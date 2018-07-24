@@ -63,7 +63,7 @@ define('NONCE_SALT',       'h/)A_n8!>].kA1Iqp|vs6$aJjiOEO3#|P=Y,4#|.lfea[e^:-ReD
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_';
+$table_prefix  = 'wucc_';
 
 /**
  * For developers: WordPress debugging mode.
@@ -87,3 +87,5 @@ if ( !defined('ABSPATH') )
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
+//Disable File Edits
+define('DISALLOW_FILE_EDIT', true);
