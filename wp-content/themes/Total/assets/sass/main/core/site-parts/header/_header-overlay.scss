@@ -1,0 +1,181 @@
+/*------------------------------------------------------------------
+[Header Overlay] @version 4.5.5
+-------------------------------------------------------------------*/
+#overlay-header-wrap {
+	position: relative;
+	z-index: 3; // Must be greater than 2 to prevent issues with footer builder and VC row bgs in the footer builder
+}
+
+#site-header.overlay-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: auto;
+	width: 100%;
+	z-index: 9999;
+	@include transition( background 0.3s ease );
+	
+	// Reset customizer backgrounds
+	&.dyn-styles {
+		background: none;
+		#site-navigation-wrap {
+			background: none;
+		}
+	}
+
+	// Reset padding
+	#site-header-inner {
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+
+	// Menu button opacity fix
+	li.menu-button > a {
+		@include opacity( 1 !important );
+	}
+	// Hide main logo
+	.has-overlay-logo .main-logo {
+		display: none;
+	}
+
+}
+
+/* Reset hidden title padding */
+body.has-overlay-header.page-header-disabled #content-wrap {
+	padding-top: 0;
+}
+
+
+/* Header > Overlay > Offset */
+.overlay-header-offset-div {
+	width: 100%;
+	display: block;
+}
+
+.add-overlay-header-offset .wpex-vc-columns-wrap {
+
+	@include opacity( 0 );
+
+	.wpex-window-loaded & {
+		@include opacity( 1 );
+	}
+
+}
+
+
+/* Header > Overlay > Boxed Layout */
+body.boxed-main-layout.has-overlay-header #wrap {
+	position: relative;
+}
+
+body.boxed-main-layout.has-overlay-header #site-header.overlay-header {
+	padding: 0 $boxed__layout-inner-padding;
+}
+
+
+/* Header > Overlay > Sticky Header Resets */
+body.has-overlay-header .wpex-sticky-header-holder {
+	height: auto !important;
+	background: none !important;
+}
+.wpex-sticky-header-holder.is-sticky #site-header.overlay-header {
+	left: auto;
+}
+
+
+/* Header > Overlay > Light Skin */
+#site-header.overlay-header.light-style {
+	color: #fff;
+
+	#site-logo a.site-logo-text,
+	#site-navigation .dropdown-menu > li > a,
+	#mobile-menu a {
+		color: #fff !important;
+	}
+
+	#site-navigation .dropdown-menu > li > a {
+		background: none;
+		@include opacity( 0.7 );
+		&:hover {
+			@include opacity( 1 );
+		}
+	}
+
+	#mobile-menu .wpex-bars {
+		> span,
+		> span::before,
+		> span::after {
+			background: #fff;
+		}
+	}
+
+}
+
+// Light skin sticky header edits
+#site-header-sticky-wrapper.is-sticky #site-header.overlay-header.light-style {
+	background-color: #000;
+
+	#site-navigation-wrap {
+		background: none;
+	}
+
+}
+
+
+/* Header > Overlay > White Skin */
+#site-header.overlay-header.white-style.dyn-styles {
+	color: #fff;
+
+	#site-logo a.site-logo-text,
+	#site-navigation .dropdown-menu > li > a,
+	#mobile-menu a {
+		color: #fff !important;
+	}
+
+	#site-navigation .dropdown-menu > li > a {
+		background: none;
+		@include transition( $transition__speed );
+		&:hover {
+			@include opacity( 0.5 );
+		}
+	}
+
+	#mobile-menu .wpex-bars {
+		> span,
+		> span::before,
+		> span::after {
+			background: #fff;
+		}
+	}
+
+}
+
+
+/* Header > Overlay > Dark Skin */
+#site-header.overlay-header.dark-style.dyn-styles {
+	color: #000;
+
+	#site-logo a.site-logo-text,
+	#site-navigation .dropdown-menu > li > a,
+	#mobile-menu a {
+		color: #000 !important;
+	}
+
+	#site-navigation .dropdown-menu > li > a {
+		background: none;
+		@include transition( $transition__speed );
+		@include opacity( 0.7 );
+		&:hover {
+			@include opacity( 1 );
+		}
+	}
+
+	#mobile-menu .wpex-bars {
+		> span,
+		> span::before,
+		> span::after {
+			background: #000;
+		}
+	}
+
+}

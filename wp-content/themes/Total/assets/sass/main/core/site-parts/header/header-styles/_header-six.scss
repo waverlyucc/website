@@ -1,0 +1,85 @@
+/*------------------------------------------------------------------
+[Header Style Six]
+-------------------------------------------------------------------*/
+
+// @version 4.6
+.navbar-style-six {
+
+	#site-navigation {
+		border-top: 1px solid $borders__color-light;
+	}
+
+	.dropdown-menu {
+
+		> li {
+			display: block;
+			width: 100%;
+			height: auto;
+			border-bottom: 1px solid $borders__color-light;
+
+			> a {
+				display: block;
+				color: #555;
+				font-weight: normal;
+				padding: 1em 30px;
+
+				span.link-inner {
+					display: block;
+					padding: 0;
+					@include transition( none );
+				}
+
+			}
+
+			&.menu-item-has-children > a {
+				padding-right: 50px;
+			}
+
+		}
+
+		a {
+			@include transition( all 0.35s ease );
+
+			&:hover {
+				background: $background__light-gray;
+			}
+
+		}
+
+		> .current-menu-item > a,
+		> .current-menu-parent > a {
+			background: #4a97c2;
+			color: #fff;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.nav-arrow.top-level {
+			position: absolute;
+			right: 20px;
+			top: 50%;
+			height: 20px;
+			line-height: 20px;
+			margin-top: -10px;
+			font-size: 11px;
+			@include opacity( 0.4 );
+		}
+
+	}
+
+	// Menu search text
+	.wpex-menu-search-text {
+		display: inline-block;
+		padding-left: 20px;
+	}
+
+	&.rtl .wpex-menu-search-text {
+		padding-left: 0;
+		padding-right: 20px;
+	}
+
+	// Superfish fix
+	.sf-menu li {
+		white-space: normal
+	}
+
+}

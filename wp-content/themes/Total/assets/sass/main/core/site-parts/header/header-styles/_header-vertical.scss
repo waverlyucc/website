@@ -1,0 +1,190 @@
+/*------------------------------------------------------------------
+[Header Style Six ( Vertical Header ) ]
+-------------------------------------------------------------------*/
+
+// Core styles
+body.wpex-has-vertical-header {
+
+	#site-header {
+		background: #fff;
+	}
+
+	// Re-position dropdowns and megamenu
+	#site-navigation {
+		
+		// Default dropdowns
+		.sf-menu {
+
+			ul {
+				top: 0;
+				left: 100%;
+				text-align: left;
+
+				a {
+					padding: 1em 20px;
+				}
+
+			}
+
+		}
+		
+		// Mega menu tweaks
+		.dropdown-menu li.megamenu {
+			position: relative;
+
+			> ul {
+				left: 100%;
+				width: 750px;
+			}
+
+		}
+
+	}
+
+	&.rtl #site-navigation {
+
+		.dropdown-menu li.megamenu {
+
+			> ul {
+				left: auto;
+				right: 100%;
+			}
+			
+		}
+
+	}
+
+}
+
+// Media query dependent styles
+@media only screen and ( min-width: 960px ) {
+
+   /* Header Vertical > Main */
+	body.wpex-has-vertical-header {
+		position: relative;
+
+		&.full-width-main-layout #wrap {
+			padding-left: $vertical-header__width;
+		}
+
+		&.rtl.full-width-main-layout #wrap {
+			padding-left: 0;
+			padding-right: $vertical-header__width;
+		}
+
+		&.full-width-main-layout.wpex-site-header-disabled #outer-wrap {
+			padding-left: 0;
+		}
+	
+		// Core header styles
+		#site-header {
+			position: absolute;
+			z-index: 99;
+			top: 0;
+			left: 0;
+			width: $vertical-header__width;
+			height: 100%;
+			
+			&.header-six {
+				@include box-shadow( 0 0 7px rgba(0,0,0,0.1) );
+			}
+
+			.container {
+				width: 100%;
+				max-width: 100%;
+			}
+
+		}
+
+		/*
+		// Breaks dropdowns :(
+		#site-header-inner {
+			max-height: 100%;
+			overflow-y : scroll;
+		}*/
+
+		&.rtl #site-header {
+			left: auto;
+			right: 0;
+		}
+	
+		// RTL header position
+		/*@if $support_rtl == 1 {
+			&.rtl #site-header {
+				left: auto;
+				right: 0;
+			}
+		}*/
+		
+		// Fixed style
+		&.wpex-fixed-vertical-header {
+
+			#site-header {
+				position: fixed;
+				overflow: visible;
+			}
+
+			&.admin-bar #site-header {
+				top: 32px;
+			}
+
+		}
+
+		// Logo tweaks
+		#site-logo {
+			display: block;
+
+			img {
+				display: block;
+				margin: 0 auto;
+			}
+
+		}
+
+		.header-six #site-logo {
+			padding: 0 30px 30px 30px;
+		}
+
+		#site-logo-inner {
+			display: block;
+		}
+
+		.sf-menu ul {
+			min-width: 180px;
+		}
+
+		// Boxed layout
+		&.boxed-main-layout {
+
+			#wrap {
+				padding-left: $vertical-header__width;
+			}
+
+			&.wpex-site-header-disabled #wrap {
+				padding-left: 0
+			}
+
+			#site-header .container {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+
+		}
+
+		&.rtl.boxed-main-layout {
+
+			#wrap {
+				padding-left: 0;
+				padding-right: $vertical-header__width;
+			}
+
+		}
+
+		// Remove extra border on page title
+		.page-header {
+			border-top: 0;
+		}
+
+	}
+	
+}

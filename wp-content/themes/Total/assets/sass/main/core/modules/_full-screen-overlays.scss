@@ -1,0 +1,67 @@
+/*------------------------------------------------------------------
+[Full-Screen Overlays]
+-------------------------------------------------------------------*/
+.wpex-fs-overlay {
+	position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99999;
+    visibility: hidden;
+    opacity: 0;
+    background: #000;
+    background: rgba( 0, 0, 0, 0.92 );
+    transform: translateZ(0);
+    @include transition( all .25s ease-in-out );
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+	.wpex-inner {
+        position: relative;
+        top: 50%;
+        display: block;
+        position: relative;
+        width: 700px;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 30px;
+        &.wpex-scale {
+            transform: scale(.85) translateY(-50%);
+            @include transition( all .25s ease-in-out );
+        }
+    }
+
+    &.active .wpex-inner.wpex-scale {
+        transform: scale(1) translateY(-50%);
+    }
+
+    .wpex-close {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        cursor: pointer;
+        font-family: "Times New Roman", Times, serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-size: 64px; // Use pixels because it's an icon
+        cursor: pointer;
+        @include opacity( 0.2 );
+        @include transition( all 0.3s );
+
+        &:hover {
+            @include opacity( 1 );
+        }
+
+    }
+
+
+}

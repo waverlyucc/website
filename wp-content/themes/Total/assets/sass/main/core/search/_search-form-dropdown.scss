@@ -1,0 +1,55 @@
+/*------------------------------------------------------------------
+[Search Form > Dropdown]
+-------------------------------------------------------------------*/
+#searchform-dropdown {
+    z-index: 10000;
+    position: absolute;
+    right: 0;
+    background: #fff;
+    top: 100%;
+    padding: 15px;
+    width: 260px;
+    border-top: 3px solid transparent;
+    visibility: hidden;
+    @include box-shadow( 0 2px 7px rgba( 0, 0, 0, 0.1 ) );
+    @include opacity( 0 );
+    @include transition( all 0.25s ease-in-out );
+
+    &.show {
+        visibility: visible;
+        @include opacity( 1 );
+    }
+
+    input[type="search"] {
+        display: block;
+        outline: 0;
+        border: 0;
+        width: 100%;
+        background: #f4f4f4;
+        height: auto;
+        line-height: 1.65;
+        padding: .7em 30px .7em .8em;
+        @include border-radius( 0 );
+    }
+
+    button,
+    input[type="submit"],
+    .woocommerce-product-search button {
+        display: none;
+    }
+
+    .boxed-main-layout & {
+        right: $boxed__layout-inner-padding;
+    }
+
+    .navbar-style-six & {
+        top: 0;
+        left: 100%;
+        right: auto;
+    }
+
+    .navbar-style-five & {
+        margin-top: 10px;
+    }
+
+}

@@ -1,0 +1,58 @@
+/*------------------------------------------------------------------
+[Onsale Badge]
+-------------------------------------------------------------------*/
+.woocommerce span.onsale {
+    z-index: 9;
+    color: #fff;
+    font-size: 0.923em;
+    padding: .6em .8em;
+    line-height: 1;
+    text-transform: uppercase;
+    font-weight: normal;
+    position: absolute;
+    text-align: center;
+    top: 15px;
+    left: 15px;
+    margin: 0;
+    background: #ed4039;
+    min-height: 0;
+    min-width: 0;
+    @include border-radius( 0 );
+    -webkit-font-smoothing: inherit;
+    visibility: hidden;
+}
+
+.woocommerce ul.products li.product .onsale {
+    top: 15px;
+    left: 15px;
+    margin: 0;
+    right: auto;
+}
+
+.woocommerce ul.products li.product.outofstock .onsale {
+    display: none;
+}
+
+
+.woocommerce .outofstock-badge {
+    z-index: 9;
+    color: #fff;
+    font-size: 0.923em;
+    padding: .6em .8em;
+    line-height: 1;
+    font-weight: normal;
+    position: absolute;
+    text-align: center;
+    top: 15px;
+    left: 15px;
+    margin: 0;
+    background: #000;
+    background: rgba( 0,0,0, 0.75 );
+    visibility: hidden;
+}
+
+// prevent flash when no images yet
+body.wpex-window-loaded span.onsale,
+body.wpex-window-loaded .outofstock-badge {
+    visibility: visible;
+}

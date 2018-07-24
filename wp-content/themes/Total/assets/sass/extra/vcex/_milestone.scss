@@ -1,0 +1,103 @@
+/*------------------------------------------------------------------
+[Milestones]
+-------------------------------------------------------------------*/
+.vcex-milestone,
+a.vcex-milestone {
+    display: block !important;
+    margin: 0 auto;
+    text-align: center;
+}
+
+a.vcex-milestone,
+a.vcex-milestone:hover {
+    text-decoration: none;
+}
+
+.vcex-milestone-number {
+    font-weight: 600;
+    font-size: 54px;
+    color: #bcbcbc;
+    line-height: 1em;
+}
+
+.vcex-milestone-caption {
+    font-size: 1.231em;
+    font-weight: 300;
+    color: #898989;
+    margin-top: 5px;
+}
+
+.vcex-milestone-icon {
+    display: inline-block;
+}
+
+// Icon positions
+.vcex-milestone {
+
+    .vcex-milestone-inner {
+        position: relative;
+        display: inline-block;
+    }
+
+    // Inline
+    &.vcex-ip-inline {
+        
+        .vcex-milestone-icon {
+            margin-right: pem( 4 );
+        }
+
+    }
+    
+    // Icon top
+    &.vcex-ip-top {
+
+        .vcex-milestone-icon {
+            font-size: 54px;
+            margin: 0;
+        }
+
+    }
+
+    // Icon left/right
+    &.vcex-ip-left,
+    &.vcex-ip-right {
+
+        .vcex-milestone-icon {
+            font-size: 52px;
+            position: absolute;
+            margin: 0;
+            width: 50px;
+            height: 50px;
+        }
+
+    }
+
+    // Icon Left
+    &.vcex-ip-left {
+        
+        .vcex-milestone-inner {
+            padding-left: 80px;
+            text-align: left;
+        }
+
+        .vcex-milestone-icon {
+            left: 0;
+        }
+
+    }
+
+    // Icon right
+    &.vcex-ip-right {
+
+        .vcex-milestone-inner {
+            padding-right: 80px;
+            text-align: right;
+        }
+
+        .vcex-milestone-icon {
+            right: 0;
+        }
+
+    }
+
+}

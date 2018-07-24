@@ -1,0 +1,380 @@
+.clr:after {
+    @include clear-after;
+}
+
+.vcex-noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+.vcex-trbl-param {
+    padding-top: 4px;
+}
+.vcex-trbl-param .vcex-item,
+.vcex-rs-param .vcex-item {
+	position: relative;
+    margin-right: 10px;
+    white-space: nowrap;
+    float: left;
+    display: inline-block;
+    margin-bottom: 6px;
+
+    .rtl & {
+        float: right;
+        margin-right: 0;
+        margin-left: 10px;
+    }
+
+}
+
+.vcex-trbl-param .vcex-icon,
+.vcex-rs-param .vcex-icon {
+    display: block;
+    float: left;
+    width: 36px;
+    height:30px;
+    color: #fff;
+    text-align: center;
+    background: $vc_accent;
+    @include border-radius( 3px 0 0 3px );
+
+    .rtl & {
+        float: right;
+        @include border-radius( 0 3px 3px 0 );
+    }
+}
+
+.vcex-rs-param .vcex-icon .dashicons {
+    top: 5px;
+    position: relative;
+}
+
+.vcex-apply-all .dashicons,
+.vcex-trbl-param .vcex-icon .dashicons {
+    font-size: 18px;
+    top: 7px;
+    position: relative;
+}
+
+.vcex-rs-param .vcex-flip .dashicons {
+    -ms-transform: rotate( 90deg );
+    -webkit-transform: rotate( 90deg );
+    transform: rotate( 90deg );
+}
+
+.vcex-trbl-param .vcex-input,
+.vcex-rs-param .vcex-input {
+    height: 30px;
+    padding: 0;
+    width: 60px;
+    text-align: center;
+    @include border-radius( 0 3px 3px 0 );
+}
+
+.vcex-trbl-param .vcex-hidden,
+.vcex-rs-param .vcex-hidden {
+	display: none;
+}
+
+// Button set
+.vcex-button-set {
+    float: left;
+    line-height: 32px;
+    margin: 6px 0 10px;
+    background: #dcdcdc;
+    @include border-radius( 3px );
+}
+
+.vcex-button-set div {
+    display: block;
+    float: left;
+    text-transform: uppercase;
+    color: #5e5e5e;
+    background: #dcdcdc;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    @include transition( $transition__speed );
+
+    &:hover {
+        box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+        &.vcex-active {
+            box-shadow: none;
+        }
+    }
+
+    &.vcex-active {
+        background: #2c4b7d;
+        color: #fff;
+    }
+
+}
+
+
+// On off switch
+.vcex-ofswitch {
+    float: left;
+    width: 100px;
+    line-height: 32px;
+    margin: 6px 0 10px;
+    background: #dcdcdc;
+    @include border-radius( 3px );
+
+    .rtl & {
+       float: right;
+    }
+
+}
+
+.vcex-ofswitch div {
+    display: block;
+    float: left;
+    text-transform: uppercase;
+    color: #5e5e5e;
+    font-size: 11px;
+    font-weight: 600;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    @include transition( $transition__speed );
+
+    .rtl & {
+       float: right;
+    }
+
+    &:hover {
+        box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+        &.vcex-active {
+            box-shadow: none;
+        }
+    }
+
+    &.vcex-on {
+        @include border-radius( 3px 0 0 3px );
+        .rtl & {
+            @include border-radius( 0 3px 3px 0 );
+        }
+    }
+
+    &.vcex-off {
+        @include border-radius( 0 3px 3px 0 );
+            
+        .rtl & {
+            @include border-radius( 3px 0 0 3px );
+        }
+
+    }
+
+    &.vcex-active {
+        background: #666;
+        color: #fff;
+
+        &.vcex-on {
+            background: #6DAB3C;
+            color: #fff;
+        }
+
+    }
+
+}
+
+// Custom Selects
+.vcex-select-buttons-param {
+    padding-top: 6px;
+    font-size: 13px;
+
+    .vcex-opt {
+        color: #5e5e5e;
+        padding: 0 10px;
+        line-height: 28px;
+        float: left;
+        border-radius: 3px;
+        text-align: center;
+        border: 1px solid #ddd;
+        margin-right: 6px;
+        margin-bottom: 4px;
+        cursor: pointer;
+        .dashicons {
+            line-height: inherit;
+        }
+        &:hover {
+            background: #efefef;
+        }
+        &.vcex-active {
+            background: $vc_accent;
+            color: #fff;
+            border-color: transparent;
+            cursor: default;
+        }
+    }
+
+    &.vcex-no-active-bg .vcex-opt {
+        border-width: 2px;
+        &:hover,
+        &.vcex-active {
+            background: none;
+            border-color: $vc_accent;
+        }
+    }
+
+    .vcex-opt-italic {
+        font-style: italic;
+    }
+
+     .vcex-opt-oblique {
+        font-style: oblique;
+    }
+
+    .vcex-opt-underline {
+        text-decoration: underline;
+    }
+
+    .vcex-opt-overline {
+        text-decoration: overline;
+    }
+
+    .vcex-opt-line-through {
+        text-decoration: line-through;
+    }
+
+}
+
+// Colors
+.vcex-colors-select-param {
+    padding-top: 6px;
+    .vcex-opt {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        float: left;
+        margin-right: 6px;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        cursor: pointer;
+        text-align: center;
+        font-size: 13px;
+        transition: border-color 0.2s ease;
+        &:hover,
+        &.vcex-active {
+            border-color: $vc_accent;
+        }
+        &.vcex-default {
+            color: #bbb;
+        }
+    }
+}
+
+// Custom Alignments
+.vcex-alignments-param {
+    padding-top: 6px;
+    font-size: 13px;
+
+    .vcex-alignment-opt {
+        color: #5e5e5e;
+        width: 35px;
+        line-height: 28px;
+        float: left;
+        border-radius: 3px;
+        text-align: center;
+        border: 1px solid #ddd;
+        margin-right: 10px;
+        cursor: pointer;
+        .dashicons {
+            line-height: inherit;
+        }
+        &.vcex-default {
+            padding: 0 10px;
+            width: auto;
+        }
+        &:hover {
+            background: #efefef;
+        }
+        &.vcex-active {
+            background: $vc_accent;
+            color: #fff;
+            border-color: transparent;
+            cursor: default;
+        }
+    }
+
+}
+
+// Attach Images
+.wpb_el_type_vcex_attach_images,
+.wpb_el_type_vcex_attach_image {
+
+    // Add new image square button
+    .gallery_widget_add_images {
+        margin-top: 0;
+        display: block;
+        float: left;
+        height: 80px;
+        width: 80px;
+        background: #F5F5F5;
+        border: 1px solid #DFDFDF;
+        font-size: 0;
+        color: #F5F5F5;
+        position: relative;
+
+        &:hover {
+          color: #C8C8C8;
+          border-color: #C8C8C8;
+          text-decoration: none;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+
+        .rtl & {
+            float: right;
+        }
+
+    }
+
+    .vc-composer-icon {
+      font-size: 18px;
+      color: #87D148;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      @include transform( translate(-50%, -50%) );
+    }
+
+    .vc_icon-remove {
+        display: block;
+        position: absolute;
+        background: red;
+        height: 15px;
+        width: 15px;
+        top: auto;
+        left: auto;
+        bottom: 0;
+        right: 0;
+
+        &:hover {
+            background: #000;
+        }
+
+        .vc-composer-icon {
+            font-size: 14px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            @include transform( translate(-50%, -50%) );
+        }
+
+        .rtl & {
+            left: 0;
+            right: auto;
+        }
+
+    }
+
+}

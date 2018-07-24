@@ -1,0 +1,33 @@
+/*------------------------------------------------------------------
+[Breadcrumbs]
+-------------------------------------------------------------------*/
+.vcex-breadcrumbs {
+	color: #333;
+	font-size: pem( 14 );
+
+	a {
+		color: inherit;
+	}
+
+	.trail-end,
+	.sep {
+		opacity: 0.7;
+	}
+
+	.breadcrumb-trail {
+		display: inline-block;
+	}
+
+	.breadcrumb-title {
+		margin-right: 5px;
+	}
+
+	.sep {
+		margin: 0 3px;
+	}
+
+	.trail-begin {
+		margin: 0 5px 0 0;
+	}
+
+}

@@ -1,0 +1,200 @@
+/* Mobile Menus > Full Screen Fade Overlay */
+
+// @version 4.5.5
+
+.full-screen-overlay-nav {
+	display: block;
+	position: fixed;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	visibility: hidden;
+	overflow-y: auto;
+	font-weight: 300;
+	font-size: 32px;  // Use pixels because it's basically stand-alone
+	line-height: normal;
+	@include opacity( 0 );
+	@include transition( all 0.4s );
+	
+	// Show menu
+	&.visible {
+		z-index: 99999;
+		visibility:
+		visible;
+		@include opacity( 1 );
+	}
+
+	// Close button
+	.full-screen-overlay-nav-close {
+		position: fixed;
+		top: 0;
+		right: 0;
+		width: 80px;
+		text-align: center;
+		height: 80px;
+		line-height: 80px;
+		cursor: pointer;
+		font-family: "Times New Roman", Times, serif;
+		font-weight: 400;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font-size: 64px; // Use pixels because it's an icon
+		@include opacity( 0.3 );
+		@include transition( all 0.3s );
+
+		&:hover {
+			@include opacity( 1 );
+		}
+
+	}
+
+	// White design
+	&.white {
+		background: #fff;
+		background: rgba(255,255,255,0.95);
+		color: #000;
+			
+		li.wpex-active > a {
+			opacity: 0.4;
+		}
+
+		#mobile-menu-search input[type="search"] {
+			border-color: #ddd;
+		}
+
+	}
+
+	// Black design
+	&.black {
+		background: #000;
+		background: rgba(0,0,0,0.98);
+		color: #fff;
+
+		li {
+
+			a {
+				@include opacity( 0.4 );
+			}
+			
+			a:hover,
+			&.wpex-active > a {
+				@include opacity( 1 );
+			}
+
+		}
+
+		#mobile-menu-search input[type="search"] {
+			border-color: #333;
+		}
+
+	}
+
+}
+
+// Menu
+.full-screen-overlay-nav-ul-wrapper {
+	display: table;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+
+	// Search
+	#mobile-menu-search {
+		display: block;
+		margin: 0 auto;
+		width: 350px;
+		max-width: 100%;
+        padding-top: 40px;
+        font-size: 0.85em;
+		input[type="search"] {
+			width: 100%;
+			background: none;
+			color: inherit;
+			background: none;
+			border: 0;
+			text-align: center;
+			border-bottom: 1px solid transparent;
+		}
+		button, input[type="submit"] {
+			display: none;
+		}
+	}
+
+}
+
+.full-screen-overlay-nav-ul {
+	display: table-cell;
+	vertical-align: middle;
+	height: 100%;
+	width: 100%;
+	padding: 80px 30px;
+	
+	ul {
+		font-size: 0.9em;
+		display: block;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	li {
+		display: block;
+
+		a {
+			display: inline-block;
+			margin-bottom: 20px;
+			color: inherit;
+			@include transition( all 0.3s );
+
+			.fa {
+				margin-right: 10px;
+			}
+
+			&:hover {
+				text-decoration: none;
+				opacity: 0.4;
+			}
+
+		}
+
+		// Hide extra items
+		&.wpex-menu-extra {
+			display: none !important;
+		}
+
+		// Hide dropdown arrows
+		.nav-arrow {
+			display: none;
+		}
+
+	}
+
+	span.link-inner {
+		position: relative;
+		&::after {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			content: "";
+			height: 2px;
+			width: 0;
+			transition: all 0.4s linear;
+		}
+	}
+
+	li.wpex-active > a > span.link-inner::after {
+		width: 100%;
+		background: #000;
+		.black & {
+			background: #fff;
+		}
+
+	}
+
+	ul.sub-menu {
+		display: none;
+	}
+
+}

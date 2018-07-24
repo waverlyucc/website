@@ -1,0 +1,46 @@
+/*------------------------------------------------------------------
+[Multi-Buttons]
+-------------------------------------------------------------------*/
+.vcex-multi-buttons {
+
+	.theme-button {
+		text-align: center; // fixes issues when using min-width and buttons
+	}
+
+	.theme-button,
+	.theme-txt-link {
+		line-height: inherit;
+		margin: 0 5px 5px;
+		font-weight: inherit;
+		letter-spacing: inherit;
+		border-radius: inherit;
+		border: 3px solid transparent; // to make outline buttons same height
+		&:hover {
+			border: 3px solid transparent;
+		}
+	}
+
+	.theme-button.outline[data-wpex-hover]:hover {
+		color: #fff !important;
+	}
+	
+}
+
+@media screen and (max-width: 480px) {
+
+	.vcex-multi-buttons.vcex-small-screen-full-width {
+
+		.theme-button {
+			display: block;
+			width: 100%;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+
+		.vcex-spacer {
+			display: none;
+		}
+		
+	}
+
+}

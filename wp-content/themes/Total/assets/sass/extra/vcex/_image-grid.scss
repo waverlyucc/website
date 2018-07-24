@@ -1,0 +1,64 @@
+/*------------------------------------------------------------------
+[Image Grid]
+-------------------------------------------------------------------*/
+.vcex-image-grid-entry-figure {
+    position: relative;
+}
+
+.vcex-image-grid-entry {
+    text-align: center;
+
+    img {
+        display: inline-block;
+        vertical-align: bottom;
+    }
+
+}
+
+.vcex-image-grid-entry-title{
+    margin: 10px 0 0;
+
+    h2, h3, h4 {
+        margin: 0
+    }
+
+    p:last-child {
+        margin: 0
+    }
+
+}
+
+.vcex-image-grid-entry-excerpt {
+    margin: 10px 0 0;
+}
+
+.vcex-image-grid.grid-style-no-margins {
+
+    .vcex-image-grid-entry-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: #000;
+        background: rgba(0,0,0,0.8);
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+        .entry-title {
+            color: #fff
+        }
+
+    }
+
+    .vcex-image-grid-entry-excerpt {
+        background: #262626;
+        color: #787878;
+        margin: 0;
+        padding: 15px;
+    }
+
+    .col {
+        margin: 0
+    }
+
+}

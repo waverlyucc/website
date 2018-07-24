@@ -1,0 +1,15 @@
+/*--------------------------------------------------------------
+# VC > Video
+--------------------------------------------------------------*/
+
+// Fix responsive wrap issues
+.wpb_video_widget {
+	
+	.wpex-roembed,
+	.responsive-video-wrap {
+		padding-top: 0;
+		margin-bottom: 0;
+		position: static;
+	}
+
+}

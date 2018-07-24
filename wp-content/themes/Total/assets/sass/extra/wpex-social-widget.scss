@@ -1,0 +1,34 @@
+.wpex-social-widget-services-list {
+	padding-top: 5px;
+
+
+	li {
+		cursor: move;
+		background: #fafafa;
+		padding: 10px;
+		border: 1px solid #e5e5e5;
+		margin-bottom: 10px;
+
+		p {
+			margin: 0;
+		}
+
+		label {
+			margin-bottom: 3px;
+			display: block;
+			color: #222;
+
+			.fa {
+				margin-right: 8px;
+			}
+
+		}
+
+	}
+
+	.placeholder {
+		border: 1px dashed #e3e3e3;
+	}
+
+}
+

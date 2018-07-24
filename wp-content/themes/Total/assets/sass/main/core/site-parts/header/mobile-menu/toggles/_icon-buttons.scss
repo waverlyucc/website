@@ -1,0 +1,72 @@
+/* Mobile Menu Toggles > Icon Button(s) */
+
+// @version 4.5.5.1
+
+#mobile-menu {
+
+	a {
+		position: relative;
+		display: inline-block;
+		color: inherit;
+		font-size: 22px;
+		margin-left: pem( 12px );
+		@include transition( $transition__speed );
+
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&:hover {
+			text-decoration: none;
+		}
+
+	}
+
+	.wpex-shop {
+		position: relative;
+	}
+	
+	.wpex-cart-count {
+		display: block;
+		position: absolute;
+		top: -6px;
+		right: -8px;
+		height: 16px;
+		line-height: 16px;
+		width: 16px;
+		text-align: center;
+		background: #bbb;
+		color: #fff;
+		padding: 0 4px;
+		font-size: 9px;
+		font-weight: 600;
+		@include border-radius( 50% );
+
+	    &.wpex-has-items {
+			background: $accent__main;
+	    }
+
+	}
+
+	// Mobile Menu Toggles > Icon Buttons
+	body.wpex-mobile-toggle-menu-icon_buttons & {
+		height: 30px;
+		line-height: 30px;
+		position: absolute;
+		right: 0;
+		top: 50%;
+		margin-top: -15px;
+	}
+
+}
+
+/* Mobile Menu Toggles > Icon Button(s) Under Logo */
+.wpex-mobile-toggle-menu-icon_buttons_under_logo {
+	clear: both;
+	
+	#mobile-menu {
+		padding-top: 10px;
+		text-align: center;
+	}
+
+}

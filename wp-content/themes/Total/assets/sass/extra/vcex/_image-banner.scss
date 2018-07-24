@@ -1,0 +1,160 @@
+/*------------------------------------------------------------------
+[Image Banner]
+-------------------------------------------------------------------*/
+.vcex-image-ba-wrap {
+    max-width: 100%;
+}
+.vcex-image-banner {
+    min-height: 100px;
+    background: #222;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    max-width: 100%;
+
+    .vcex-ib-img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        display: block;
+        @include background-size( cover );
+        @include transition( all 0.4s ease );
+    }
+
+    .vcex-ib-overlay {
+        height: 100%;
+        width: 100%;
+        display: block;
+        position: absolute;
+        background: rgba( 0, 0, 0, 0.3 );
+        z-index: 2;
+        @include transition( all 0.25s ease );
+    }
+
+    .vcex-ib-content-wrap {
+        position: relative;
+        z-index: 4;
+        padding: 100px 40px;
+        max-width: 100%;
+        @include transition( all 0.45s ease );
+    }
+
+    .vcex-ib-content {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .vcex-ib-link {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        outline: none;
+        border: 0;
+    }
+
+    .vcex-ib-title {
+        font-size: pem( 26 );
+        font-weight: 600;
+        color: inherit;
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .vcex-ib-caption {
+        font-size: pem( 16 );
+    }
+
+    &.vcex-has-button .vcex-ib-caption {
+        padding-bottom: pem( 10px );
+    }
+
+    .vcex-ib-title,
+    .vcex-ib-caption,
+    .vcex-ib-button {
+        position: relative;
+        @include transition( all 0.35s ease );
+    }
+    
+    // Alignments
+    &.textcenter .vcex-ib-content {
+        margin-right: auto;
+        margin-left: auto;
+    }
+    &.textright .vcex-ib-content {
+        float: right;
+    }
+    &.textleft .vcex-ib-content {
+        float: left;
+    }
+    
+    // Show on hover
+    &.vcex-soh {
+    
+        .vcex-ib-overlay,
+        .vcex-ib-title,
+        .vcex-ib-caption,
+        .vcex-ib-button {
+            visibility: hidden;
+            @include opacity( 0 );
+        }
+
+        // Hover fade up
+        &.vcex-anim-fade-up {
+            .vcex-ib-title { 
+                top: 10px;
+            }
+
+            .vcex-ib-caption {
+                top: 15px;
+            }
+
+            .vcex-ib-button {
+                top: 20px;
+            }
+
+            &:hover {
+                
+                .vcex-ib-title,
+                .vcex-ib-caption,
+                .vcex-ib-button {
+                    top: 0;
+                }
+
+            }
+
+        }
+
+        &:hover {
+
+            .vcex-ib-overlay,
+            .vcex-ib-title,
+            .vcex-ib-caption,
+            .vcex-ib-button {
+                visibility: visible;
+                @include opacity( 1 );
+            }
+        }
+
+    }
+
+    // Hover Zoon
+    &.vcex-h-zoom {
+
+        &:hover .vcex-ib-img {
+            @include transform( scale( 1.15 ) );
+        }
+
+    }
+
+}
+
+@media screen and (max-width: 740px) {
+
+    .vcex-image-banner .vcex-ib-content {
+        width: 100% !important;
+    }
+
+}

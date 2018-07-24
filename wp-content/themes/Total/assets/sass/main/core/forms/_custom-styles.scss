@@ -1,0 +1,328 @@
+/*------------------------------------------------------------------
+[Form Styles]
+-------------------------------------------------------------------*/
+
+/* white form */
+body .light-form {
+
+	select {
+		color: #555;
+	}
+
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="week"],
+	input[type="month"],
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="password"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="number"],
+	textarea,
+	.wpex-select-wrap,
+	.wpex-multiselect-wrap select {
+		background: #fff !important;
+		color: #555 !important;
+		border-color: transparent !important;
+	}
+	
+	&, label, .wpex-wpcf7-loader {
+		color: #fff;
+	}
+
+	.wpex-select-wrap .fa {
+		opacity: 0.8;
+	}
+
+	.wpcf7-validation-errors,
+	.wpcf7 .wpcf7-mail-sent-ok {
+		background: none;
+		color: #fff;
+		border: 3px solid #fff;
+	}
+
+	input:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px #fff inset
+	}
+
+	.wpcf7-not-valid {
+		border: 1px solid red !important;
+	}
+
+}
+
+
+/* minimal */
+body .wpex-form-min {
+	color: #444;
+
+	label {
+		color: #444;
+	}
+
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="week"],
+	input[type="month"],
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="password"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="number"],
+	textarea,
+	.wpex-select-wrap,
+	.wpex-multiselect-wrap select {
+		background: none !important;
+		color: #888 !important;
+		border: 1px solid #ddd !important;
+		border-radius: 0 !important;
+
+	}
+
+	.wpex-wpcf7-loader {
+		color: #999;
+		font-size: 12px;
+	}
+
+	.wpcf7-validation-errors,
+	.wpcf7 .wpcf7-mail-sent-ok {
+		background: #f9f9f9;
+		border: 0;
+		color:#888;
+	}
+
+	input:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px #fff inset
+	}
+
+	.wpcf7-not-valid {
+		border: 1px solid red !important;
+	}
+
+}
+
+
+/* modern */
+body .wpex-form-modern {
+
+	color: #444;
+
+	label {
+		color: #444;
+	}
+
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="week"],
+	input[type="month"],
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="password"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="number"],
+	textarea,
+	.wpex-select-wrap,
+	.wpex-multiselect-wrap select {
+		background: #fff;
+		color: #536570;
+		border: 1px solid #d4dbe0;
+		border-radius: 4px;
+		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.072);
+		transition: all .15s;
+		&:focus {
+			background: #fff;
+			color: #000;
+			border: 1px solid #66afe9;
+			box-shadow: none;
+		}
+	}
+
+	.wpex-wpcf7-loader {
+		color: #999;
+		font-size: 12px;
+	}
+
+	.wpcf7-not-valid {
+		border: 1px solid red !important;
+	}
+
+}
+
+
+/* white outline */
+body .wpex-form-white-o {
+	color: #fff;
+
+	label, .wpex-wpcf7-loader {
+		color: #fff;
+	}
+
+	select {
+		color: #555;
+	}
+	
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="week"],
+	input[type="month"],
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="password"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="number"],
+	textarea,
+	.wpex-select-wrap,
+	.wpex-multiselect-wrap select {
+		background: none !important;
+		color: #fff !important;
+		border: 3px solid #fff !important;
+		border-radius: 0;
+	}
+
+	.wpex-select-wrap {
+		select {
+			color: #fff;
+		}
+		.fa-angle-down {
+			opacity: 1;
+			font-size: 12px;
+		}
+		.fa-angle-down::before {
+			content: "\f078";
+		}
+	}
+
+	input:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px #fff inset
+	}
+
+	.wpcf7-validation-errors,
+	.wpcf7 .wpcf7-mail-sent-ok {
+		background: #fff;
+		border: 0;
+	}
+
+	.wpcf7-not-valid {
+		border-color: red !important;
+	}
+	
+}
+
+
+/* black form */
+body .wpex-form-black {
+	color: #000;
+
+	label {
+		color: #000;
+	}
+
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="week"],
+	input[type="month"],
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="password"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="number"],
+	textarea,
+	.wpex-select-wrap,
+	.wpex-multiselect-wrap select {
+		background: #000 !important;
+		color: #fff !important;
+		border-color: #000 !important;
+	}
+
+	input:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px #000 inset
+	}
+
+	.wpex-select-wrap .fa {
+		opacity: 1;
+	}
+
+	.wpcf7-validation-errors,
+	.wpcf7 .wpcf7-mail-sent-ok {
+		background: none;
+		color: #000;
+		border: 3px solid #000;
+	}
+
+	.wpcf7-not-valid {
+		border: 1px solid red !important;
+	}
+
+}
+
+/* black outline */
+body .wpex-form-black-o {
+	color: #000;
+
+	label,
+	.wpex-wpcf7-loader {
+		color: #000;
+	}
+
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="week"],
+	input[type="month"],
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="password"],
+	input[type="search"],
+	input[type="tel"],
+	input[type="number"],
+	textarea,
+	.wpex-select-wrap,
+	.wpex-multiselect-wrap select {
+		background: none !important;
+		color: #000 !important;
+		border: 3px solid #000 !important;
+		border-radius: 0;
+	}
+
+	input:-webkit-autofill {
+		-webkit-box-shadow: none;
+	}
+
+	.wpex-select-wrap {
+		.fa-angle-down {
+			opacity: 1;
+			font-size: 12px;
+		}
+		.fa-angle-down::before {
+			content: "\f078";
+		}
+	}
+
+	.wpcf7-validation-errors,
+	.wpcf7 .wpcf7-mail-sent-ok {
+		background: #000;
+		border: 0;
+		color: #fff;
+	}
+
+	.wpcf7-not-valid {
+		border-color: red !important;
+	}
+
+}

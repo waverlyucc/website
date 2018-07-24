@@ -1,0 +1,98 @@
+/*!
+ Project   : Total WordPress Theme
+ Purpose   : Visual Composer admin-side styles
+ Author    : WPExplorer
+ Theme URI : http://www.wpexplorer.com
+ Notes     : Un-compressed SASS files available
+ */
+
+// Helpers
+@import "../load-helpers";
+
+$vc_accent: $accent__vc-brand;
+
+// Clear floats
+.wpex-clr:after {
+	@include clear-after;
+}
+
+// Fix margin issue
+body .wpb_vc_param_value p {
+	margin-top: 0;
+}
+
+// Remove visit knowledgebase link
+body .vc_ui-help-block.vc_welcome-visible-e {
+	display: none !important;
+}
+
+// Prevent images from going outside container
+.wpb_element_wrapper img {
+	max-width: 100%;
+	height: auto;
+}
+
+// Hide hidden params
+.vc_column.vc_edit-form-hidden-field-wrapper {
+	padding-top: 0 !important;
+}
+
+/* Font Family => Deprecated in 4.0
+.vc_modal-content {
+	font-family: 'Open Sans', 'Helvetica Neue', Arial;
+}*/
+
+// Responsive columns param
+.vcex-responsive-columns-param {
+	padding: 10px 0;
+	background: #f9f9f9;
+	border: 1px solid #eee;
+
+	.vc_col-sm-6 {
+    	padding-top: 5px;
+    	padding-bottom: 5px;
+    }
+
+}
+
+// Add padding to tabs
+.vc_ui-panel .vc_panel-tabs {
+	padding-bottom: 10px;
+}
+
+// Background selector temp fix @todo - remove when VC updates their plugin with a fix
+.vc_css-editor .vc_settings .wp-picker-input-wrap {
+	label {
+		display: inline-block;
+		margin: 0;
+	}
+}
+
+.vc_css-editor .wp-color-result::before,
+.vc_css-editor .wp-color-result::after {
+	display: none !important;
+}
+
+body .vc_edit_form_elements input.wp-color-picker[type=text] {
+	width: 65px !important;
+}
+
+.vc_css-editor .vc_settings .color-group .wp-picker-container .wp-picker-holder {
+	left: 0 !important;
+}
+
+// add a bit more margin under css editor box so when the window is small there is space before border color option
+body .vc_css-editor .vc_layout-onion .vc_margin {
+	margin-bottom: 10px;
+}
+
+// larger font for raw text module
+body .vc_edit_form_elements .textarea_raw_html {
+	font-size: 1em;
+	color: #585858;
+}
+
+@import "vc-admin/editor-tweaks";
+@import "vc-admin/module-icons";
+@import "vc-admin/custom-params";
+@import "vc-admin/chosen-selects";

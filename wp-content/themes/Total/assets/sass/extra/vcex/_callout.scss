@@ -1,0 +1,52 @@
+/*------------------------------------------------------------------
+[Callout]
+-------------------------------------------------------------------*/
+.vcex-callout {
+	padding: 20px;
+	position: relative;
+	background: #f7f7f7;
+	border: 1px solid $borders__color;
+	border-radius: 3px;
+	display: flex;
+    align-items: center;
+}
+
+.vcex-callout-caption {
+	float: left;
+	font-size: 14px;
+	font-weight: normal;
+	max-width: 100%;
+	.vcex-callout.with-button & {
+		width: 75%;
+		padding-right: 20px;
+	}
+}
+
+.vcex-callout-caption h1,
+.vcex-callout-caption h2,
+.vcex-callout-caption h3,
+.vcex-callout-caption h4 {
+	margin: 0;
+	font-size: 21px;
+	font-weight: normal;
+	color: $headings__color;
+}
+
+.vcex-callout-caption p:last-child {
+	margin: 0
+}
+
+.vcex-callout-button {
+	float: left;
+	width: 25%;
+	max-width: 100%;
+	text-align: right;
+
+	.theme-button {
+		font-size: 1em;
+		font-weight: normal;
+		margin: 0;
+		text-align: center;
+	}
+
+}

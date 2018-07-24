@@ -1,0 +1,103 @@
+/*------------------------------------------------------------------
+[Sticky Header]
+-------------------------------------------------------------------*/
+
+// @version 4.6.5
+
+// Hide sticky logo
+#site-logo a.sticky-logo {
+    display: none;
+}
+
+// Hardware acceleration
+#site-header.fixed-scroll {
+    z-index: 99;
+    transform: translateZ( 0 ); // Causes issues with sticky header going outside the site when scrolling with momentum ?
+    // @include transform( translateZ( 0 ) );
+}
+
+#site-header.transform-prepare {
+    @include transform( translateY(-100%) );
+    transition: transform .25s ease-in-out, opacity .15s ease-in-out !important;
+    .overlay-header {
+        position: fixed;
+    }
+    &.transform-go {
+        @include transform( translateY(0%) );
+    }
+}
+
+#site-header-sticky-wrapper.is-sticky {
+
+    #site-header {
+        position: fixed;
+        overflow: visible !important;
+        z-index: 1001; // WooCommerce loading divs are set to 1000 so should be greater but can NOT be more then 1001 overlays are set to 1002
+        background-color: #fff;
+        @include box-shadow( 0px 2px 5px rgba(0,0,0,0.1) );
+        //@include transform( translate3d(0, 0, 0) );
+    }
+    
+    #site-header-inner {
+        z-index: 999; // Make sure sticky header goes over all elements except lightbox
+    }
+
+}
+
+#site-header.shrink-sticky-header {
+    width: 100%;
+    @include transition( opacity 0.3s ); // Used for opacity setting
+}
+
+// Shrunk styles
+$shrink-header__height: 70px;
+$shrink-header__padding: 10px;
+
+#site-header.shrink-sticky-header.sticky-header-shrunk #site-logo {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.sticky-header-shrunk #site-header-inner {
+    height: $shrink-header__height;
+    padding-top: $shrink-header__padding !important;
+    padding-bottom: $shrink-header__padding !important;
+}
+
+.shrink-sticky-header.sticky-header-shrunk .navbar-style-five .dropdown-menu > li > a {
+    height: $shrink-header__height - $shrink-header__padding - $shrink-header__padding;
+}
+
+.shrink-sticky-header.sticky-header-shrunk #site-logo img {
+    max-height: $shrink-header__height - $shrink-header__padding - $shrink-header__padding;
+}
+
+// Animate shrink header
+$shrink-header__animation-speed: 0.3s linear;
+.anim-shrink-header {
+
+	#site-header-sticky-wrapper,
+	#site-header,
+	#site-header-inner,
+	.navbar-style-five,
+	.navbar-style-five #site-navigation,
+	#site-logo,
+	#site-logo-inner,
+	#site-logo a,
+	#site-logo img {
+	    transition: all $shrink-header__animation-speed; // Animate via CSS
+	}	
+	
+	// Hardware acceleration for logo shrink
+	#site-logo img {
+	    -webkit-transform: translate3d( 0, 0, 0 );
+	    transform : translate3d( 0, 0, 0 );
+	    @include backface-hidden;
+	}
+
+	// Animate menu
+	#site-navigation-wrap {
+		transition: top $shrink-header__animation-speed;
+	}
+
+}

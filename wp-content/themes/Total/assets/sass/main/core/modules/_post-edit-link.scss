@@ -1,0 +1,36 @@
+/* Post Edit Link */
+.post-edit {
+	padding: 40px 0 60px;
+
+	body.is_customize_preview & {
+		display: none;
+	}
+
+	body.content-full-screen & {
+		text-align: center;
+	}
+
+	a {
+		font-family: apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+		font-weight: 500;
+		display: inline-block;
+		padding: 10px 14px;
+		line-height: normal;
+		text-transform: uppercase;
+		font-size: 10px;
+		letter-spacing: 1px;
+		background: $accent__main;
+		color: #fff !important;
+		margin-right: 3px;
+		-webkit-font-smoothing: subpixel-antialiased;
+		@include transition( $buttons__transition-speed );
+		@include border-radius ( $buttons__border-radius );
+
+		&:hover {
+			text-decoration: none;
+			background: $accent__main-hover;
+		}
+
+	}
+
+}

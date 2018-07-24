@@ -1,0 +1,19 @@
+/*------------------------------------------------------------------
+[Next/Prev]
+-------------------------------------------------------------------*/
+.vcex-post-next-prev {
+
+    &.vcex-icon-only .theme-button-icon-left,
+    &.vcex-icon-only .theme-button-icon-right {
+        margin: 0;
+        padding: 0;
+    }
+
+    .vcex-col {
+        display: inline-block;
+        &:first-child {
+            margin-right: pem( 7 );
+        }
+    }
+
+}

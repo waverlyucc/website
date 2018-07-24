@@ -1,0 +1,85 @@
+/*------------------------------------------------------------------
+[Search Form > Header Replace]  @version 4.5.5.1
+-------------------------------------------------------------------*/
+#searchform-header-replace {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #fff;
+    visibility: hidden;
+    z-index: 999;
+    color: #bbb;
+    @include opacity( 0 );
+    @include transition( all 0.25s ease-in-out );
+
+    &.show {
+        visibility: visible;
+        @include opacity( 1 );
+    }
+
+    form {
+        height: 100%;
+        width: 100%;
+    }
+
+    input[type="search"] {
+        height: 100%;
+        width: 100%;
+        outline: 0;
+        border: 0;
+        font-size: 28px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: inherit;
+        background: none;
+        padding: 0;
+        @include border-radius( 0 );
+    }
+
+    input[type="submit"],
+    button.submit,
+    .searchform-submit,
+    .woocommerce-product-search button {
+        display: none;
+    }
+    
+}
+
+#searchform-header-replace-close {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -20px;
+    height: 40px;
+    line-height: 40px;
+    color: inherit;
+    cursor: pointer;
+    font-family: Times New Roman, Times New Roman, Times, serif;
+    font-size: 40px; // Use pixels because it's an icon
+    font-weight: 400;
+    //-webkit-font-smoothing: antialiased;
+    //-moz-osx-font-smoothing: grayscale;
+    @include transition( color 0.2s ease );
+}
+
+#searchform-header-replace-close:hover {
+    color: #000;
+    .custom-bg & {
+        color: inherit;
+    }
+}
+
+body.boxed-main-layout {
+
+    #searchform-header-replace input {
+        padding: 0 $boxed__layout-inner-padding;
+    }
+
+    #searchform-header-replace-close {
+        right: $boxed__layout-inner-padding;
+    }
+
+}
+

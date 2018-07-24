@@ -1,0 +1,275 @@
+/* Mobile Menus > Sidebar */
+
+// @version 4.5.5
+
+#sidr-main {
+	display: block;
+	position: fixed;
+	top: 0;
+	height: 100%;
+	z-index: 999999;
+	width: 320px;
+	max-width: 100%;
+	padding-bottom: 30px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	font-size: 16px; // Use pixels because it's basically stand-alone
+	background: #262626;
+	color: #707070;
+	-webkit-overflow-scrolling: touch;
+	@include disable-user-select();
+
+	&.right {
+		right: -320px;
+	}
+
+	&.left {
+		left: -320px;
+	}
+
+}
+
+// Close button
+.sidr-class-wpex-close {
+	line-height: normal;
+	font-size: 36px; // Use pixels because it's an icon
+	color: #aaa;
+	font-family: "Times New Roman", Times, serif;
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	a {
+		color: inherit;
+		display: block;
+		display: inline-block;
+		padding: 10px 20px;
+		&:hover {
+			color: #fff;
+		}
+	}
+}
+
+// Links
+.sidr a {
+	color: inherit;
+	border: 0;
+	transition: all 0.15s ease-in-out;
+}
+
+.sidr a:hover {
+	color: #fff;
+	text-decoration: none;
+}
+
+// Close icon
+#sidr-close {
+	display: none;
+}
+
+// Menu
+.sidr-class-dropdown-menu {
+	
+	> li:first-child {
+		border-top: 1px solid rgba( 255, 255, 255, 0.035 );
+	}
+
+	li {
+		border-bottom: 1px solid rgba( 255, 255, 255, 0.035 );
+
+		&:last-child {
+			border: 0;
+		}
+
+		a {
+			display: block;
+			position: relative;
+			padding: 0.9em 20px;
+
+			&.sidr-class-sf-with-ul {
+				padding-right: 40px;
+			}
+
+		}
+
+		&.sidr-class-menu-item-has-children > a {
+			padding-right: 60px;
+		}
+
+	}
+	
+	// Dropdowns
+	ul {
+		display: none;
+		border-top: 1px solid rgba( 255, 255, 255, 0.035 );
+		margin-left: 0;
+		background: rgba(255,255,255,0.02);
+		font-size: 0.95em;
+
+		ul {
+			font-size: 1em;
+		}
+
+		a {
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+
+		// Add arrows to sub-items
+		a:before {
+			content: "-";
+			display: inline-block;
+			margin: 0 pem( 8px );
+		}
+
+		ul a:before {
+			content: "--";
+		}
+
+		ul a:before {
+			margin-left: 20px;
+		}
+
+		ul ul a:before {
+			margin-left: 40px;
+		}
+
+	}
+
+	// Dropdown arrows
+	li.active > a > .sidr-class-dropdown-toggle {
+		@include transform(rotate(90deg));
+	}
+	
+	// Spacing for menu icons
+	a {
+	
+		.fa {
+			margin-right: 10px;
+
+			body.rtl & {
+				margin-right: 0;
+				margin-left: 10px;
+			}
+		}
+
+	}
+
+}
+
+.sidr-class-menu-item-has-children {
+	position: relative;
+}
+
+.sidr-class-dropdown-toggle {
+	font-size: 1.25em;
+	height: 100%;
+	position: absolute;
+	right: 15px;
+	top: 50%;
+	margin-top: -10px;
+	height: 20px;
+	line-height: 20px;
+	cursor: pointer;
+	transition: all 0.2s ease-out;
+
+	&:before {
+		content: "\f105";
+	}
+
+}
+
+// Hide search and cart icons in sidr mobile menu
+.sidr #searchform-header-replace-close,
+.sidr .nav-arrow,
+.sidr-class-wcmenucart,
+.sidr-class-nav-arrow,
+.sidr-class-search-toggle-li,
+#sidr-id-searchform-dropdown {
+	display: none !important;
+}
+
+// Sidebar overlay
+.wpex-sidr-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(0,0,0,0.6);
+	z-index: 9999;
+	@include transform( translateZ(0) );
+	&.wpex-custom-cursor {
+		cursor: url(assets/cursors/close.ico), default;
+   		cursor: -webkit-image-set(url(assets/cursors/close.ico) 1x, url(assets/cursors/close2x.ico) 2x);
+	}
+}
+
+// Sidebar Search
+#sidr-id-searchform-overlay-title {
+	display: none;
+}
+
+.sidr-class-mobile-menu-searchform {
+	position: relative;
+	margin: 30px 20px 0;
+}
+
+.sidr-class-mobile-menu-searchform {
+
+	input {
+		width: 100%;
+		background: none;
+		border: 0;
+		outline: 0;
+		padding: 15px 45px 15px 0;
+		line-height: 1.4em;
+		color: inherit;
+		font-size: 1em;
+		font-weight: 400;
+		border-color: #fff;
+		border-color: rgba( 255, 255, 255, 0.2 );
+		border-bottom-width: 1px;
+		border-style: solid;
+		@include transition( all 0.3s );
+		@include border-radius( 0 );
+
+		&:focus {
+			border-color: rgba( 255, 255, 255, 0.4 );
+		}
+	}
+
+	button {
+		background: none !important;
+		display: block;
+		position: absolute;
+		right: 0;
+		height: 30px;
+		line-height: 30px;
+		width: 30px;
+		text-align: right;
+		top: 50%;
+		margin-top: -15px;
+		color: inherit;
+		padding: 0;
+	}
+
+	input[placeholder] {
+        color: inherit;
+    }
+
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: inherit;
+    }
+    ::-moz-placeholder { /* Firefox 19+ */
+        color: inherit;
+        opacity: 1;
+    }
+    :-ms-input-placeholder { /* IE 10+ */
+        color: inherit;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+        color: inherit;
+    }
+	
+}

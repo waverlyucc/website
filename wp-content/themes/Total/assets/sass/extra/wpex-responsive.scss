@@ -1,0 +1,783 @@
+/*!
+ Project   : Total WordPress Theme
+ Purpose   : Main Responsive Styles
+ Author    : WPExplorer
+ Theme URI : http://www.wpexplorer.com
+ Notes     : Un-compressed SASS files available
+ */
+
+// Helpers
+@import "../load-helpers";
+
+// @version 4.6.5
+
+// @todo Finish porting to SASS
+
+/*------------------------------------------------------------------
+[# Visibility]
+-------------------------------------------------------------------*/
+.visible-tablet,
+.visible-tablet-landscape,
+.visible-tablet-portrait {
+	display: none !important;
+}
+
+/*------------------------------------------------------------------
+[# Smaller than Large Desktops less than 1280px]
+-------------------------------------------------------------------*/
+@media only screen and (max-width: 1279px) {
+	.visible-desktop-large {
+		display: none !important;
+	}
+}
+
+/*------------------------------------------------------------------
+[# All Devices under 1280px]
+-------------------------------------------------------------------*/
+@media only screen and (max-width: 1280px) {
+	
+	/* Flip menu dropdowns */
+	#site-navigation .dropdown-menu li.flip-drops-smallscreen ul {
+
+		ul {
+			left: auto;
+			right: 100%;
+		}
+
+		.fa-angle-right {
+			left: 9px;
+			right: auto;
+		}
+
+		.fa-angle-right:before {
+			content: "\f104";
+		}
+
+	}
+
+	body #site-navigation .sf-menu li.flip-drops-smallscreen ul a.sf-with-ul {
+		padding-left: 25px;
+		padding-right: 12px;
+	}
+
+}
+
+/*------------------------------------------------------------------
+[# Greater than phones]
+-------------------------------------------------------------------*/
+@media only screen and (min-width: 768px) {
+
+	body.has-sidebar .content-area {
+		max-width: 70%;
+	}
+
+	#sidebar {
+		max-width: 26%;
+	}
+
+	.visible-phone {
+		display: none !important;
+	}
+
+	.text-md-center { text-align: center; }
+	.text-md-right { text-align: right; }
+	.text-md-left { text-align: left; }
+
+}
+
+/*------------------------------------------------------------------
+[# Desktop - 960px or greater]
+-------------------------------------------------------------------*/
+@media only screen and (min-width: 960px) {
+
+	.hidden-desktop {
+		display: none !important;
+	}
+
+	.text-lg-center { text-align: center; }
+	.text-lg-right { text-align: right; }
+	.text-lg-left { text-align: left; }
+
+}
+
+/*------------------------------------------------------------------
+[# Large Desktops greater than 1280px]
+-------------------------------------------------------------------*/
+@media only screen and (min-width: 1280px) {
+
+	.hidden-desktop-large {
+		display: none !important;
+	}
+
+	.text-xl-center { text-align: center; }
+	.text-xl-right { text-align: right; }
+	.text-xl-left { text-align: left; }
+
+}
+
+/*------------------------------------------------------------------
+[# Not Desktop - less than 960]
+-------------------------------------------------------------------*/
+@media only screen and (max-width: 959px) {
+	
+	/* hide things */
+	.header-one-search-toggle,
+	.visible-desktop,
+	.post-edit {
+		display: none !important;
+	}
+	
+	/* boxed */
+	.boxed-main-layout #wrap {
+		overflow: hidden;
+	}
+	
+	/* full width content and sidebar */
+	body.has-sidebar .content-area
+	#sidebar {
+		width: 100%;
+		max-width: none;
+	}
+
+	body.has-composer.has-sidebar #primary {
+		margin-bottom: 40px;
+	}
+
+	/* Header > Reset vertical align*/
+	#site-header.wpex-header-two-flex-v #site-header-inner {
+		display: block;
+	}
+
+	/* Header > Hide menu and show mobile menu  */
+	body.has-mobile-menu {
+	
+		#site-navigation-wrap,
+		.hide-at-mm-breakpoint {
+			display: none;
+		}
+		
+		.wpex-mobile-menu-toggle,
+		.show-at-mm-breakpoint {
+			display: block;
+		}
+
+	}
+
+	/* Header > Aside */
+	.header-two-aside {
+		float: left;
+		clear: both;
+		padding-top: 20px;
+		text-align: left;
+	}
+
+	#header-two-search {
+		display: inline-block;
+	}
+	
+	/* Header > Mobile Menu Disabled */
+	body.mobile-menu-disabled {
+	
+		#site-header #site-logo {
+			float: none;
+			text-align: center;
+			margin: 0 auto 20px 0;
+		}
+
+		#site-logo a {
+			display: inline;
+			display: inline-block;
+			float: none;
+		}
+
+		#site-logo img {
+			display: block;
+		}
+
+		#site-header #site-navigation-wrap {
+			position: relative;
+			top: auto;
+			right: auto;
+			clear: both;
+			margin: 0;
+		}
+	
+	}
+	
+	/* Header > Mobile toggle icons */
+	body.wpex-mobile-toggle-menu-icon_buttons {
+
+		#site-logo {
+			height: 100%;
+			float: left;
+			max-width: 75%;
+			text-align: left;
+		}
+
+		&.rtl #site-logo {
+			float: right;
+			text-align: right;
+		}
+
+	}
+
+	/* Header > Mobile Menu Toggle Buttons Under Logo */
+	body.wpex-mobile-toggle-menu-icon_buttons_under_logo {
+		
+		#site-logo {
+			float: none;
+			width: 100%;
+			height: auto;
+			text-align: center;
+		}
+
+		.header-two-aside {
+			text-align: center;
+		}
+
+	}
+
+	/* Header > Fixed Top Mobile Menu */
+	body.has-mobile-menu.wpex-mobile-toggle-menu-fixed_top {
+		padding-top: 50px; // offset fixed mobile menu
+	}
+
+	body.has-mobile-menu.wpex-mobile-toggle-menu-fixed_top #site-header.header-one #site-logo {
+		float: none;
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Social Sharing */
+	.wpex-social-share.position-vertical {
+		top: auto;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		max-width: 100%;
+		z-index: 1000200;
+		font-size: 18px;
+		@include transform( none );
+
+		margin-left: 0;
+		margin-bottom: -45px;
+
+		ul {
+			display: flex;
+		}
+
+		li {
+			flex: 1;
+			a {
+				display: block;
+				width: 100%;
+				height: 38px;
+				line-height: 38px;
+				padding: 0 0.4em;
+			}
+		}
+
+		&.style-rounded {
+			left: 0;
+			li {
+				margin: 0;
+			}
+			li a {
+				background: #fff;
+				border-radius: 0;
+				border-color: #ddd;
+				border-bottom-width: 0;
+			}
+		}
+		
+	}
+
+	body.wpex-share-p-vertical.wpex-docready {
+		padding-bottom: 38px;
+
+		#site-scroll-top {
+			margin-bottom: 38px;
+		}
+
+	}
+	
+	/* Visual Composer tabs */
+	.wpb_tour .wpb_tour_tabs_wrapper .wpb_tabs_nav,
+	.wpb_tour .wpb_tab,
+	.wpb_tour_next_prev_nav { width: 100%; float: none; margin-left: 0; }
+	.wpb_tour .wpb_tour_tabs_wrapper .wpb_tab { width: 100%; }
+	.wpb_tour .wpb_tab { padding-left: 0; padding-right: 0; border: none; }
+	.wpb_tour, .wpb_tour .wpb_tour_tabs_wrapper .wpb_tab { border: none !important }
+	.wpb_tour .wpb_tour_tabs_wrapper .wpb_tab { padding: 20px 0 0 !important }
+	.wpb_tour .wpb_tour_next_prev_nav { display: none !important }
+	.wpb_tour .wpb_tabs_nav { border: 1px solid #e4e4e4 }
+	.wpb_tour .wpb_tabs_nav li { background: none; border-bottom: 1px solid #e4e4e4; border-right: 0; margin: 0; }
+	#wrap .wpb_tour .wpb_tabs_nav li a { padding: 10px }
+
+}
+
+/*------------------------------------------------------------------
+[# Tablet Landscape]
+-------------------------------------------------------------------*/
+@media only screen and (min-width:768px) and (max-width:1024px) and (orientation:landscape) {
+
+	.hidden-desktop,
+	.visible-tablet,
+	.visible-tablet-landscape {
+		display: block !important;
+		&.vc_row-flex {
+			display: flex !important;
+		}
+	}
+
+	.visible-desktop,
+	.hidden-tablet-landscape {
+		display: none !important;
+	}
+
+}
+
+/*------------------------------------------------------------------
+[# Tablet landscape => VC Visibility Fix]
+-------------------------------------------------------------------*/
+@media only screen and (min-width:768px) and (max-width:1024px) {
+	
+	.compose-mode .hidden-desktop,
+	.compose-mode .visible-tablet,
+	.compose-mode .visible-tablet-landscape {
+		display: block !important;
+		&.vc_row-flex {
+			display: flex !important;
+		}
+	}
+
+	.compose-mode .visible-desktop,
+	.compose-mode .hidden-tablet-landscape {
+		display: none !important;
+	}
+
+}
+
+/*------------------------------------------------------------------
+[# Tablet Portrait]
+-------------------------------------------------------------------*/
+@media only screen and (min-width: 768px) and (max-width: 959px) { 
+	
+	// Visibility
+	.visible-tablet,
+	.visible-tablet-portrait {
+		display: block !important;
+		&.vc_row-flex {
+			display: flex !important;
+		}
+	}
+
+	.hidden-tablet,
+	.hide-on-tablets,
+	.tparrows.custom,
+	.hidden-tablet-portrait {
+		display: none !important;
+	}
+	
+	// Remove boxed wrap custom widths
+	body.boxed-main-layout#wrap {
+		width: auto !important
+	}
+	
+	// Full width columns on tablets
+	.tablet-fullwidth-columns {
+
+		//.col,
+		.wpb_column,
+		.vcex-feature-box-content,
+		.vcex-feature-box-media {
+			width: 100% !important;
+			margin-left: 0 !important;
+			height: auto !important;
+		}
+
+		&.vcex-feature-box.v-align-middle {
+			display: block;
+		}
+
+		.vcex-feature-box-media {
+			margin-bottom: 30px;
+		}
+
+		&.vcex-feature-box-match-height {
+
+			.vcex-feature-box-image {
+				position: inherit;
+				top: auto;
+				left: auto; max-width: 100%;
+
+				img {
+					max-width: 100%;
+				}
+
+			}
+
+		}
+
+		&.vcex-feature-box.left-content-right-image {
+			.vcex-feature-box-content {
+				padding-right: 0px
+			}
+		}
+
+		&.vcex-feature-box.left-image-right-content {
+			.vcex-feature-box-content {
+				padding-left: 0px;
+			}
+		}
+
+	}
+	
+	// Page Header
+	.site-breadcrumbs.position-absolute {
+		position: inherit;
+		top: auto;
+		left: auto;
+		right: auto;
+		margin-top: 0;
+	}
+
+	.boxed-main-layout .site-breadcrumbs {
+		padding: 0 30px;
+	}
+	
+	/* portfolio  */
+	.single-portfolio-media {
+		width: 100%;
+		margin: 0 0 20px;
+	}
+
+	.single-portfolio-content {
+		width: 100%;
+		margin: 0;
+	}
+	
+	/* turn 4 column masonry grids into 2 columns */
+	.wpex-row .span_1_of_4.col-3.col,
+	.wpex-row .span_1_of_4.col.product:nth-child(2n+3) {
+		margin-left: 0;
+		clear: both;
+	}
+
+	.wpex-row .span_1_of_4.col,
+	.vcex-isotope-grid .span_1_of_4.col,
+	.wpex-isotope-grid .span_1_of_4.col {
+		width: 50%;
+	}
+	
+	/* make footer columns 1 column*/
+	#footer-widgets .col {
+		width: 100%;
+	}
+	
+	/* useful common classes */
+	.tablet-single-column { width: 100% !important }
+
+}
+
+/*------------------------------------------------------------------
+[# Phone Portrait and Landscape less than 767px]
+-------------------------------------------------------------------*/
+@media only screen and (max-width: 767px) {
+
+	.visible-desktop,
+	.hidden-phone,
+	.hide-on-phones,
+	.tparrows.custom {
+		display: none !important;
+	}
+
+	.text-sm-center { text-align: center; }
+	.text-sm-right { text-align: right; }
+	.text-sm-left { text-align: left; }
+	
+	// Main wrapper
+	#wrap {
+		width: 100% !important
+	}
+
+	body.boxed-main-layout#wrap {
+		width: auto !important
+	}
+	
+	// Grids & columns
+	.col,
+	.blog-entry,
+	.wpex-row .col,
+	.wpex-row.vcex-no-margin-grid .col {
+		width: 100%;
+	}
+
+	body.has-sidebar .content-area,
+	#sidebar {
+		float: none;
+		width: 100% !important;
+	}
+
+	#wrap .wpex-row.gap-none .col {
+		margin-bottom: 0 !important;
+	}
+
+	.row-no-spacing .wpb_column {
+		margin-bottom: 0;
+	}
+
+	.vc_span12.wpb_column {
+		margin-bottom: 0 !important;
+	}
+
+	// Hide gallery slider nav
+	.gallery-format-post-slider-wrap .flex-direction-nav { display: none }
+
+	/* Simple columns */
+	.one-half, .one-third, .one-fourth, .one-fifth { width: 100%; float: none; }
+	div.wpcf7 .one-half { padding-left: 0; }
+	
+	/* remove padding around boxed layout */
+	.boxed-main-layout #outer-wrap { padding: 0 !important }
+	
+	/* logo */
+	#site-logo { margin-top: 0px !important; margin-bottom: 0px !important; }
+	
+	/* Entries > Left Thumbnail Style */
+	body .entries.left-thumbs .entry .entry-media { margin-bottom: 20px }
+	body .entries.left-thumbs .entry .entry-media,
+	body .entries.left-thumbs .entry .entry-details { float: none; width: 100%; }
+	
+	/*phone full-width*/
+	.phone-fullwidth-columns  {
+
+		.col,
+		.wpb_column,
+		.vcex-feature-box-content,
+		.vcex-feature-box-media {
+			width: 100% !important;
+			margin-left: 0 !important;
+			height: auto !important;
+		}
+
+		.vcex-feature-box-media { margin-bottom: 30px }
+
+		&.vcex-feature-box.v-align-middle {
+			display: block;
+		}
+
+		&.vcex-feature-box-match-height {
+	
+			.vcex-feature-box-media {
+	
+				.vcex-feature-box-image {
+					position: inherit;
+					top: auto;
+					left: auto;
+					max-width: 100%;
+
+					img {
+						max-width: 100%;
+					}
+
+				}
+
+			}
+
+		}
+
+		&.vcex-feature-box.left-content-right-image .vcex-feature-box-content { padding-right: 0px }
+		&.vcex-feature-box.left-image-right-content .vcex-feature-box-content { padding-left: 0px }
+	
+	}
+	
+	/* Topbar */
+	#top-bar {
+		// padding: 20px 0; @deprecated since 4.0 - no need for additional padding
+		
+		// Reset social position so it's always centered
+		#top-bar-social{
+			position: static;
+			left: auto;
+			right: auto;
+			float: none;
+			height: auto;
+			line-height: 1.5em;
+			margin-top: 0;
+			text-align: center;
+			padding-top: $topbar__padding - 5px;
+
+			a {
+				display: inline-block;
+				float: none;
+			}
+
+		}
+		
+		// Reset content position
+		#top-bar-content,
+		.top-bar-menu {
+			float: none;
+			text-align: center;
+		}
+
+		.top-bar-menu li {
+			display: inline-block;
+			float: none;
+		}
+
+		// lang switcher fixes
+		#lang_sel {
+			text-align: left;
+		}
+
+		body.rtl & {
+		
+			#lang_sel {
+				text-align: right;
+			}
+
+		}
+
+	}
+	
+	/* page header */
+	body.hasnt-overlay-header .page-header.background-image-page-header .page-header-table { height: 150px; }
+	body.hasnt-overlay-header .page-header.background-image-page-header .page-header-title,
+	.centered-page-header .page-header-title,
+	.centered-minimal-page-header .page-header-title { font-size: 1.846em }
+	.centered-page-header .page-subheading,
+	.centered-minimal-page-header .page-header-subheading,
+	body.hasnt-overlay-header .page-header.background-image-page-header .page-subheading { font-size: 1.077em }
+	
+	/* header  */
+	body.has-breadcrumbs .page-header-title { max-width: 100%; width: 100%; }
+	
+	/* composer extension */
+	.vcex-filter-links li { float: none !important; width: 100% !important; margin: 0 0 5px !important; }
+	.vcex-filter-links li a { display: block }
+	
+	/* portfolio  */
+	.portfolio-archives-filter li { float: none; margin: 0 0 5px; }
+	.filterable-portfolio { margin-left: 0; margin-right: 0; }
+	
+	/* blog  */
+	#single-post-next-prev { top: 0 }
+	.entry-has-avatar .blog-entry-header { width: 100%; padding: 0; min-height: 0; }
+	.blog-entry-author-avatar { display: none }
+	.related-post { width: 100% !important }
+	.author-bio-avatar { position: inherit; left: auto; top: auto; margin-bottom: 20px; }
+	.author-bio { padding-left: 25px; }
+	.author-bio-social a { margin-top: 5px; }
+	
+	/* clear match heights js @deprecated in Total 4.6
+	.blog-entry.grid-entry-style .blog-entry-inner,
+	.match-height-content { height: auto !important } */
+	
+	/* comments */
+	#comments .children { margin-left: 0; }
+	.comment-form-author input,
+	.comment-form-author input,
+	.comment-form-email input,
+	.comment-form-website input,
+	.comment-form-comment input,
+	.comment-form-url input { width: 100% }
+	
+	/* sidebar  */
+	#main .widget_nav_menu li a:before { display: none }
+	
+	/* footer callout */
+	#footer-callout { display: block; }
+	#footer-callout-left, #footer-callout-right { width: 100%; margin: 0; float: none; }
+	#footer-callout-right { margin-top: 20px }
+	#footer-bottom { text-align: center; }
+	#footer-bottom #footer-bottom-menu { position: static; top: auto; right: auto; left: auto; margin: 0; text-align: center; height: auto; line-height: inherit; }
+	#footer-bottom #footer-bottom-menu ul li { float: none; display: inline-block; height: auto; line-height: inherit; margin-top: 10px; }
+	#footer-bottom #footer-bottom-menu ul li a,
+	#footer-bottom #footer-bottom-menu ul li a:hover { text-decoration: underline }
+
+	/* position back to top closer to edge*/
+	#site-scroll-top { right: 20px; bottom: 20px; }
+	
+	/* vc tabs */
+	.wpb_tabs.tab-style-default .wpb_tabs_nav { height: auto }
+	.wpb_tabs .wpb_tabs_nav li,
+	.wpb_tabs .wpb_tabs_nav li a { float: none; width: 100% !important; }
+	.wpb_tabs.tab-style-alternative-one .wpb_tabs_nav { float: none }
+	.wpb_tabs.tab-style-alternative-one .wpb_tabs_nav li a { border-left: 0; border-radius: 0 !important; -moz-border-radius: 0 !important; -webkit-border-radius: 0 !important; }
+	.wpb_tabs.tab-style-alternative-two { border: none }
+	.wpb_tabs.tab-style-alternative-two .wpb_tabs_nav li a { border-top: 1px solid #eee }
+	
+	/* vc post types slider */
+	.vcex-posttypes-flexslider .vcex-img-flexslider-caption { padding: 10px; text-align: center; background: rgba(0,0,0,0.7); }
+	.vcex-posttypes-flexslider .vcex-img-flexslider-caption .title { font-size: 14px }
+	.vcex-posttypes-flexslider .vcex-img-flexslider-caption .excerpt { display: none }
+
+	/*vc modules*/
+	.vcex-testimonials-fullslider.has-arrows .entry { padding-left: 0; padding-right: 0; }
+	.vcex-testimonials-fullslider.has-arrows .sp-arrows { display: none; }
+	.vcex-testimonials-fullslider .sp-buttons { display: block; }
+	
+}
+
+/*------------------------------------------------------------------
+[# Phone Landscape]
+-------------------------------------------------------------------*/
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+	body.has-sidebar .content-area,
+	#sidebar {
+		width: 100%;
+		float: none;
+	}
+
+	.col {
+		width: 100%;
+	}
+
+	.row-no-spacing .wpb_column {
+		margin-bottom: 0;
+	}
+
+	.wpex-flickr-widget .flickr_badge_image {
+		width: 23%;
+	}
+
+}
+
+/*------------------------------------------------------------------
+[# Phone Portrait]
+-------------------------------------------------------------------*/
+@media only screen and (max-width: 479px) {
+
+	#top-bar-content {
+		span.wpex-inline {
+			display: block;
+			margin-right: 0;
+			margin-bottom: 5px;
+		}
+	}
+
+	.mobile-menu-extra-icons {
+		display: none !important;
+	}
+
+	.mobile-menu-extra-icons.wpex-shop,
+	.mobile-menu-extra-icons.wpex-show-on-mobile {
+		display: inline-block !important;
+	}
+
+	.woocommerce-cart-form {
+		font-size: 13px; // Prevents shop cart from breaking on small devices
+	}
+
+	.text-xsm-center { text-align: center; }
+	.text-xsm-right { text-align: right; }
+	.text-xsm-left { text-align: left; }
+
+}
+
+@import "responsive/responsive-grids";
+@import "responsive/visual-composer"; // @todo move to VC

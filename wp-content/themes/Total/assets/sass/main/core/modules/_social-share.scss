@@ -1,0 +1,386 @@
+/*------------------------------------------------------------------
+[Social Sharing] @version 4.5.5
+-------------------------------------------------------------------*/
+.wpex-social-share {
+
+	.blog-entry & {
+		display: none;
+	}
+
+	ul {
+		margin: 0;
+		list-style: none;
+	}
+
+	li {
+		display: inline-block;
+		zoom: 1;
+		*display: inline;
+	}
+
+	a {
+		display: block;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	a {
+		text-align: center;
+		@include transition( $transition__speed );
+	}
+
+	a:hover {
+		text-decoration: none;
+	}
+
+	.wpex-label {
+		font-size: 13px;
+		margin-left: pem( 7px );
+	}
+
+	&.disable-labels .wpex-label {
+		display: none;
+	}
+
+}
+
+.single-portfolio.no-composer .social-share-wrap.position-horizontal {
+	margin: 40px 0 0;
+}
+
+/* Social Sharing > Vertical */
+.wpex-social-share.position-vertical {
+	position: fixed;
+	top: 50%;
+	left: 0;
+	z-index: 9;
+	width: 45px;
+	list-style: none;
+	transform: translateY(-50%); // center vertically
+	font-size: 22px;
+	z-index: 9999;
+	transition: margin 0.25s ease;
+	margin-left: -45px;
+
+	body.wpex-has-vertical-header & {
+		left: auto;
+		right: 0;
+	}
+
+	.wpex-docready & {
+		margin: 0;
+	}
+	
+	li {
+
+		a {
+			width: 45px;
+			height: 45px;
+			line-height: 45px;
+		}
+
+	}
+
+	.wpex-label {
+		display: none;
+	}
+
+}
+
+
+/* Social Sharing > Minimal > Horizontal */
+.wpex-social-share.position-horizontal {
+	margin: 0 auto 40px;
+	font-size: 1.077em;
+
+	li {
+		margin: 0 5px 5px 0;
+
+		a {
+			color: #999;
+			padding: 0.3em 0.9em;
+		}
+
+	}
+
+	&.disable-labels {
+		font-size: 16px;
+		li a {
+			padding: 0;
+			height: 35px;
+			line-height: 35px;
+			width: 45px;
+		}
+	}
+
+	&.disable-labels.style-rounded li a {
+		width: 35px;
+		font-size: 14px;
+	}
+
+}
+
+/* Social Sharing > Minimal */
+.wpex-social-share.style-minimal {
+
+	li {
+
+		a {
+			color: #999;
+			border: 1px solid $borders__color;
+			background: #fff;
+
+			&:hover {
+				background: #f7f7f7;
+			}
+
+		}
+
+		&.wpex-twitter a:hover {
+			color: #00aced;
+		}
+
+		&.wpex-facebook a:hover {
+			color: #3b5998;
+		}
+
+		&.wpex-pinterest a:hover {
+			color: #cb2027;
+		}
+
+		&.wpex-googleplus a:hover {
+			color: #dd4b39;
+		}
+
+		&.wpex-linkedin a:hover {
+			color: #4875B4;
+		}
+
+		&.wpex-email a:hover {
+			color: #666;
+		}
+
+	}
+
+	&.position-vertical {
+		border-top: 1px solid $borders__color;
+
+		a {
+			border-top: 0;
+			border-left: 0;
+		}
+
+	}
+
+}
+
+/* Social Sharing > Flat */
+.wpex-social-share.style-flat {
+
+	&.position-horizontal {
+
+		a {
+			border-radius: 2px;
+		}
+
+	}
+
+	li {
+
+		a {
+			background: #444;
+			color: #fff !important;
+		}
+
+		&.wpex-twitter a {
+			background: #00aced;
+			&:hover {
+				background: #0093cb;
+			}
+		}
+
+		&.wpex-email a {
+			background: #999;
+			&:hover {
+				background: #888;
+			}
+		}
+
+		&.wpex-facebook a {
+			background: #3b5998;
+			&:hover {
+				background: #324b80;
+			}
+		}
+
+		&.wpex-pinterest a {
+			background: #cb2027;
+			&:hover {
+				background: #ae1b21;
+			}
+		}
+
+		&.wpex-googleplus a {
+			background: #dd4b39;
+			&:hover {
+				background: #d03724;
+			}
+		}
+
+		&.wpex-linkedin a {
+			background: #4875B4;
+			&:hover {
+				background: #3e659c;
+			}
+		}
+
+	}
+
+}
+
+/* Social Sharing > 3D */
+.wpex-social-share.style-three-d {
+
+	li {
+
+		a {
+			color: #fff !important;
+			border: none;
+			border-bottom: 3px solid rgba(0,0,0,0.25);
+
+			&:active {
+				border-bottom-color: transparent;
+			}
+
+		}
+
+		&.wpex-email a {
+			background: #999;
+			&:hover {
+				background: #888;
+			}
+		}
+
+		&.wpex-twitter a {
+			background: #00aced;
+			&:hover {
+				background: #0093cb;
+			}
+		}
+
+		&.wpex-facebook a {
+			background: #3b5998;
+			&:hover {
+				background: #324b80;
+			}
+		}
+
+		&.wpex-pinterest a {
+			background: #cb2027;
+			&:hover {
+				background: #ae1b21;
+			}
+		}
+
+		&.wpex-googleplus a {
+			background: #dd4b39;
+			&:hover {
+				background: #d03724;
+			}
+		}
+
+		&.wpex-linkedin a {
+			background: #4875B4;
+			&:hover {
+				background: #3e659c;
+			}
+		}
+
+	}
+
+}
+
+/* Social Sharing > Rounded */
+.wpex-social-share.style-rounded {
+	font-size: 1em;
+
+	li {
+
+		a {
+			padding: 0.462em 1.692em;
+			border: 2px solid $borders__color-light;
+			@include box-sizing( content-box );
+			@include transition( all 0.2s ease );
+			@include border-radius( 99px );
+		}
+
+		&.wpex-email a {
+			border-color: #888;
+			color: #888;
+			&:hover {
+				background: #888;
+				color: #fff;
+			}
+		}
+
+		&.wpex-twitter a {
+			border-color: #00aced;
+			color: #00aced;
+			&:hover {
+				background: #00aced;
+				color: #fff;
+			}
+		}
+
+		&.wpex-facebook a {
+			border-color: #3b5998;
+			color: #3b5998;
+			&:hover {
+				background: #3b5998;
+				color: #fff;
+			}
+		}
+
+		&.wpex-pinterest a {
+			border-color: #cb2027;
+			color: #cb2027;
+			&:hover {
+				background: #cb2027;
+				color: #fff;
+			}
+		}
+
+		&.wpex-googleplus a {
+			border-color: #dd4b39;
+			color: #dd4b39;
+			&:hover {
+				background: #dd4b39;
+				color: #fff;
+			}
+		}
+
+		&.wpex-linkedin a {
+			border-color: #4875B4;
+			color: #4875B4;
+			&:hover {
+				background: #4875B4;
+				color: #fff;
+			}
+		}
+
+	}
+
+	&.position-vertical {
+		font-size: 18px;
+		left: 10px;
+		li {
+			margin-right: 0;
+			margin-bottom: 7px;
+			a {
+				padding: 0;
+				@include box-sizing( content-box );
+			}
+		}
+	}
+
+}

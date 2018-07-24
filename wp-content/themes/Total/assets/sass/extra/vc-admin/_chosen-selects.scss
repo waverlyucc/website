@@ -1,0 +1,44 @@
+.vcex-chosen,
+.vc-chosen {
+
+    .chosen-results {
+        max-height: 160px;
+    }
+
+    &.chosen-container{
+        width: 100% !important;
+        
+        ul.chosen-results li.highlighted {
+            background: $accent__vc-brand;
+        }
+
+    }
+
+    /*
+    &.chosen-container-single {
+
+        .chosen-single {
+            color: #32373c;
+            font-size: 14px;
+            height: 36px;
+            line-height: 36px;
+            padding-left: 10px;
+            background: #fff;
+            border-color: #ddd;
+            background: #dcdcdc;
+            box-shadow: none;
+            @include border-radius( 3px );
+
+            div {
+                color: #000;
+                top: 7px;
+                right: 2px;
+            }
+
+        }
+
+    }
+
+    */
+
+}

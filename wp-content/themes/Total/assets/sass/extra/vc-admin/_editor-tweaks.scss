@@ -1,0 +1,213 @@
+/* Make headings less bold
+// No longer needed since VC added this
+.wpb_element_label,
+.vc_element_label {
+	font-weight: 600;
+}*/
+
+// Prevent extra space on editor panel
+.vc_ui-panel-content {
+    margin-top: 0 !important;
+}
+
+.vcex-clear {
+    clear: both;
+}
+
+// Change auto select buttons to match VC 5.3+ colors
+.vc_autocomplete-field .vc_autocomplete li.vc_data {
+    background-color: $vc_accent;
+    border-color: $vc_accent;
+}
+
+body #vc_preloader {
+    background: #fff;
+    background: rgba(0,0,0,0.15);
+    &::before {
+        content: "";
+        display: block;
+        background: url(#{$images__path}/spinner-light.svg);
+        height: 24px;
+        width: 24px;
+        background-size: contain;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -16px;
+        margin-left: -16px;
+        animation: vc_ui-wp-spinner-animation 1.08s linear infinite;
+    }
+}
+
+// Hide logo where not wanted/needed
+body .vc_welcome-brand { display: none !important; }
+body .vc_welcome-header { line-height: normal; margin-bottom: 20px; }
+
+body #vc_logo {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    width: 60px;
+    height: 55px;
+    padding: 28px 0;
+    background: #0473AB !important;
+    opacity: 1;
+    @include transition( all 0.35s ease );
+    &.vc_ui-wp-spinner {
+        display: block;
+        &::before {
+            opacity: 0.7;
+            background: url(#{$images__path}/spinner-light.svg);
+            height: 16px;
+            width: 16px;
+            background-size: contain;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+    }
+}
+
+// Hide logo from design field
+.vc_css-editor .vc_layout-onion .vc_margin .vc_border .vc_padding .vc_content i {
+    display: none !important;
+}
+
+/*
+// Old templatera button
+body .vc_templatera_button {
+    background-image: none !important;
+    color: #fff;
+    speak: none;
+    font-variant: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-transform: none;
+    &::before {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-family: vcpb-plugin-icons!important;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        -webkit-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+        content: "\e903";
+    }
+}
+*/
+
+// Backend full-screen fix
+body .vc_fullscreen .wrap { margin-top: -16px; }
+
+// Make x on images more visible
+body .vc_css-editor .vc_settings .vc_background-image .vc_image .added .vc_icon-remove,
+body .wpb_el_type_attach_image .vc_icon-remove,
+body .wpb_el_type_attach_images .vc_icon-remove {
+    background: red;
+    height: 15px;
+    width: 15px;
+    bottom: 0;
+    top: auto;
+    left: auto;
+    right: 0;
+    -webkit-transform: none;
+    transform: none;
+}
+
+body .vc_css-editor .vc_settings .vc_background-image .vc_image .added .vc_icon-remove .vc-composer-icon,
+body .wpb_el_type_attach_image .vc_icon-remove .vc-composer-icon,
+body .wpb_el_type_attach_images .vc_icon-remove .vc-composer-icon {
+    font-size: 14px;
+    color: #fff;
+}
+
+.metabox-composer-content .wpb_element_wrapper {
+    overflow: hidden; // Hide overflow in backend-editor
+}
+
+.vc_icon-remove:hover {
+    background: #000;
+}
+
+
+// Larger font icon selections
+.vc-icons-selector .fip-icons-container .fip-box {
+	font-size: 24px;
+}
+
+// Remove branding
+.composer-switch .logo-icon {
+	display: none !important;
+}
+
+.composer-switch .vc_spacer {
+	display: none !important; 
+}
+
+.composer-switch .wpb_switch-to-composer {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	border-right: 1px solid #1f5b8c;
+}
+
+// Fix button padding
+.vc_welcome .vc_add-element-button,
+.vc_welcome .vc_add-text-block-button,
+.vc_default-templates #vc_templates-more-layouts {
+	padding-right: 20px;
+}
+
+// Nice vc switcher buttons
+body .composer-switch {
+    margin-top: 7px;
+}
+
+body .composer-switch a,
+body .composer-switch a:visited {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-right: 5px;
+}
+
+body .composer-switch a.wpb_switch-to-composer:hover,
+body .composer-switch a:visited.wpb_switch-to-composer:hover,
+body .composer-switch a.wpb_switch-to-front-composer:hover,
+body .composer-switch a:visited.wpb_switch-to-front-composer:hover {
+    background-color: #036291;
+}
+
+body .composer-switch .wpb_switch-to-composer {
+    border-right: 0;
+    border-radius: 4px;
+}
+
+body .composer-switch a:last-of-type {
+    border-radius: 4px;
+}
+
+// Remove WordPress active shadow
+.composer-switch a, .vc_navbar a {
+	@include box-shadow( none );
+}
+
+// Backend styles
+#poststuff .wpb_vc_param_value {
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h2, h3, h4, h5 {
+        font-weight: 600;
+        color: #23282d;
+        margin: 0;
+        padding: 1em 0 0.8em;
+    }
+
+
+}
