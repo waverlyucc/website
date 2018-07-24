@@ -1,0 +1,330 @@
+0000.000 (0) Opened log file at time: Tue, 24 Jul 2018 20:40:36 +0000 on https://waverly.rootwork.org
+0000.001 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.14.12 WP: 4.9.7 PHP: 7.0.30-0+deb9u1 (fpm-fcgi, Linux erica 4.9.0-6-amd64 #1 SMP Debian 4.9.88-1+deb9u1 (2018-05-07) x86_64) MySQL: 5.5.5 WPLANG: en_US Server: Apache/2.4.25 (Debian) safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 63.2M | 6M) multisite: N openssl: OpenSSL 1.1.0f  25 May 2017 mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.059 (0) Free space on disk containing Updraft's temporary directory: 12568 MB
+0000.061 (0) Tasks: Backup files: 1 (schedule: daily) Backup DB: 1 (schedule: daily)
+0000.065 (0) Requesting semaphore lock (fd) (apparently not via scheduler)
+0000.067 (0) Set semaphore last lock (fd) time to 2018-07-24 20:40:36
+0000.067 (0) Semaphore lock (fd) complete
+0000.071 (0) Backup run: resumption=0, nonce=e1dabd259a6d, begun at=1532464836 (0s ago), job type=backup
+0000.083 (0) Scheduling a resumption (1) after 300 seconds (1532465136) in case this run gets aborted
+0000.179 (0) Checking if we have a zip executable available
+0000.179 (0) Testing: /usr/bin/zip
+0000.189 (0) Output: zip warning: binziptest/test.zip not found or empty
+0000.230 (0) Output: adding: binziptest/subdir1/	(in=0) (out=0) (stored 0%)
+0000.232 (0) Output: adding: binziptest/subdir1/subdir2/	(in=0) (out=0) (stored 0%)
+0000.232 (0) Output: adding: binziptest/subdir1/subdir2/test.html	(in=131) (out=107) (deflated 18%)
+0000.233 (0) Output: total bytes=131, compressed=107 -> 18% savings
+0000.241 (0) Output: adding: binziptest/subdir1/subdir2/test2.html	(in=138) (out=113) (deflated 18%)
+0000.242 (0) Output: total bytes=269, compressed=220 -> 18% savings
+0000.248 (0) Working binary zip found: /usr/bin/zip
+0000.250 (0) Zip engine: found/will use a binary zip: /usr/bin/zip
+0000.267 (0) Creation of backups of directories: beginning
+0000.313 (0) Beginning creation of dump of plugins (split every: 400 MB)
+0000.513 (0) Total entities for the zip file: 857 directories, 6996 files (0 skipped as non-modified), 99.5 MB
+0000.518 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 100 files added (on-disk size: 0 KB)
+0000.521 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 200 files added (on-disk size: 0 KB)
+0000.524 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 300 files added (on-disk size: 0 KB)
+0000.527 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 400 files added (on-disk size: 0 KB)
+0000.530 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 500 files added (on-disk size: 0 KB)
+0000.530 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3 MB, 6996 files batched, 501 (501) added so far); re-opening (prior size: 0 KB)
+0004.059 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: size is now: 1.20 MB
+0004.068 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 600 files added (on-disk size: 1252.4 KB)
+0004.070 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 700 files added (on-disk size: 1252.4 KB)
+0004.073 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 800 files added (on-disk size: 1252.4 KB)
+0004.081 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 900 files added (on-disk size: 1252.4 KB)
+0004.086 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1000 files added (on-disk size: 1252.4 KB)
+0004.087 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (21.7 MB, 6996 files batched, 501 (1002) added so far); re-opening (prior size: 1252.4 KB)
+0011.167 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: size is now: 7.20 MB
+0011.173 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1100 files added (on-disk size: 7342.1 KB)
+0011.182 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1200 files added (on-disk size: 7342.1 KB)
+0011.186 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1300 files added (on-disk size: 7342.1 KB)
+0011.194 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1400 files added (on-disk size: 7342.1 KB)
+0011.202 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1500 files added (on-disk size: 7342.1 KB)
+0011.205 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5.2 MB, 6996 files batched, 501 (1503) added so far); re-opening (prior size: 7342.1 KB)
+0014.714 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: size is now: 8.90 MB
+0014.720 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1600 files added (on-disk size: 9080.5 KB)
+0014.766 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1700 files added (on-disk size: 9080.5 KB)
+0014.770 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1800 files added (on-disk size: 9080.5 KB)
+0014.774 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 1900 files added (on-disk size: 9080.5 KB)
+0014.777 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2000 files added (on-disk size: 9080.5 KB)
+0014.778 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (19.6 MB, 6996 files batched, 501 (2004) added so far); re-opening (prior size: 9080.5 KB)
+0021.048 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: size is now: 14.40 MB
+0021.053 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2100 files added (on-disk size: 14794 KB)
+0021.056 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2200 files added (on-disk size: 14794 KB)
+0021.058 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2300 files added (on-disk size: 14794 KB)
+0021.061 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2400 files added (on-disk size: 14794 KB)
+0021.064 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2500 files added (on-disk size: 14794 KB)
+0021.065 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3 MB, 6996 files batched, 501 (2505) added so far); re-opening (prior size: 14794 KB)
+0024.343 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2600 files added (on-disk size: 15805.8 KB)
+0024.348 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2700 files added (on-disk size: 15805.8 KB)
+0024.353 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2800 files added (on-disk size: 15805.8 KB)
+0024.363 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 2900 files added (on-disk size: 15805.8 KB)
+0024.365 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3000 files added (on-disk size: 15805.8 KB)
+0024.369 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.2 MB, 6996 files batched, 501 (3006) added so far); re-opening (prior size: 15805.8 KB)
+0027.494 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3100 files added (on-disk size: 17008.4 KB)
+0027.497 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3200 files added (on-disk size: 17008.4 KB)
+0027.519 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3300 files added (on-disk size: 17008.4 KB)
+0027.522 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3400 files added (on-disk size: 17008.4 KB)
+0027.532 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3500 files added (on-disk size: 17008.4 KB)
+0027.539 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.1 MB, 6996 files batched, 501 (3507) added so far); re-opening (prior size: 17008.4 KB)
+0031.548 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3600 files added (on-disk size: 20312.3 KB)
+0031.550 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3700 files added (on-disk size: 20312.3 KB)
+0031.557 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3800 files added (on-disk size: 20312.3 KB)
+0031.561 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 3900 files added (on-disk size: 20312.3 KB)
+0031.569 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4000 files added (on-disk size: 20312.3 KB)
+0031.569 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (4.6 MB, 6996 files batched, 501 (4008) added so far); re-opening (prior size: 20312.3 KB)
+0035.785 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4100 files added (on-disk size: 22156.2 KB)
+0035.796 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4200 files added (on-disk size: 22156.2 KB)
+0035.800 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4300 files added (on-disk size: 22156.2 KB)
+0035.804 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4400 files added (on-disk size: 22156.2 KB)
+0035.807 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4500 files added (on-disk size: 22156.2 KB)
+0035.809 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (0.8 MB, 6996 files batched, 501 (4509) added so far); re-opening (prior size: 22156.2 KB)
+0037.809 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4600 files added (on-disk size: 22716.2 KB)
+0037.813 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4700 files added (on-disk size: 22716.2 KB)
+0037.816 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4800 files added (on-disk size: 22716.2 KB)
+0037.819 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 4900 files added (on-disk size: 22716.2 KB)
+0037.822 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5000 files added (on-disk size: 22716.2 KB)
+0037.822 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (4.9 MB, 6996 files batched, 501 (5010) added so far); re-opening (prior size: 22716.2 KB)
+0040.709 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5100 files added (on-disk size: 24429.6 KB)
+0040.713 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5200 files added (on-disk size: 24429.6 KB)
+0040.722 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5300 files added (on-disk size: 24429.6 KB)
+0040.728 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5400 files added (on-disk size: 24429.6 KB)
+0040.732 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5500 files added (on-disk size: 24429.6 KB)
+0040.733 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (9.4 MB, 6996 files batched, 501 (5511) added so far); re-opening (prior size: 24429.6 KB)
+0044.483 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5600 files added (on-disk size: 28017.1 KB)
+0044.486 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5700 files added (on-disk size: 28017.1 KB)
+0044.490 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5800 files added (on-disk size: 28017.1 KB)
+0044.497 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 5900 files added (on-disk size: 28017.1 KB)
+0044.506 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6000 files added (on-disk size: 28017.1 KB)
+0044.506 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.9 MB, 6996 files batched, 501 (6012) added so far); re-opening (prior size: 28017.1 KB)
+0047.426 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6100 files added (on-disk size: 29347.8 KB)
+0047.430 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6200 files added (on-disk size: 29347.8 KB)
+0047.435 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6300 files added (on-disk size: 29347.8 KB)
+0047.443 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6400 files added (on-disk size: 29347.8 KB)
+0047.450 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6500 files added (on-disk size: 29347.8 KB)
+0047.455 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (4.1 MB, 6996 files batched, 501 (6513) added so far); re-opening (prior size: 29347.8 KB)
+0050.306 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6600 files added (on-disk size: 30957.5 KB)
+0050.309 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6700 files added (on-disk size: 30957.5 KB)
+0050.312 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6800 files added (on-disk size: 30957.5 KB)
+0050.314 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip.tmp: 6900 files added (on-disk size: 30957.5 KB)
+0055.633 (0) Created plugins zip (0) - 34367 KB in 55.3 s (621.3 KB/s) (sha1: cb8a800e5e7405be18fdc3ed20c2a23cd6083e09, sha256: c0517d7e41dd8425827e130e3be7caf04991fb1036e76e5f8128204875d90f48)
+0055.690 (0) Beginning creation of dump of themes (split every: 400 MB)
+0055.752 (0) Total entities for the zip file: 168 directories, 1505 files (0 skipped as non-modified), 31.3 MB
+0055.754 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 100 files added (on-disk size: 0 KB)
+0055.757 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 200 files added (on-disk size: 0 KB)
+0055.760 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 300 files added (on-disk size: 0 KB)
+0055.762 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 400 files added (on-disk size: 0 KB)
+0055.764 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 500 files added (on-disk size: 0 KB)
+0055.765 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (18.8 MB, 1505 files batched, 501 (501) added so far); re-opening (prior size: 0 KB)
+0060.381 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: size is now: 15.60 MB
+0060.539 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 600 files added (on-disk size: 15968.8 KB)
+0060.543 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 700 files added (on-disk size: 15968.8 KB)
+0060.548 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 800 files added (on-disk size: 15968.8 KB)
+0060.553 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 900 files added (on-disk size: 15968.8 KB)
+0060.557 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 1000 files added (on-disk size: 15968.8 KB)
+0060.558 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (1.3 MB, 1505 files batched, 501 (1002) added so far); re-opening (prior size: 15968.8 KB)
+0064.204 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 1100 files added (on-disk size: 16486.3 KB)
+0064.207 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 1200 files added (on-disk size: 16486.3 KB)
+0064.214 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 1300 files added (on-disk size: 16486.3 KB)
+0064.222 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 1400 files added (on-disk size: 16486.3 KB)
+0064.229 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: 1500 files added (on-disk size: 16486.3 KB)
+0064.230 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (11.3 MB, 1505 files batched, 501 (1503) added so far); re-opening (prior size: 16486.3 KB)
+0068.948 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip.tmp: size is now: 19.60 MB
+0069.525 (0) Created themes zip (0) - 20024.5 KB in 13.8 s (1447.5 KB/s) (sha1: 821c0d847c9a5215b30568a9972b0e419c426113, sha256: e680fea89476c8b9b96ea78094527ff07ae68a46d80de57ea9acd1658f7e1213)
+0069.545 (0) Exclusion option setting (uploads): backup*,*backups,backwpup*,wp-clone,snapshots
+0069.545 (0) Looking for candidates to backup in: /home/members/ivanb/sites/waverly.rootwork.org/web/wp-content/uploads
+0069.587 (0) finding files: 2015: adding to list (1)
+0069.588 (0) finding files: revslider: adding to list (2)
+0069.588 (0) finding files: 2018: adding to list (3)
+0069.589 (0) finding files: js_composer: adding to list (4)
+0069.589 (0) Beginning creation of dump of uploads (split every: 400 MB)
+0069.671 (0) Total entities for the zip file: 166 directories, 547 files (0 skipped as non-modified), 17.3 MB
+0069.673 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip.tmp: 100 files added (on-disk size: 0 KB)
+0069.723 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip.tmp: 200 files added (on-disk size: 0 KB)
+0069.725 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip.tmp: 300 files added (on-disk size: 0 KB)
+0069.728 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip.tmp: 400 files added (on-disk size: 0 KB)
+0069.730 (0) Zip: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip.tmp: 500 files added (on-disk size: 0 KB)
+0069.730 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (16.3 MB, 547 files batched, 501 (501) added so far); re-opening (prior size: 0 KB)
+0071.729 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip.tmp: size is now: 16.50 MB
+0072.315 (0) Created uploads zip (0) - 17880.2 KB in 2.7 s (6563 KB/s) (sha1: 26eeb2807ec4500ab84e09b63ba6ff90191538c4, sha256: 64824438d420f22d009e8bec32625829a60524ecb19de5aa6fa6883ee31935ca)
+0072.318 (0) Beginning backup of other directories found in the content directory (index: 0)
+0072.318 (0) Exclusion option setting (others): upgrade,cache,updraft,backup*,*backups,mysql.sql,debug.log
+0072.348 (0) Looking for candidates to backup in: /home/members/ivanb/sites/waverly.rootwork.org/web/wp-content
+0072.348 (0) finding files: themes: skipping: this is the themes directory
+0072.349 (0) finding files: uploads: skipping: this is the uploads directory
+0072.349 (0) finding files: updraft: skipping: this is the updraft directory
+0072.350 (0) finding files: plugins: skipping: this is the plugins directory
+0072.350 (0) finding files: aiowps_backups: skipping: excluded by options (glob)
+0072.351 (0) finding files: upgrade: skipping: excluded by options
+0072.352 (0) finding files: index.php: adding to list (1)
+0072.352 (0) finding files: cache: skipping: excluded by options
+0072.427 (0) Total entities for the zip file: 0 directories, 1 files (0 skipped as non-modified), 0 MB
+0072.543 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-others.zip.tmp: size is now: 0.00 MB
+0072.689 (0) Created others zip (0) - 0.2 KB in 0.3 s (0.6 KB/s) (sha1: 112b6c049756aabf686745cb4189fdbe9f5e5a19, sha256: a48f6bec393cc8a489793e850670ab3bce1e45a49b9afcec16e195e7e95b806b)
+0072.704 (0) Saving backup status to database (elements: 8)
+0072.884 (0) Beginning creation of database dump (WordPress DB)
+0072.886 (0) Testing: /usr/bin/mysqldump
+0072.971 (0) Output: /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n/*!40103 SET TIME_ZONE='+00:00' */;\n/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;\nDROP TABLE IF EXISTS `wucc_options`;\n/*!40101 SET @saved_cs_client     = @@character_set_client */;\n/*!40101 SET character_set_client = utf8 */;\nC (truncated - 1206 bytes total)
+0072.978 (0) Binary mysqldump: error (code: 5)
+0072.982 (0) Table wucc_options: Total expected rows (approximate): 378
+0073.203 (0) Table wucc_options: Total rows added: 381 in 0.22 seconds
+0073.205 (0) Table wucc_options: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_options.table.gz - 228.4 KB)
+0073.213 (0) Table wucc_users: Total expected rows (approximate): 0
+0073.215 (0) Table wucc_users: Total rows added: 1 in 0.00 seconds
+0073.216 (0) Table wucc_users: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_users.table.gz - 0.6 KB)
+0073.226 (0) Table wucc_usermeta: Total expected rows (approximate): 26
+0073.231 (0) Table wucc_usermeta: Total rows added: 26 in 0.00 seconds
+0073.232 (0) Table wucc_usermeta: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_usermeta.table.gz - 1.1 KB)
+0073.236 (0) Table wucc_commentmeta: Total expected rows (approximate): 0
+0073.239 (0) Table wucc_commentmeta: Total rows added: 0 in 0.00 seconds
+0073.240 (0) Table wucc_commentmeta: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_commentmeta.table.gz - 0.4 KB)
+0073.247 (0) Table wucc_comments: Total expected rows (approximate): 0
+0073.254 (0) Table wucc_comments: Total rows added: 0 in 0.00 seconds
+0073.260 (0) Table wucc_comments: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_comments.table.gz - 0.5 KB)
+0073.267 (0) Table wucc_links: Total expected rows (approximate): 0
+0073.270 (0) Table wucc_links: Total rows added: 0 in 0.00 seconds
+0073.272 (0) Table wucc_links: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_links.table.gz - 0.4 KB)
+0073.279 (0) Table wucc_postmeta: Total expected rows (approximate): 517
+0073.300 (0) Table wucc_postmeta: Total rows added: 526 in 0.02 seconds
+0073.306 (0) Table wucc_postmeta: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_postmeta.table.gz - 11.9 KB)
+0073.311 (0) Table wucc_posts: Total expected rows (approximate): 102
+0073.351 (0) Table wucc_posts: Total rows added: 104 in 0.04 seconds
+0073.355 (0) Table wucc_posts: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_posts.table.gz - 25.6 KB)
+0073.367 (0) Table wucc_term_relationships: Total expected rows (approximate): 50
+0073.370 (0) Table wucc_term_relationships: Total rows added: 50 in 0.00 seconds
+0073.371 (0) Table wucc_term_relationships: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_term_relationships.table.gz - 0.5 KB)
+0073.375 (0) Table wucc_term_taxonomy: Total expected rows (approximate): 14
+0073.378 (0) Table wucc_term_taxonomy: Total rows added: 15 in 0.00 seconds
+0073.382 (0) Table wucc_term_taxonomy: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_term_taxonomy.table.gz - 0.6 KB)
+0073.385 (0) Table wucc_termmeta: Total expected rows (approximate): 0
+0073.391 (0) Table wucc_termmeta: Total rows added: 0 in 0.01 seconds
+0073.393 (0) Table wucc_termmeta: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_termmeta.table.gz - 0.4 KB)
+0073.397 (0) Table wucc_terms: Total expected rows (approximate): 14
+0073.405 (0) Table wucc_terms: Total rows added: 15 in 0.01 seconds
+0073.406 (0) Table wucc_terms: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_terms.table.gz - 0.6 KB)
+0073.414 (0) Table wucc_aiowps_events: Total expected rows (approximate): 0
+0073.418 (0) Table wucc_aiowps_events: Total rows added: 0 in 0.00 seconds
+0073.419 (0) Table wucc_aiowps_events: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_events.table.gz - 0.4 KB)
+0073.429 (0) Table wucc_aiowps_failed_logins: Total expected rows (approximate): 0
+0073.431 (0) Table wucc_aiowps_failed_logins: Total rows added: 0 in 0.00 seconds
+0073.433 (0) Table wucc_aiowps_failed_logins: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_failed_logins.table.gz - 0.4 KB)
+0073.439 (0) Table wucc_aiowps_global_meta: Total expected rows (approximate): 1
+0073.735 (0) Table wucc_aiowps_global_meta: Total rows added: 1 in 0.29 seconds
+0073.738 (0) Table wucc_aiowps_global_meta: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_global_meta.table.gz - 487.5 KB)
+0073.744 (0) Table wucc_aiowps_login_activity: Total expected rows (approximate): 0
+0073.745 (0) Table wucc_aiowps_login_activity: Total rows added: 0 in 0.00 seconds
+0073.746 (0) Table wucc_aiowps_login_activity: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_login_activity.table.gz - 0.4 KB)
+0073.749 (0) Table wucc_aiowps_login_lockdown: Total expected rows (approximate): 0
+0073.751 (0) Table wucc_aiowps_login_lockdown: Total rows added: 0 in 0.00 seconds
+0073.751 (0) Table wucc_aiowps_login_lockdown: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_login_lockdown.table.gz - 0.4 KB)
+0073.754 (0) Table wucc_aiowps_permanent_block: Total expected rows (approximate): 0
+0073.756 (0) Table wucc_aiowps_permanent_block: Total rows added: 0 in 0.00 seconds
+0073.757 (0) Table wucc_aiowps_permanent_block: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_permanent_block.table.gz - 0.4 KB)
+0073.760 (0) Table wucc_redirection_404: Total expected rows (approximate): 0
+0073.763 (0) Table wucc_redirection_404: Total rows added: 1 in 0.00 seconds
+0073.764 (0) Table wucc_redirection_404: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_404.table.gz - 0.6 KB)
+0073.767 (0) Table wucc_redirection_groups: Total expected rows (approximate): 2
+0073.772 (0) Table wucc_redirection_groups: Total rows added: 2 in 0.00 seconds
+0073.772 (0) Table wucc_redirection_groups: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_groups.table.gz - 0.4 KB)
+0073.787 (0) Table wucc_redirection_items: Total expected rows (approximate): 0
+0073.789 (0) Table wucc_redirection_items: Total rows added: 0 in 0.00 seconds
+0073.789 (0) Table wucc_redirection_items: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_items.table.gz - 0.5 KB)
+0073.793 (0) Table wucc_redirection_logs: Total expected rows (approximate): 0
+0073.795 (0) Table wucc_redirection_logs: Total rows added: 0 in 0.00 seconds
+0073.795 (0) Table wucc_redirection_logs: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_logs.table.gz - 0.4 KB)
+0073.807 (0) Table wucc_revslider_css: Total expected rows (approximate): 109
+0073.818 (0) Table wucc_revslider_css: Total rows added: 109 in 0.01 seconds
+0073.819 (0) Table wucc_revslider_css: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_css.table.gz - 4.9 KB)
+0073.822 (0) Table wucc_revslider_layer_animations: Total expected rows (approximate): 0
+0073.824 (0) Table wucc_revslider_layer_animations: Total rows added: 0 in 0.00 seconds
+0073.824 (0) Table wucc_revslider_layer_animations: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_layer_animations.table.gz - 0.3 KB)
+0073.827 (0) Table wucc_revslider_navigations: Total expected rows (approximate): 0
+0073.831 (0) Table wucc_revslider_navigations: Total rows added: 0 in 0.00 seconds
+0073.832 (0) Table wucc_revslider_navigations: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_navigations.table.gz - 0.3 KB)
+0073.834 (0) Table wucc_revslider_sliders: Total expected rows (approximate): 0
+0073.836 (0) Table wucc_revslider_sliders: Total rows added: 1 in 0.00 seconds
+0073.836 (0) Table wucc_revslider_sliders: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_sliders.table.gz - 3.2 KB)
+0073.843 (0) Table wucc_revslider_slides: Total expected rows (approximate): 4
+0073.845 (0) Table wucc_revslider_slides: Total rows added: 4 in 0.00 seconds
+0073.846 (0) Table wucc_revslider_slides: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_slides.table.gz - 5.1 KB)
+0073.920 (0) Table wucc_revslider_static_slides: Total expected rows (approximate): 0
+0073.924 (0) Table wucc_revslider_static_slides: Total rows added: 0 in 0.00 seconds
+0073.924 (0) Table wucc_revslider_static_slides: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_static_slides.table.gz - 0.3 KB)
+0073.928 (0) Table wucc_simple_history: Total expected rows (approximate): 142
+0073.937 (0) Table wucc_simple_history: Total rows added: 157 in 0.01 seconds
+0073.937 (0) Table wucc_simple_history: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_simple_history.table.gz - 5.3 KB)
+0073.940 (0) Table wucc_simple_history_contexts: Total expected rows (approximate): 1763
+0073.974 (0) Table wucc_simple_history_contexts: Total rows added: 1828 in 0.03 seconds
+0074.009 (0) Table wucc_simple_history_contexts: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_simple_history_contexts.table.gz - 21.8 KB)
+0074.012 (0) Table wucc_smush_dir_images: Total expected rows (approximate): 0
+0074.014 (0) Table wucc_smush_dir_images: Total rows added: 0 in 0.00 seconds
+0074.014 (0) Table wucc_smush_dir_images: finishing file (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_smush_dir_images.table.gz - 0.4 KB)
+0074.017 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_options.table.gz (1/31): adding to final database dump
+0074.105 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_users.table.gz (2/31): adding to final database dump
+0074.107 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_usermeta.table.gz (3/31): adding to final database dump
+0074.107 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_commentmeta.table.gz (4/31): adding to final database dump
+0074.109 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_comments.table.gz (5/31): adding to final database dump
+0074.109 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_links.table.gz (6/31): adding to final database dump
+0074.109 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_postmeta.table.gz (7/31): adding to final database dump
+0074.114 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_posts.table.gz (8/31): adding to final database dump
+0074.127 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_term_relationships.table.gz (9/31): adding to final database dump
+0074.128 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_term_taxonomy.table.gz (10/31): adding to final database dump
+0074.128 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_termmeta.table.gz (11/31): adding to final database dump
+0074.129 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_terms.table.gz (12/31): adding to final database dump
+0074.129 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_events.table.gz (13/31): adding to final database dump
+0074.130 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_failed_logins.table.gz (14/31): adding to final database dump
+0074.131 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_global_meta.table.gz (15/31): adding to final database dump
+0074.279 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_login_activity.table.gz (16/31): adding to final database dump
+0074.283 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_login_lockdown.table.gz (17/31): adding to final database dump
+0074.283 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_aiowps_permanent_block.table.gz (18/31): adding to final database dump
+0074.284 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_404.table.gz (19/31): adding to final database dump
+0074.285 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_groups.table.gz (20/31): adding to final database dump
+0074.286 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_items.table.gz (21/31): adding to final database dump
+0074.286 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_redirection_logs.table.gz (22/31): adding to final database dump
+0074.286 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_css.table.gz (23/31): adding to final database dump
+0074.288 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_layer_animations.table.gz (24/31): adding to final database dump
+0074.291 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_navigations.table.gz (25/31): adding to final database dump
+0074.292 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_sliders.table.gz (26/31): adding to final database dump
+0074.293 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_slides.table.gz (27/31): adding to final database dump
+0074.296 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_revslider_static_slides.table.gz (28/31): adding to final database dump
+0074.299 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_simple_history.table.gz (29/31): adding to final database dump
+0074.300 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_simple_history_contexts.table.gz (30/31): adding to final database dump
+0074.312 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db-table-wucc_smush_dir_images.table.gz (31/31): adding to final database dump
+0074.315 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db.gz: finished writing out complete database file (784 KB)
+0074.335 (0) Total database tables backed up: 31 (backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db.gz, size: 816164, sha256)
+0074.342 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip: plugins: This file has not yet been successfully uploaded: will queue
+0074.343 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip: themes: This file has not yet been successfully uploaded: will queue
+0074.343 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip: uploads: This file has not yet been successfully uploaded: will queue
+0074.356 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-others.zip: others: This file has not yet been successfully uploaded: will queue
+0074.356 (0) backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db.gz: db: This file has not yet been successfully uploaded: will queue
+0074.357 (0) Saving backup history. Total backup size: 71.4 MB
+0074.358 (0) Requesting upload of the files that have not yet been successfully uploaded (5)
+0074.360 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0074.361 (0) No remote despatch: user chose no remote backup service
+0074.362 (0) Recording as successfully uploaded: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-plugins.zip (6e35bb9a57b280060c10511b30d52b26)
+0074.365 (0) Recording as successfully uploaded: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-themes.zip (4dd513cc0a3bd25ae4deee20998f27cd)
+0074.368 (0) Recording as successfully uploaded: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-uploads.zip (f3d4339bf819e5bd462741c2e93835e9)
+0074.371 (0) Recording as successfully uploaded: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-others.zip (ea5681a2c3e82f12d12088c84b456368)
+0074.375 (0) Recording as successfully uploaded: backup_2018-07-24-1340_Waverly_UCC_e1dabd259a6d-db.gz (5adb94308cb1a62ae17fb5e2988a97e3)
+0074.378 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=14, retain_db=14
+0074.379 (0) Number of backup sets in history: 2; groups (db): 1
+0074.379 (0) Examining (for databases) backup set with group_id=0, nonce=e1dabd259a6d, datestamp=1532464836 (Jul 24 2018 20:40:36)
+0074.383 (0) This backup set is the backup set just made, so will not be deleted.
+0074.383 (0) Examining (for databases) backup set with group_id=0, nonce=038035c13d59, datestamp=1532457259 (Jul 24 2018 18:34:19)
+0074.383 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0074.383 (0) Number of backup sets in history: 2; groups (files): 1
+0074.384 (0) Examining (for files) backup set with nonce=e1dabd259a6d, datestamp=1532464836 (Jul 24 2018 20:40:36)
+0074.384 (0) This backup set is the backup set just made, so will not be deleted.
+0074.409 (0) This backup set is the backup set just made, so will not be deleted.
+0074.409 (0) This backup set is the backup set just made, so will not be deleted.
+0074.409 (0) This backup set is the backup set just made, so will not be deleted.
+0074.409 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0074.410 (0) Examining (for files) backup set with nonce=038035c13d59, datestamp=1532457259 (Jul 24 2018 18:34:19)
+0074.410 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0074.410 (0) Retain: saving new backup history (sets now: 2) and finishing retain operation
+0074.412 (0) Resume backup (e1dabd259a6d, 0): finish run
+0074.581 (0) Decremented the semaphore (fd) by 1
+0074.584 (0) Semaphore (fd) unlocked
+0074.584 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0074.587 (0) No email will/can be sent - the user has not configured an email address.
+0074.587 (0) The backup apparently succeeded and is now complete
