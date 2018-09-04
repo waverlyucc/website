@@ -1,2 +1,8 @@
+# Don't include caches.
+wp-content/cache
+
+# Don't include user-created uploads.
+wp-content/uploads
+
 # Don't include Updraft backups, as they could contain sensitive information.
 wp-content/updraft
