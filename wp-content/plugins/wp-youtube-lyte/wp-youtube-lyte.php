@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.7.4
+Version: 1.7.5
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
@@ -100,6 +100,13 @@ function lyte_parse($the_content,$doExcerpt=false) {
             $the_content=preg_replace('/^https?:\/\/(www.)?youtu(be.com|.be)\/playlist\?list=/m','httpv://www.youtube.com/playlist?list=',$the_content);
         }
         $the_content=preg_replace('/^https?:\/\/(www.)?youtu(be.com|.be)\/(watch\?v=)?/m','httpv://www.youtube.com/watch?v=',$the_content);
+
+        // new: also replace original YT embed code (iframes)
+        if ( apply_filters( 'lyte_eats_yframes', true ) && preg_match_all('#<iframe(?:.*)?\ssrc=["|\']https:\/\/www\.youtube\.com\/embed\/(.*)["|\']\s(?:.*)><\/iframe>#Usm', $the_content, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                $the_content = str_replace($match[0], 'httpv://youtu.be/'.$match[1], $the_content);
+            }
+        }
     }
 
     if ( strpos($the_content,"<!-- wp:") !== false  && strpos($the_content,"youtu") !== false ) {
@@ -113,11 +120,11 @@ function lyte_parse($the_content,$doExcerpt=false) {
          * https://media1.giphy.com/media/l2QZTNMFTQ2Z00zHG/giphy.gif
          */
         if (strpos($the_content,'/playlist?list=') !== false ) {
-            $gutenbeard_playlist_regex = '%<\!--\s?wp:(?:core[-|/])?embed(?:/youtube)?\s?{"url":"https://www.youtube.com/playlist\?list=(.*)"}\s?-->.*<\!--\s?/wp:(?:core[-|/])?embed(?:/youtube)?\s?-->%Us';
-            $the_content = preg_replace($gutenbeard_playlist_regex, 'httpv://www.youtube.com/playlist?list=\1',$the_content);
+            $gutenbeard_playlist_regex = '%<\!--\s?wp:(?:core[-|/])?embed(?:/youtube)?\s?{"url":"https://www.youtube.com/playlist\?list=(.*)"}\s?-->.*<figcaption>(.*)</figcaption><\!--\s?/wp:(?:core[-|/])?embed(?:/youtube)?\s?-->%Us';
+            $the_content = preg_replace($gutenbeard_playlist_regex, '<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube">httpv://www.youtube.com/playlist?list=\1<figcaption>\2</figcaption></figure>',$the_content);
         }
-        $gutenbeard_single_regex = '%<\!--\s?wp:(?:core[-|/])?embed(?:/youtube)?\s?{"url":"https?://(?:www\.)?youtu(?:be\.com|.be)/(?:watch\?v=)?(.*)"}\s?-->.*<\!--\s?/wp:(?:core[-|/])?embed(?:/youtube)?\s?-->%Us';
-        $the_content = preg_replace($gutenbeard_single_regex, 'httpv://www.youtube.com/watch?v=\1',$the_content);
+        $gutenbeard_single_regex = '%<\!--\s?wp:(?:core[-|/])?embed(?:/youtube)?\s?{"url":"https?://(?:www\.)?youtu(?:be\.com|.be)/(?:watch\?v=)?(.*)"}\s?-->.*<figcaption>(.*)</figcaption><\!--\s?/wp:(?:core[-|/])?embed(?:/youtube)?\s?-->%Us';
+        $the_content = preg_replace($gutenbeard_single_regex, '<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube">httpv://www.youtube.com/watch?v=\1<figcaption>\2</figcaption></figure>',$the_content);
     }
 
     if((strpos($the_content, "httpv")!==FALSE)||(strpos($the_content, "httpa")!==FALSE)) {
@@ -239,7 +246,10 @@ function lyte_parse($the_content,$doExcerpt=false) {
             }
             
             // add disclaimer to lytelinks
-            $disclaimer = '<span class="lyte_disclaimer">' . wp_kses_data( get_option( 'lyte_disclaimer', '') ) . '</span>';
+            $disclaimer = wp_kses_data( get_option( 'lyte_disclaimer', '') );
+            if ( !empty( $disclaimer ) ) {
+                $disclaimer = '<span class="lyte_disclaimer">' . $disclaimer . '</span>';
+            }
             
             if ( $disclaimer && empty( $lytelinks_txt ) ) {
                 $lytelinks_txt = "<div class=\"lL\" style=\"max-width:100%;width:".$lyteSettings[2]."px;".$lyteSettings['pos']."\">".$diclaimer."</div>";

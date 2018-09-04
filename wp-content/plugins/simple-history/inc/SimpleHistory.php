@@ -998,6 +998,8 @@ class SimpleHistory {
 			$loggersDir . 'AvailableUpdatesLogger.php',
 			$loggersDir . 'FileEditsLogger.php',
 			$loggersDir . 'class-sh-privacy-logger.php',
+			$loggersDir . 'class-sh-translations-logger.php',
+			$loggersDir . 'class-sh-jetpack-logger.php',
 
 			// Loggers for third party plugins.
 			$loggersDir . 'PluginUserSwitchingLogger.php',
@@ -1010,7 +1012,7 @@ class SimpleHistory {
 		);
 
 		// SimpleLogger.php must be loaded first and always since the other loggers extend it.
-		// Include it manually so risk of anyone using filters or similar disables it.
+		// Include it manually so no risk of anyone using filters or similar disables it.
 		include_once $loggersDir . 'SimpleLogger.php';
 
 		/**
@@ -1047,6 +1049,12 @@ class SimpleHistory {
 			 * @param string basename of logger, i.e. "SimpleCommentsLogger" or "class-privacy-logger"
 			 */
 			$load_logger = apply_filters( 'simple_history/logger/load_logger', $load_logger, $basename_no_suffix );
+
+			// If logger was SimpleLogger then force it to be loaded because for example
+			// custom extended plugins added later probably depends on it.
+			if ( 'SimpleLogger' === $basename_no_suffix ) {
+				$load_logger = true;
+			}
 
 			if ( ! $load_logger ) {
 				continue;

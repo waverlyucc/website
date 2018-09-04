@@ -111,7 +111,7 @@ class SimpleHistoryExportDropin {
 
 			}
 
-			// Paginate through all pages and all their rows
+			// Paginate through all pages and all their rows.
 			$row_loop = 0;
 			while ( $page_current <= $pages_count + 1 ) {
 
@@ -128,8 +128,8 @@ class SimpleHistoryExportDropin {
 
 						$message_output = strip_tags( html_entity_decode( $this->sh->getLogRowPlainTextOutput( $one_row ), ENT_QUOTES, 'UTF-8' ) );
 
-						$user_email = empty( $one_row->context['user_email'] ) ? null : $one_row->context['user_email'];
-						$user_login = empty( $one_row->context['user_login'] ) ? null : $one_row->context['user_login'];
+						$user_email = empty( $one_row->context['_user_email'] ) ? null : $one_row->context['_user_email'];
+						$user_login = empty( $one_row->context['_user_login'] ) ? null : $one_row->context['_user_login'];
 
 						fputcsv($fp, array(
 							$one_row->date,
@@ -146,7 +146,7 @@ class SimpleHistoryExportDropin {
 
 					} elseif ( 'json' == $export_format ) {
 
-						// If not first loop then add a comma between all json objects
+						// If not first loop then add a comma between all json objects.
 						if ( $row_loop == 0 ) {
 							$comma = "\n";
 						} else {
