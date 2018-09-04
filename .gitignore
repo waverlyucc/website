@@ -1,0 +1,2 @@
+# Don't include Updraft backups, as they could contain sensitive information.
+wp-content/updraft
