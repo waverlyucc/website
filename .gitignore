@@ -1,3 +1,7 @@
+# Don't include server files.
+.well-known
+.user.ini
+
 # Don't include caches.
 wp-content/cache
 
