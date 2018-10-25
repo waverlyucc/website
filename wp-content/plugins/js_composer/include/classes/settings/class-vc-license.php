@@ -35,7 +35,7 @@ class Vc_License {
 	/**
 	 * @var string
 	 */
-	static protected $support_host = 'http://support.wpbakery.com';
+	static protected $support_host = 'https://support.wpbakery.com';
 
 	/**
 	 * @var string
@@ -140,9 +140,26 @@ class Vc_License {
 			$url = self::$support_host . '/finish-license-deactivation';
 		}
 
-		$params = array( 'body' => array( 'token' => $user_token ) );
-
+		$params = array(
+			'body' => array( 'token' => $user_token ),
+			'timeout' => 30,
+		);
+		// FIX SSL SNI
+		$filter_add = true;
+		if ( function_exists( 'curl_version' ) ) {
+			$version = curl_version();
+			if ( version_compare( $version['version'], '7.18', '>=' ) ) {
+				$filter_add = false;
+			}
+		}
+		if ( $filter_add ) {
+			add_filter( 'https_ssl_verify', '__return_false' );
+		}
 		$response = wp_remote_post( $url, $params );
+
+		if ( $filter_add ) {
+			remove_filter( 'https_ssl_verify', '__return_false' );
+		}
 
 		if ( is_wp_error( $response ) ) {
 			$this->showError( __( sprintf( '%s. Please try again.', $response->get_error_message() ), 'js_composer' ) );

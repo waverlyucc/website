@@ -161,7 +161,6 @@ class Vc_Hooks_Vc_Grid implements Vc_Vendor_Interface {
 		$pattern = $this->getShortcodeRegexForId();
 		$content = stripslashes( $post->post_content );
 		preg_match_all( "/$pattern/", $content, $found ); // fetch only needed shortcodes
-		$settings['vc_grid_id'] = array();
 		if ( is_array( $found ) && ! empty( $found[0] ) ) {
 			$to_save = array();
 			if ( isset( $found[1] ) && is_array( $found[1] ) ) {

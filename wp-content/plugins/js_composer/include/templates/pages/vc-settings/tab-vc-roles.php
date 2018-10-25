@@ -38,12 +38,10 @@ $vc_role = new Vc_Roles();
 							data-vc-target="[data-vc-unique-id=<?php echo esc_attr( $unique_id ) ?>]">
 							<div class="widget-top">
 								<div class="widget-title-action">
-									<a class="widget-action hide-if-no-js" href="#"></a>
-									<a class="widget-control-edit hide-if-js">
-										<span class="edit vc_automapper-edit-btn">Edit</span>
-										<span class="add vc_automapper-delete-btn">Add</span>
-										<span class="screen-reader-text">Search</span>
-									</a>
+									<button type="button" class="widget-action hide-if-no-js" aria-expanded="true">
+										<span class="screen-reader-text">Edit widget: Search</span>
+										<span class="toggle-indicator" aria-hidden="true"></span>
+									</button>
 								</div>
 								<div class="widget-title">
 									<h4>

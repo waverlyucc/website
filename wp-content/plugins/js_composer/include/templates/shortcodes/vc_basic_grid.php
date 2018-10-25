@@ -48,7 +48,7 @@ if ( ! vc_is_page_editable() ) {
 			'lazy',
 			'all',
 		) ) && in_array( $this->settings['base'], array( 'vc_basic_grid' ) ) ) {
-		$this->atts['max_items'] = $this->atts['items_per_page'] > $this->atts['max_items'] ? $this->atts['max_items'] : $this->atts['items_per_page'];
+		$this->atts['max_items'] = 'all' === $this->atts['style'] || $this->atts['items_per_page'] > $this->atts['max_items'] ? $this->atts['max_items'] : $this->atts['items_per_page'];
 		$this->buildItems();
 	}
 }

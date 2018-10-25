@@ -21,6 +21,10 @@ class Vc_Vendor_YoastSeo implements Vc_Vendor_Interface {
 			$this,
 			'enqueueJs',
 		) );
+		add_filter( 'wpseo_sitemap_urlimages', array(
+			$this,
+			'filterSitemapUrlImages',
+		), 10, 2 );
 	}
 
 	/**
@@ -114,5 +118,27 @@ class Vc_Vendor_YoastSeo implements Vc_Vendor_Interface {
 			$vc_yoast_meta_box,
 			'template_keyword_tab',
 		) );
+	}
+
+	public function filterSitemapUrlImages( $images, $id ) {
+		if ( empty( $images ) ) {
+			$post = get_post( $id );
+			if ( $post && strpos( $post->post_content, '[vc_row' ) !== false ) {
+				preg_match_all( '/(?:image|images|ids|include)\=\"([^\"]+)\"/', $post->post_content, $matches );
+				foreach ( $matches[1] as $m ) {
+					$ids = explode( ',', $m );
+					foreach ( $ids as $id ) {
+						if ( (int) $id ) {
+							$images[] = array(
+								'src' => wp_get_attachment_url( $id ),
+								'title' => get_the_title( $id ),
+							);
+						}
+					}
+				}
+			}
+		}
+
+		return $images;
 	}
 }

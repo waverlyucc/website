@@ -1,3 +1,23 @@
+08.09.2018 - ver 5.5.4
+  - Fix: Link selector works properly in Backend editor
+
+07.09.2018 - ver 5.5.3
+  - Added: RTL control toggle added for columns
+  - Fix: Accordion control styles display properly in Role Manager settings
+  - Fix: Plugin update notice works properly
+  - Fix: RTL works properly with full screen rows
+  - Fix: Single Image elements are counted into Yoast SEO sitemap
+  - Fix: Post grid id applied properly to reduce number of records in wp_postmeta
+  - Fix: Exception works properly in Post Grid
+  - Fix: SSL timeout on activation
+  - Fix: Link selector works properly in Frontend and Backend editors
+  - Fix: Simplified controls in Design Options save border color
+  - Fix: Empty space in class name removed for inner column
+  - Fix: Post grid display proper number of posts specified
+
+27.06.2018 - ver 5.5.2
+   - Fix: "WPBMap Uncaught Exception" for modifyParam API method
+
 22.06.2018 - ver 5.5.1
    - Fix: "WPBMap Uncaught Exception" for dropParam and addParam API methods
 

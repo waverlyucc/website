@@ -478,7 +478,12 @@ class WPBMap {
 	public static function dropParam( $name, $attribute_name ) {
 		$currentScope = self::getScope();
 		if ( 'default' !== $currentScope ) {
-			throw new Exception( 'WPBMap::addParam can be called only in default scope' );
+			//throw new Exception( 'WPBMap::dropParam can be called only in default scope' );
+			self::setScope( 'default' );
+			$res = self::dropParam( $name, $attribute_name );
+			self::setScope( $currentScope );
+
+			return $res;
 		}
 		if ( ! isset( self::$init_elements[ $name ] ) ) {
 			vc_mapper()->addElementActivity( $name, 'drop_param', array(
@@ -557,7 +562,12 @@ class WPBMap {
 	public static function addParam( $name, $attribute = array() ) {
 		$currentScope = self::getScope();
 		if ( 'default' !== $currentScope ) {
-			throw new Exception( 'WPBMap::addParam can be called only in default scope' );
+			// throw new Exception( 'WPBMap::addParam can be called only in default scope' );
+			self::setScope( 'default' );
+			$res = self::addParam( $name, $attribute );
+			self::setScope( $currentScope );
+
+			return $res;
 		}
 		if ( ! isset( self::$init_elements[ $name ] ) ) {
 			vc_mapper()->addElementActivity( $name, 'add_param', array(
@@ -608,7 +618,12 @@ class WPBMap {
 	public static function mutateParam( $name, $attribute = array() ) {
 		$currentScope = self::getScope();
 		if ( 'default' !== $currentScope ) {
-			throw new Exception( 'WPBMap::mutateParam can be called only in default scope' );
+			// throw new Exception( 'WPBMap::mutateParam can be called only in default scope' );
+			self::setScope( 'default' );
+			$res = self::mutateParam( $name, $attribute );
+			self::setScope( $currentScope );
+
+			return $res;
 		}
 		if ( ! isset( self::$init_elements[ $name ] ) ) {
 			vc_mapper()->addElementActivity( $name, 'mutate_param', array(
@@ -656,7 +671,12 @@ class WPBMap {
 	public static function dropShortcode( $name ) {
 		$currentScope = self::getScope();
 		if ( 'default' !== $currentScope ) {
-			throw new Exception( 'WPBMap::dropShortcode can be called only in default scope' );
+			// throw new Exception( 'WPBMap::dropShortcode can be called only in default scope' );
+			self::setScope( 'default' );
+			$res = self::dropShortcode( $name );
+			self::setScope( $currentScope );
+
+			return $res;
 		}
 		self::$removedElements[] = $name;
 		if ( ! isset( self::$init_elements[ $name ] ) ) {
@@ -673,7 +693,12 @@ class WPBMap {
 	public static function dropAllShortcodes() {
 		$currentScope = self::getScope();
 		if ( 'default' !== $currentScope ) {
-			throw new Exception( 'WPBMap::dropAllShortcodes can be called only in default scope' );
+			// throw new Exception( 'WPBMap::dropAllShortcodes can be called only in default scope' );
+			self::setScope( 'default' );
+			$res = self::dropAllShortcodes();
+			self::setScope( $currentScope );
+
+			return $res;
 		}
 		if ( ! self::$is_init ) {
 			vc_mapper()->addActivity( '*', 'drop_all_shortcodes', array() );
@@ -705,7 +730,12 @@ class WPBMap {
 	public static function modify( $name, $setting_name, $value = '' ) {
 		$currentScope = self::getScope();
 		if ( 'default' !== $currentScope ) {
-			throw new Exception( 'WPBMap::modify can be called only in default scope' );
+			// throw new Exception( 'WPBMap::modify can be called only in default scope' );
+			self::setScope( 'default' );
+			$res = self::modify( $name, $setting_name, $value );
+			self::setScope( $currentScope );
+
+			return $res;
 		}
 		if ( ! isset( self::$init_elements[ $name ] ) ) {
 			vc_mapper()->addElementActivity( $name, 'modify', array(

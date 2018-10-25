@@ -261,12 +261,10 @@ if ( ! class_exists( 'Vc_Automapper' ) ) {
 			<script type="text/html" id="vc_automapper-item-complex-tpl">
 				<div class="widget-top">
 					<div class="widget-title-action">
-						<a class="widget-action hide-if-no-js" href="#"></a>
-						<a class="widget-control-edit hide-if-js">
-							<span class="edit vc_automapper-edit-btn"><?php _e( 'Edit', 'js_composer' ) ?></span>
-							<span class="add vc_automapper-delete-btn"><?php _e( 'Add', 'js_composer' ) ?></span>
-							<span class="screen-reader-text"><?php _e( 'Search', 'js_composer' ) ?></span>
-						</a>
+						<button type="button" class="widget-action hide-if-no-js" aria-expanded="true">
+							<span class="screen-reader-text">Edit widget: Search</span>
+							<span class="toggle-indicator" aria-hidden="true"></span>
+						</button>
 					</div>
 					<div class="widget-title"><h4>{{ name }}<span class="in-widget-title"></span></h4></div>
 				</div>

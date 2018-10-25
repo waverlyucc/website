@@ -78,7 +78,22 @@ class Vc_Updater {
 	 */
 	public function getDownloadUrl( $license_key = '' ) {
 		$url = $this->getUrl();
-		$response = wp_remote_get( $url );
+		// FIX SSL SNI
+		$filter_add = true;
+		if ( function_exists( 'curl_version' ) ) {
+			$version = curl_version();
+			if ( version_compare( $version['version'], '7.18', '>=' ) ) {
+				$filter_add = false;
+			}
+		}
+		if ( $filter_add ) {
+			add_filter( 'https_ssl_verify', '__return_false' );
+		}
+		$response = wp_remote_get( $url, array( 'timeout' => 30 ) );
+
+		if ( $filter_add ) {
+			remove_filter( 'https_ssl_verify', '__return_false' );
+		}
 
 		if ( is_wp_error( $response ) ) {
 			return false;
