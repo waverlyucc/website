@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -441,6 +441,29 @@ if ( $wpex_query->have_posts() ) :
 
 							$output .= '</a>';
 
+
+						}
+
+						// Attachment page
+						elseif ( 'attachment_page' == $thumbnail_link || 'full_image' == $thumbnail_link ) {
+
+							// Get URL
+							if ( 'attachment_page' == $thumbnail_link ) {
+								$url = get_permalink();
+							} else {
+								$url = wp_get_attachment_url( $post_id );
+							}
+
+							// Open link tag
+							$output .= '<a href="'. esc_url( $url ) .'" class="wpex-carousel-entry-img"' . vcex_html( 'target_attr', $custom_links_target ) . '>';
+
+								$output .= $image_output;
+
+								ob_start();
+								wpex_overlay( 'inside_link', $overlay_style, $atts );
+								$output .= ob_get_clean();
+
+							$output .= '</a>';
 
 						}
 

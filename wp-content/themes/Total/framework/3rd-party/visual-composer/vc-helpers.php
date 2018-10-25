@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Visual Composer
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -174,13 +174,13 @@ function vcex_grid_get_post_class( $classes = array(), $post_id ) {
 	$type = get_post_type( $post_id );
 
 	// Add post ID class
-	$classes[] = 'post-'. $post_id;
+	$classes[] = 'post-' . $post_id;
 
 	// Add entry class
 	$classes[] = 'entry';
 
 	// Add type class
-	$classes[] = 'type-'. $type;
+	$classes[] = 'type-' . $type;
 
 	// Add has media class
 	if ( wpex_post_has_media( $post_id, true ) ) {
@@ -206,7 +206,7 @@ function vcex_grid_get_post_class( $classes = array(), $post_id ) {
 	$classes = implode( ' ', $classes );
 
 	// Sanitize and return
-	return 'class="'. esc_attr( $classes ) .'"';
+	return 'class="' . esc_attr( $classes ) . '"';
 
 }
 

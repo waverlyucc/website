@@ -457,7 +457,6 @@ var wpex = {};
 
 			// Re-run functions
 			this.megaMenusWidth();
-			this.inlineHeaderLogo();
 			this.cartDropdownRelocate();
 			this.overlayHovers();
 			this.responsiveText();
@@ -1477,29 +1476,53 @@ var wpex = {};
 			var self = this;
 
 			// For header 5 only
-			if ( 'five' != self.config.siteHeaderStyle ) return;
+			if ( 'five' != self.config.siteHeaderStyle ) {
+				return;
+			}
 
 			// Define vars
 			var $headerLogo        = $( '#site-header-inner > .header-five-logo', self.config.$siteHeader );
 			var $headerNav         = $( '.navbar-style-five', self.config.$siteHeader );
 			var $navLiCount        = $headerNav.children( '#site-navigation' ).children( 'ul' ).children( 'li' ).size();
 			var $navBeforeMiddleLi = Math.round( $navLiCount / 2 ) - parseInt( wpexLocalize.headerFiveSplitOffset );
-			var $centeredLogo      = $( '.menu-item-logo .header-five-logo' );
 
-			// Add logo into menu
-			if ( this.config.viewportWidth > this.config.mobileMenuBreakpoint && $headerLogo.length && $headerNav.length ) {
-				$( '<li class="menu-item-logo"></li>' ).insertAfter( $headerNav.find( '#site-navigation > ul > li:nth( '+ $navBeforeMiddleLi +' )' ) );
-				$headerLogo.appendTo( $headerNav.find( '.menu-item-logo' ) );
+			// Insert Logo into Menu
+			function onInit() {
+
+				if ( self.config.viewportWidth > self.config.mobileMenuBreakpoint
+					&& $headerLogo.length
+					&& $headerNav.length
+				) {
+					$( '<li class="menu-item-logo"></li>' ).insertAfter( $headerNav.find( '#site-navigation > ul > li:nth( '+ $navBeforeMiddleLi +' )' ) );
+					$headerLogo.appendTo( $headerNav.find( '.menu-item-logo' ) );
+				}
+
+				$headerLogo.addClass( 'display' );
+
 			}
 
-			// Remove logo from menu and add to header
-			if ( this.config.viewportWidth < this.config.mobileMenuBreakpoint && $centeredLogo.length ) {
-				$centeredLogo.prependTo( $( '#site-header-inner' ) );
-				$( '.menu-item-logo' ).remove();
+			// Move logo
+			function onResize() {
+
+				var $centeredLogo = $( '.menu-item-logo .header-five-logo' );
+
+				if ( self.config.viewportWidth <= self.config.mobileMenuBreakpoint ) {
+					if ( $centeredLogo.length ) {
+						$centeredLogo.prependTo( $( '#site-header-inner' ) );
+						$( '.menu-item-logo' ).remove();
+					}
+				} else if ( ! $centeredLogo.length ) {
+					onInit(); // Insert logo to menu
+				}
 			}
 
-			// Add display class to logo (hidden by default)
-			$headerLogo.addClass( 'display' );
+			// On init
+			onInit();
+
+			// Move logo on resize
+			self.config.$window.resize( function() {
+				onResize();
+			} );
 
 		},
 

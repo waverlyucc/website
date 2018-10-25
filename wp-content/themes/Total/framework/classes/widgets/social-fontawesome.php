@@ -6,7 +6,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Widgets
- * @version 4.5.3
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -18,8 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 
 	class WPEX_Fontawesome_Social_Widget extends WP_Widget {
-		
-		public $social_services_array = array();
 
 		/**
 		 * Register widget with WordPress.
@@ -28,8 +26,30 @@ if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 		 */
 		public function __construct() {
 
-			// Declare social services array
-			$this->social_services_array = apply_filters( 'wpex_social_widget_profiles', array(
+			// Define widget
+			$branding = wpex_get_theme_branding();
+			$branding = $branding ? $branding . ' - ' : '';
+			parent::__construct(
+				'wpex_fontawesome_social_widget',
+				$branding . esc_attr__( 'Social Profiles (Font Icons)', 'total' ),
+				array(
+					'description' => __( 'Displays your social profile links via retina ready font icons with many different styles to choose from (recommended).', 'total' ),
+					'customize_selective_refresh' => true,
+				)
+			);
+
+			// Load scripts for drag and drop
+			add_action( 'admin_print_scripts-widgets.php', array( $this, 'scripts' ) );
+
+		}
+
+		/**
+		 * Returns social options.
+		 *
+		 * @since 1.0.0
+		 */
+		public function get_social_options() {
+			return apply_filters( 'wpex_social_widget_profiles', array(
 				'twitter' => array(
 					'name' => 'Twitter',
 					'url'  => '',
@@ -139,22 +159,6 @@ if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 					'url'  => '',
 				),
 			) );
-
-			// Define widget
-			$branding = wpex_get_theme_branding();
-			$branding = $branding ? $branding . ' - ' : '';
-			parent::__construct(
-				'wpex_fontawesome_social_widget',
-				$branding . esc_attr__( 'Social Profiles (Font Icons)', 'total' ),
-				array(
-					'description' => __( 'Displays your social profile links via retina ready font icons with many different styles to choose from (recommended).', 'total' ),
-					'customize_selective_refresh' => true,
-				)
-			);
-
-			// Load scripts for drag and drop
-			add_action( 'admin_print_scripts-widgets.php', array( $this, 'scripts' ) );
-
 		}
 
 		/**
@@ -244,7 +248,7 @@ if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 				$output .= '<ul'. $ul_style .'>';
 
 					// Original Array
-					$social_services_array = $this->social_services_array;
+					$get_social_options = $this->get_social_options();
 
 					// Loop through each item in the array
 					foreach( $social_services as $key => $val ) :
@@ -253,8 +257,8 @@ if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 
 						if ( $link ) {
 
-							$name     = $social_services_array[$key]['name'];
-							$nofollow = ( $nofollow || isset( $social_services_array[$key]['nofollow'] ) ) ? 'nofollow' : '';
+							$name     = $get_social_options[$key]['name'];
+							$nofollow = ( $nofollow || isset( $get_social_options[$key]['nofollow'] ) ) ? 'nofollow' : '';
 
 							$l_attrs = array(
 								'href'   => esc_url( $link ),
@@ -380,7 +384,7 @@ if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 				'border_radius'   => '',
 				'target'          => 'blank',
 				'size'            => '',
-				'social_services' => $this->social_services_array,
+				'social_services' => $this->get_social_options(),
 				'align'           => 'left',
 				'nofollow'        => '',
 			) ); ?>
@@ -466,7 +470,7 @@ if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 				<input type="hidden" id="<?php echo esc_attr( $field_name_services ); ?>" value="<?php echo esc_attr( $field_name_services ); ?>" class="wpex-social-widget-services-hidden-field" />
 				<?php
 				// Social array
-				$social_services_array = $this->social_services_array;
+				$get_social_options = $this->get_social_options();
 				
 				// Get current services display
 				$display_services = isset ( $instance['social_services'] ) ? $instance['social_services'] : '';
@@ -475,7 +479,7 @@ if ( ! class_exists( 'WPEX_Fontawesome_Social_Widget' ) ) {
 				foreach( $display_services as $key => $val ) :
 
 					$url  = ! empty( $display_services[$key]['url'] ) ? $display_services[$key]['url'] : null;
-					$name = $social_services_array[$key]['name'];
+					$name = $get_social_options[$key]['name'];
 
 					// Set icon
 					$icon = 'vimeo-square' == $key ? 'vimeo' : $key;

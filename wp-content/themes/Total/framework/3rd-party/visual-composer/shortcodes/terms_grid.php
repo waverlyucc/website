@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Functions
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 if ( ! class_exists( 'VCEX_Terms_Grid_Shortcode' ) ) {
@@ -161,10 +161,16 @@ if ( ! class_exists( 'VCEX_Terms_Grid_Shortcode' ) ) {
 					),
 					array(
 						'type' => 'vcex_ofswitch',
+						'std' => 'true',
+						'heading' => __( 'Hide Empty Terms?', 'total' ),
+						'param_name' => 'hide_empty',
+						'group' => __( 'Query', 'total' ),
+					),
+					array(
+						'type' => 'vcex_ofswitch',
 						'std' => 'false',
 						'heading' => __( 'Parent Terms Only', 'total' ),
 						'param_name' => 'parent_terms',
-						'value' => array( __( 'No', 'total' ) => false, __( 'Yes', 'total' ) => true ),
 						'group' => __( 'Query', 'total' ),
 					),
 					array(

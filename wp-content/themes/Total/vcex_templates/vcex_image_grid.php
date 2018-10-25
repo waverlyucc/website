@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -206,13 +206,13 @@ if ( ! empty ( $attachment_ids ) ) :
 		if ( 'lightbox' == $thumbnail_link ) {
 			$lightbox_data = array();
 			if ( $lightbox_skin ) {
-				$lightbox_data[] = 'data-skin="'. $lightbox_skin .'"';
+				$lightbox_data[] = 'data-skin="' . $lightbox_skin . '"';
 			}
 			if ( $lightbox_path ) {
 				if ( 'disabled' == $lightbox_path ) {
 					$lightbox_data[] = 'data-thumbnails="false"';
 				} else {
-					$lightbox_data[] = 'data-path="'. $lightbox_path .'"';
+					$lightbox_data[] = 'data-path="' . $lightbox_path . '"';
 				}
 			}
 			if ( 'true' == $lightbox_loop ) {
@@ -478,19 +478,26 @@ if ( ! empty ( $attachment_ids ) ) :
 
 								$output .= '</a>';
 
-							// Custom Links
-							elseif ( 'custom_link' == $thumbnail_link && $post_url ) :
+							// Attachment page
+							elseif ( 'attachment_page' == $thumbnail_link || 'full_image' == $thumbnail_link ) :
+
+								// Get URL
+								if ( 'attachment_page' == $thumbnail_link ) {
+									$url = get_permalink();
+								} else {
+									$url = wp_get_attachment_url( $post_id );
+								}
 
 								// Get title tag if enabled
-								if ( 'true' == $link_title_tag ) {
+								if ( 'true' == $link_title_tag && $post_alt ) {
 									$post_url_tt = vcex_html( 'title_attr', $post_alt, false );
 								}
 
 								// Link target
-								$post_url_target =  vcex_html( 'target_attr', $atts['link_target'], false );
+								$post_url_target = vcex_html( 'target_attr', $atts['link_target'], false );
 
 								// Open link tag
-								$output .= '<a href="' . esc_url( $post_url ) . '" class="vcex-image-grid-entry-img"' . $post_url_tt . $post_url_target . $link_attributes . '>';
+								$output .= '<a href="' . esc_url( $url ) . '" class="vcex-image-grid-entry-img"' . $post_url_tt . $post_url_target . $link_attributes . '>';
 
 									// Display image
 									$output .= $post_thumbnail;
@@ -504,8 +511,8 @@ if ( ! empty ( $attachment_ids ) ) :
 
 								$output .= '</a>';
 
-							// Attachment page
-							elseif ( 'attachment_page' == $thumbnail_link ) :
+							// Custom Links
+							elseif ( 'custom_link' == $thumbnail_link && $post_url ) :
 
 								// Get title tag if enabled
 								if ( 'true' == $link_title_tag ) {
@@ -513,10 +520,10 @@ if ( ! empty ( $attachment_ids ) ) :
 								}
 
 								// Link target
-								$post_url_target = vcex_html( 'target_attr', $atts['link_target'], false );
+								$post_url_target =  vcex_html( 'target_attr', $atts['link_target'], false );
 
 								// Open link tag
-								$output .= '<a href="' . get_permalink() . '" class="vcex-image-grid-entry-img"' . $post_url_tt . $post_url_target . $link_attributes . '>';
+								$output .= '<a href="' . esc_url( $post_url ) . '" class="vcex-image-grid-entry-img"' . $post_url_tt . $post_url_target . $link_attributes . '>';
 
 									// Display image
 									$output .= $post_thumbnail;

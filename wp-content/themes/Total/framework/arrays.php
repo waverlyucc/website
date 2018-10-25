@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -147,7 +147,7 @@ function wpex_get_bg_img_styles() {
 	return array(
 		''             => __( 'Default', 'total' ),
 		'cover'        => __( 'Cover', 'total' ),
-		'stretched'    => __( 'Fixed Cover', 'total' ),
+		'stretched'    => __( 'Stretched', 'total' ),
 		'repeat'       => __( 'Repeat', 'total' ),
 		'fixed-top'    => __( 'Fixed Top', 'total' ),
 		'fixed'        => __( 'Fixed Center', 'total' ),

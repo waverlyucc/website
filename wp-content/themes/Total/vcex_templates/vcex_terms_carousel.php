@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.4.2
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -30,27 +30,30 @@ $output = '';
 $atts = vc_map_get_attributes( 'vcex_terms_carousel', $atts );
 
 // Taxonomy is required
-if ( ! $atts['taxonomy'] ) {
+if ( ! $atts[ 'taxonomy' ] ) {
 	return;
 }
 
 // Fix for fallback parent terms switched from bool to string
-$atts['parent_terms'] = ( $atts['parent_terms'] && 'false' != $atts['parent_terms'] ) ? true : false;
+$atts[ 'parent_terms' ] = ( $atts[ 'parent_terms' ] && 'false' != $atts[ 'parent_terms' ] ) ? true : false;
 
 // Term arguments
 $term_args = array();
-if ( $atts['parent_terms'] ) {
-	$term_args['parent'] = 0;
+if ( $atts[ 'parent_terms' ] ) {
+	$term_args[ 'parent' ] = 0;
 }
-if ( $atts['child_of'] ) {
-	$child_of = get_term_by( 'slug', $atts['child_of'], $atts['taxonomy'] );
+if ( 'false' == $atts[ 'hide_empty' ] ) {
+	$term_args[ 'hide_empty' ] = false;
+}
+if ( $atts[ 'child_of' ] ) {
+	$child_of = get_term_by( 'slug', $atts[ 'child_of' ], $atts[ 'taxonomy' ] );
 	if ( $child_of && ! is_wp_error( $child_of ) ) {
-		$term_args['child_of'] = $child_of->term_id;
+		$term_args[ 'child_of' ] = $child_of->term_id;
 	}
 }
 
 // Get terms
-$terms = get_terms( $atts['taxonomy'], $term_args );
+$terms = get_terms( $atts[ 'taxonomy' ], $term_args );
 
 // Terms needed
 if ( ! $terms || is_wp_error( $terms ) ) {
@@ -58,7 +61,7 @@ if ( ! $terms || is_wp_error( $terms ) ) {
 }
 
 // Get excluded terms
-$atts['exclude_terms'] = $atts['exclude_terms'] ? preg_split( '/\,[\s]*/', $atts['exclude_terms'] ) : array();
+$atts[ 'exclude_terms' ] = $atts[ 'exclude_terms' ] ? preg_split( '/\,[\s]*/', $atts[ 'exclude_terms' ] ) : array();
 
 // Get term thumbnails
 $term_data = wpex_get_term_data();
@@ -67,43 +70,43 @@ $term_data = wpex_get_term_data();
 $wrap_classes = array( 'vcex-module', 'wpex-carousel', 'vcex-terms-carousel', 'clr', 'owl-carousel' );
 
 // Arrow style
-$atts['arrows_style'] = $atts['arrows_style'] ? $atts['arrows_style'] : 'default';
-$wrap_classes[] = 'arrwstyle-'. $atts['arrows_style'];
+$atts[ 'arrows_style' ] = $atts[ 'arrows_style' ] ? $atts[ 'arrows_style' ] : 'default';
+$wrap_classes[] = 'arrwstyle-'. $atts[ 'arrows_style' ];
 
 // Arrow position
-if ( $atts['arrows_position'] && 'default' != $atts['arrows_position'] ) {
-	$wrap_classes[] = 'arrwpos-'. $atts['arrows_position'];
+if ( $atts[ 'arrows_position' ] && 'default' != $atts[ 'arrows_position' ] ) {
+	$wrap_classes[] = 'arrwpos-'. $atts[ 'arrows_position' ];
 }
 
 // Visiblity
-if ( $atts['visibility'] ) {
-	$wrap_classes[] = $atts['visibility'];
+if ( $atts[ 'visibility' ] ) {
+	$wrap_classes[] = $atts[ 'visibility' ];
 }
 
 // CSS animations
-if ( $atts['css_animation'] && 'none' != $atts['css_animation'] ) {
-	$wrap_classes[] = vcex_get_css_animation( $atts['css_animation'] );
+if ( $atts[ 'css_animation' ] && 'none' != $atts[ 'css_animation' ] ) {
+	$wrap_classes[] = vcex_get_css_animation( $atts[ 'css_animation' ] );
 }
 
 // Custom Classes
-if ( $atts['classes'] ) {
-	$wrap_classes[] = vcex_get_extra_class( $atts['classes'] );
+if ( $atts[ 'classes' ] ) {
+	$wrap_classes[] = vcex_get_extra_class( $atts[ 'classes' ] );
 }
 
 // Sanitize carousel data
-$arrows                 = wpex_esc_attr( $atts['arrows'], 'true' );
-$dots                   = wpex_esc_attr( $atts['dots'], 'false' );
-$auto_play              = wpex_esc_attr( $atts['auto_play'], 'false' );
-$infinite_loop          = wpex_esc_attr( $atts['infinite_loop'], 'true' );
-$center                 = wpex_esc_attr( $atts['center'], 'false' );
-$items                  = wpex_intval( $atts['items'], 4 );
-$items_scroll           = wpex_intval( $atts['items_scroll'], 1 );
-$timeout_duration       = wpex_intval( $atts['timeout_duration'], 5000 );
-$items_margin           = wpex_intval( $atts['items_margin'], 15 );
-$tablet_items           = wpex_intval( $atts['tablet_items'], 3 );
-$mobile_landscape_items = wpex_intval( $atts['mobile_landscape_items'], 2 );
-$mobile_portrait_items  = wpex_intval( $atts['mobile_portrait_items'], 1 );
-$animation_speed        = wpex_intval( $atts['animation_speed'] );
+$arrows                 = wpex_esc_attr( $atts[ 'arrows' ], 'true' );
+$dots                   = wpex_esc_attr( $atts[ 'dots' ], 'false' );
+$auto_play              = wpex_esc_attr( $atts[ 'auto_play' ], 'false' );
+$infinite_loop          = wpex_esc_attr( $atts[ 'infinite_loop' ], 'true' );
+$center                 = wpex_esc_attr( $atts[ 'center' ], 'false' );
+$items                  = wpex_intval( $atts[ 'items' ], 4 );
+$items_scroll           = wpex_intval( $atts[ 'items_scroll' ], 1 );
+$timeout_duration       = wpex_intval( $atts[ 'timeout_duration' ], 5000 );
+$items_margin           = wpex_intval( $atts[ 'items_margin' ], 15 );
+$tablet_items           = wpex_intval( $atts[ 'tablet_items' ], 3 );
+$mobile_landscape_items = wpex_intval( $atts[ 'mobile_landscape_items' ], 2 );
+$mobile_portrait_items  = wpex_intval( $atts[ 'mobile_portrait_items' ], 1 );
+$animation_speed        = wpex_intval( $atts[ 'animation_speed' ] );
 
 // Disable autoplay
 if ( wpex_vc_is_inline() || '1' == count( $terms ) ) {
@@ -114,89 +117,89 @@ if ( wpex_vc_is_inline() || '1' == count( $terms ) ) {
 $wrap_classes = implode( ' ', $wrap_classes );
 
 // Typography
-$title_typo       = vcex_parse_typography_param( $atts['title_typo'] );
-$title_tag        = ! empty( $title_typo['tag'] ) ? $title_typo['tag'] : 'h2';
-$description_typo = vcex_parse_typography_param( $atts['description_typo'] );
+$title_typo       = vcex_parse_typography_param( $atts[ 'title_typo' ] );
+$title_tag        = ! empty( $title_typo[ 'tag' ] ) ? $title_typo[ 'tag' ] : 'h2';
+$description_typo = vcex_parse_typography_param( $atts[ 'description_typo' ] );
 
 // Remove useless align
-if ( isset( $title_typo['text_align'] ) && 'left' == $title_typo['text_align'] ) {
-	unset( $title_typo['text_align'] );
+if ( isset( $title_typo[ 'text_align' ] ) && 'left' == $title_typo[ 'text_align' ] ) {
+	unset( $title_typo[ 'text_align' ] );
 }
-if ( isset( $description_typo['text_align'] ) && 'left' == $description_typo['text_align'] ) {
-	unset( $description_typo['text_align'] );
+if ( isset( $description_typo[ 'text_align' ] ) && 'left' == $description_typo[ 'text_align' ] ) {
+	unset( $description_typo[ 'text_align' ] );
 }
 
 // Load Google Fonts if needed
-if ( $atts['title_font_family'] ) {
-	wpex_enqueue_google_font( $atts['title_font_family'] );
+if ( $atts[ 'title_font_family' ] ) {
+	wpex_enqueue_google_font( $atts[ 'title_font_family' ] );
 }
-if ( $atts['description_font_family'] ) {
-	wpex_enqueue_google_font( $atts['description_font_family'] );
+if ( $atts[ 'description_font_family' ] ) {
+	wpex_enqueue_google_font( $atts[ 'description_font_family' ] );
 }
 
 // Define post type based on the taxonomy
-$taxonomy  = get_taxonomy( $atts['taxonomy'] );
+$taxonomy  = get_taxonomy( $atts[ 'taxonomy' ] );
 $post_type = $taxonomy->object_type[0];
 
 // Entry CSS wrapper
-if ( $atts['entry_css'] ) {
-	$entry_css_class = vc_shortcode_custom_css_class( $atts['entry_css'] );
+if ( $atts[ 'entry_css' ] ) {
+	$entry_css_class = vc_shortcode_custom_css_class( $atts[ 'entry_css' ] );
 }
 
 // Image classes
 $media_classes = array( 'vcex-terms-grid-entry-image', 'wpex-clr' );
-if ( 'true' == $atts['title_overlay'] && 'true' == $atts['img'] ) {
+if ( 'true' == $atts[ 'title_overlay' ] && 'true' == $atts[ 'img' ] ) {
 	$media_classes[] = 'vcex-has-overlay';
 }
-if ( $atts['img_filter'] ) {
-	$media_classes[] = wpex_image_filter_class( $atts['img_filter'] );
+if ( $atts[ 'img_filter' ] ) {
+	$media_classes[] = wpex_image_filter_class( $atts[ 'img_filter' ] );
 }
-if ( $atts['img_hover_style'] ) {
-	$media_classes[] = wpex_image_hover_classes( $atts['img_hover_style'] );
+if ( $atts[ 'img_hover_style' ] ) {
+	$media_classes[] = wpex_image_hover_classes( $atts[ 'img_hover_style' ] );
 }
 $media_classes = implode( ' ', $media_classes );
 
 // Title style
 $title_style = array(
-	'font_family'   => $atts['title_font_family'],
-	'font_weight'   => $atts['title_font_weight'],
-	'margin_bottom' => $atts['title_bottom_margin'],
+	'font_family'   => $atts[ 'title_font_family' ],
+	'font_weight'   => $atts[ 'title_font_weight' ],
+	'margin_bottom' => $atts[ 'title_bottom_margin' ],
 );
 $title_style = $title_typo + $title_style;
 $title_style = vcex_inline_style( $title_style );
 
 // Description style
-$description_font_family = array( 'font_family' => $atts['description_font_family'] );
+$description_font_family = array( 'font_family' => $atts[ 'description_font_family' ] );
 $description_typo        = $description_typo + $description_font_family;
 $description_style       = vcex_inline_style( $description_typo );
 
 
 // Button design and classes if enabled
-if ( 'true' == $atts['button'] ) {
+if ( 'true' == $atts[ 'button' ] ) {
 
 	$button_data = array();
 
-	$button_text = $atts['button_text'] ? $atts['button_text'] : esc_html__( 'visit category', 'total' );
+	$button_text = $atts[ 'button_text' ] ? $atts[ 'button_text' ] : esc_html__( 'visit category', 'total' );
 
-	$button_align = $atts['button_align'] ? ' text' . $atts['button_align']  : '';
+	$button_align = $atts[ 'button_align' ] ? ' text' . $atts[ 'button_align' ]  : '';
 
-	$button_classes = wpex_get_button_classes( $atts['button_style'], $atts['button_style_color'] );
+	$button_classes = wpex_get_button_classes( $atts[ 'button_style' ], $atts[ 'button_style_color' ] );
 
 	$button_style = vcex_inline_style( array(
-		'background'    => $atts['button_background'],
-		'color'         => $atts['button_color'],
-		'font_size'     => $atts['button_size'],
-		'padding'       => $atts['button_padding'],
-		'border_radius' => $atts['button_border_radius'],
-		'margin'        => $atts['button_margin'],
+		'background'    => $atts[ 'button_background' ],
+		'color'         => $atts[ 'button_color' ],
+		'font_size'     => $atts[ 'button_size' ],
+		'padding'       => $atts[ 'button_padding' ],
+		'border_radius' => $atts[ 'button_border_radius' ],
+		'margin'        => $atts[ 'button_margin' ],
 	) );
 
 	$button_hover_data = array();
-	if ( $atts['button_hover_background'] ) {
-		$button_hover_data['background'] = $atts['button_hover_background'];
+	if ( $atts[ 'button_hover_background' ] ) {
+		$button_hover_data[ 'background' ] = $atts[ 'button_hover_background' ];
 	}
-	if ( $atts['button_hover_color'] ) {
-		$button_hover_data['color'] = $atts['button_hover_color'];
+	if ( $atts[ 'button_hover_color' ] ) {
+		$button_hover_data[ 'color' ] = $atts[ 'button_hover_color' ];
 	}
 	if ( $button_hover_data ) {
 		$button_hover_data = json_encode( $button_hover_data );
@@ -208,13 +211,13 @@ if ( 'true' == $atts['button'] ) {
 $wrap_classes = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $wrap_classes, 'vcex_terms_carousel', $atts );
 
 // Begin output
-$output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $atts['unique_id'] ) .' data-items="'. $items .'" data-slideby="'. $items_scroll .'" data-nav="'. $arrows .'" data-dots="'. $dots .'" data-autoplay="'. $auto_play .'" data-loop="'. $infinite_loop .'" data-autoplay-timeout="'. $timeout_duration .'" data-center="'. $center .'" data-margin="'. intval( $items_margin ) .'" data-items-tablet="'. $tablet_items .'" data-items-mobile-landscape="'. $mobile_landscape_items .'" data-items-mobile-portrait="'. $mobile_portrait_items .'" data-smart-speed="'. $animation_speed .'">';
+$output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $atts[ 'unique_id' ] ) .' data-items="'. $items .'" data-slideby="'. $items_scroll .'" data-nav="'. $arrows .'" data-dots="'. $dots .'" data-autoplay="'. $auto_play .'" data-loop="'. $infinite_loop .'" data-autoplay-timeout="'. $timeout_duration .'" data-center="'. $center .'" data-margin="'. intval( $items_margin ) .'" data-items-tablet="'. $tablet_items .'" data-items-mobile-landscape="'. $mobile_landscape_items .'" data-items-mobile-portrait="'. $mobile_portrait_items .'" data-smart-speed="'. $animation_speed .'">';
 
 	// Loop through terms
 	foreach( $terms as $term ) :
 
 		// Excluded
-		if ( in_array( $term->slug, $atts['exclude_terms'] ) ) {
+		if ( in_array( $term->slug, $atts[ 'exclude_terms' ] ) ) {
 			continue;
 		}
 
@@ -225,21 +228,21 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 		$output .= '<div class="vcex-terms-carousel-entry clr term-'. $term->term_id . $term->slug .'">';
 
 		// Entry css wrapper
-		if ( $atts['entry_css'] && $entry_css_class ) {
+		if ( $atts[ 'entry_css' ] && $entry_css_class ) {
 
 			$output .= '<div class="'. esc_attr( $entry_css_class ) .'">';
 
 		}
 
 			// Display image if enabled
-			if ( 'true' == $atts['img'] ) :
+			if ( 'true' == $atts[ 'img' ] ) :
 
 				// Check meta for featured image
 				$img_id = '';
 
 				// Check wpex_term_thumbnails option for custom category image
-				if ( ! empty( $term_data[$term->term_id]['thumbnail'] ) ) {
-					$img_id = $term_data[$term->term_id]['thumbnail'];
+				if ( ! empty( $term_data[$term->term_id][ 'thumbnail' ] ) ) {
+					$img_id = $term_data[$term->term_id][ 'thumbnail' ];
 				}
 
 				// Get woo product image
@@ -290,15 +293,15 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 							$output .= wpex_get_post_thumbnail( array(
 								'attachment' => $img_id,
 								'alt'        => $term->name,
-								'width'      => $atts['img_width'],
-								'height'     => $atts['img_height'],
-								'crop'       => $atts['img_crop'],
-								'size'       => $atts['img_size'],
+								'width'      => $atts[ 'img_width' ],
+								'height'     => $atts[ 'img_height' ],
+								'crop'       => $atts[ 'img_crop' ],
+								'size'       => $atts[ 'img_size' ],
 							) );
 
 							// Overlay title
-							if ( 'true' == $atts['title_overlay']
-								&& 'true' == $atts['title']
+							if ( 'true' == $atts[ 'title_overlay' ]
+								&& 'true' == $atts[ 'title' ]
 								&& ! empty( $term->name )
 							) :
 
@@ -312,7 +315,7 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 
 												$output .= '<span>' . esc_html( $term->name ) . '</span>';
 
-												if ( 'true' == $atts['term_count'] ) {
+												if ( 'true' == $atts[ 'term_count' ] ) {
 
 													$output .= '<span class="vcex-terms-grid-entry-count">(' . $term->count . ')</span>';
 
@@ -336,10 +339,10 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 			endif; // End image check
 
 			// Inline title and description
-			if ( 'false' == $atts['title_overlay'] || 'false' == $atts['img'] ) :
+			if ( 'false' == $atts[ 'title_overlay' ] || 'false' == $atts[ 'img' ] ) :
 
 				// Show title
-				if ( 'false' == $atts['title_overlay'] && 'true' == $atts['title'] && ! empty( $term->name ) ) :
+				if ( 'false' == $atts[ 'title_overlay' ] && 'true' == $atts[ 'title' ] && ! empty( $term->name ) ) :
 
 					$output .= '<' . esc_attr( $title_tag ) . ' class="vcex-terms-grid-entry-title entry-title"' . $title_style . '>';
 
@@ -347,7 +350,7 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 
 							$output .= esc_html( $term->name );
 
-							if ( 'true' == $atts['term_count'] ) {
+							if ( 'true' == $atts[ 'term_count' ] ) {
 
 								$output .= ' <span class="vcex-terms-grid-entry-count">(' . $term->count . ')</span>';
 
@@ -360,7 +363,7 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 				endif;
 
 				// Display term description
-				if ( 'true' == $atts['description'] && ! empty( $term->description ) ) :
+				if ( 'true' == $atts[ 'description' ] && ! empty( $term->description ) ) :
 
 					$output .= '<div class="vcex-terms-grid-entry-excerpt clr"' . $description_style . '>';
 
@@ -371,7 +374,7 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 				endif;
 
 				// Display button if enabled
-				if ( 'true' == $atts['button'] ) :
+				if ( 'true' == $atts[ 'button' ] ) :
 
 					$output .= '<div class="vcex-terms-grid-entry-button clr' . $button_align . '">';
 
@@ -392,7 +395,7 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 		$output .= '</div>';
 
 		// Close entry
-		if ( $atts['entry_css'] && $entry_css_class ) {
+		if ( $atts[ 'entry_css' ] && $entry_css_class ) {
 
 			$output .= '</div>';
 

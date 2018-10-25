@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Functions
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 if ( ! class_exists( 'VCEX_Terms_Carousel_Shortcode' ) ) {
@@ -189,6 +189,13 @@ if ( ! class_exists( 'VCEX_Terms_Carousel_Shortcode' ) ) {
 							'delay' => 0,
 							'auto_focus' => true,
 						),
+						'group' => __( 'Query', 'total' ),
+					),
+					array(
+						'type' => 'vcex_ofswitch',
+						'std' => 'true',
+						'heading' => __( 'Hide Empty Terms?', 'total' ),
+						'param_name' => 'hide_empty',
 						'group' => __( 'Query', 'total' ),
 					),
 					array(

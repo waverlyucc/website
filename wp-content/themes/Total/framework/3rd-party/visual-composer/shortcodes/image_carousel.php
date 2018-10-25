@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Functions
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 if ( ! class_exists( 'VCEX_Image_Carousel' ) ) {
@@ -295,6 +295,8 @@ if ( ! class_exists( 'VCEX_Image_Carousel' ) ) {
 						'choices' => array(
 							'none' => __( 'None', 'total' ),
 							'lightbox' => __( 'Lightbox', 'total' ),
+							'full_image' => __( 'Full Image', 'total' ),
+							'attachment_page' => __( 'Attachment Page', 'total' ),
 							'custom_link' => __( 'Custom Links', 'total' ),
 						),
 						'group' => __( 'Links', 'total' ),
@@ -311,10 +313,12 @@ if ( ! class_exists( 'VCEX_Image_Carousel' ) ) {
 						'type' => 'vcex_select_buttons',
 						'heading'  => __( 'Target', 'total' ),
 						'param_name' => 'custom_links_target',
-						'description' => __( 'Select where to open custom links.', 'total'),
 						'group' => __( 'Links', 'total' ),
 						'choices' => 'link_target',
-						'dependency' => array( 'element' => 'thumbnail_link', 'value' => 'custom_link' ),
+						'dependency' => array(
+							'element' => 'thumbnail_link',
+							'value' => array( 'custom_link', 'attachment_page', 'full_image' )
+						),
 					),
 					array(
 						'type' => 'vcex_lightbox_skins',

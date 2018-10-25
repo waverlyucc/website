@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Staff Functions
- * @version 4.7
+ * @version 4.7.1
  */
 
 /**
@@ -299,7 +299,7 @@ if ( ! function_exists( 'wpex_get_staff_social' ) ) {
 
 					// Add "mailto" for emails
 					if ( 'wpex_staff_email' == $meta && is_email( $meta_value ) ) {
-						$url = 'mailto:' . $url;
+						$url = 'mailto:' . $meta_value;
 					}
 
 					// Add "callto" to skype

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -176,6 +176,16 @@ if ( $wpex_query->have_posts() ) :
 
 	// Start output
 	$output .= '<div class="'. $wrap_classes .'"'. vcex_get_unique_id( $unique_id ) .'>';
+
+		//Heading
+		if ( ! empty( $atts[ 'heading' ] ) ) {
+			$output .= wpex_heading( array(
+				'echo'    => false,
+				'tag'     => 'h2',
+				'content' => esc_html( $atts[ 'heading' ] ),
+				'classes' => array( 'vcex-module-heading' ),
+			) );
+		}
 
 		// Display filter links
 		if ( 'true' == $filter ) :
@@ -503,7 +513,7 @@ if ( $wpex_query->have_posts() ) :
 				$latts = apply_filters( 'vcex_shortcode_loop_atts', $atts );
 
 				// Begin entry output
-				$output .= '<div '. vcex_grid_get_post_class( $entry_classes, $post_id ) .'>';
+				$output .= '<div ' . vcex_grid_get_post_class( $entry_classes, $post_id ) . '>';
 
 					// Inner entry classes
 					$classes = 'vcex-post-type-entry-inner entry-inner clr';

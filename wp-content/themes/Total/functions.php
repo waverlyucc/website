@@ -22,7 +22,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.7
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -87,8 +87,8 @@ final class WPEX_Theme_Setup {
 	public function constants() {
 
 		define( 'TOTAL_THEME_ACTIVE', true );
-		define( 'WPEX_THEME_VERSION', '4.7' );
-		define( 'WPEX_VC_SUPPORTED_VERSION', '5.5.1' );
+		define( 'WPEX_THEME_VERSION', '4.7.1' );
+		define( 'WPEX_VC_SUPPORTED_VERSION', '5.5.4' );
 
 		define( 'WPEX_THEME_DIR', get_template_directory() );
 		define( 'WPEX_THEME_URI', get_template_directory_uri() );
@@ -403,10 +403,9 @@ final class WPEX_Theme_Setup {
 			}
 
 			// Plugins updater
-			// @deprecated in 4.4.1 - seems like extra functionality that isn't needed
-			// because you can already update via the TGMPA script.
-			if ( apply_filters( 'wpex_plugins_updater', true ) ) {
-				//require_once WPEX_ClASSES_DIR . 'PluginUpdater.php';
+			// @deprecated in 4.4.1 must be enabled via filter
+			if ( apply_filters( 'wpex_plugins_updater', false ) ) {
+				require_once WPEX_ClASSES_DIR . 'PluginUpdater.php';
 			}
 
 			// Gallery metabox

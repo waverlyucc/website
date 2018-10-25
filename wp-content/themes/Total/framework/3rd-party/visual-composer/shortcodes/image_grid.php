@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Functions
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 if ( ! class_exists( 'VCEX_Image_Grid' ) ) {
@@ -163,6 +163,7 @@ if ( ! class_exists( 'VCEX_Image_Grid' ) ) {
 						'choices' => array(
 							'none' => __( 'None', 'total' ),
 							'lightbox' => __( 'Lightbox', 'total' ),
+							'full_image' => __( 'Full Image', 'total' ),
 							'attachment_page' => __( 'Attachment Page', 'total' ),
 							'custom_link' => __( 'Custom Links', 'total' ),
 						),
@@ -174,7 +175,10 @@ if ( ! class_exists( 'VCEX_Image_Grid' ) ) {
 						'heading' => __( 'Link Title Attribute', 'total' ),
 						'param_name' => 'link_title_tag',
 						'group' => __( 'Links', 'total' ),
-						'dependency' => array( 'element' => 'thumbnail_link', 'value' => array( 'lightbox', 'attachment_page', 'custom_link' ) ),
+						'dependency' => array(
+							'element' => 'thumbnail_link',
+							'value' => array( 'lightbox', 'attachment_page', 'custom_link', 'full_image' )
+						),
 					),
 					array(
 						'type' => 'vcex_lightbox_skins',

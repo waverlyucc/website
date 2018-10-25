@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 namespace TotalTheme;
@@ -51,20 +51,23 @@ class HeaderBuilder {
 			// Include ID for Visual Composer custom CSS
 			add_filter( 'wpex_vc_css_ids', array( $this, 'wpex_vc_css_ids' ) );
 
-			// Remove header customizer settings
-			add_filter( 'wpex_customizer_panels', array( $this, 'remove_customizer_header_panel' ) );
-
 			// Alter template for live editing
 			if ( wpex_vc_is_inline() ) {
 				add_filter( 'template_include', array( $this, 'builder_template' ), 9999 );
 			}
 
-			// Remove Meta options
 			if ( $is_admin ) {
+
+				// Remove header customizer settings
+				add_filter( 'wpex_customizer_panels', array( $this, 'remove_customizer_header_panel' ) );
+				add_filter( 'wpex_typography_settings', array( $this, 'remove_typography_settings' ) );
+
+				// Remove meta options
 				add_filter( 'wpex_metabox_array', array( $this, 'remove_meta' ), 99, 2 );
+
 			}
 
-			// CSS
+			// Custom header design CSS output
 			add_filter( 'wpex_head_css', array( $this, 'custom_css' ), 99 );
 
 		}
@@ -493,6 +496,20 @@ class HeaderBuilder {
 	public function remove_customizer_header_panel( $panels ) {
 		unset( $panels['header'] );
 		return $panels;
+	}
+
+	/**
+	 * Remove typography settings
+	 *
+	 * @since 4.7.1
+	 */
+	public function remove_typography_settings( $settings ) {
+		unset( $settings['logo'] );
+		unset( $settings['header_aside'] );
+		unset( $settings['menu'] );
+		unset( $settings['menu_dropdown'] );
+		unset( $settings['mobile_menu'] );
+		return $settings;
 	}
 
 	/**

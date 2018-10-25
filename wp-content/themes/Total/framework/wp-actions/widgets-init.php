@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -65,24 +65,33 @@ function wpex_register_sidebar_widget_areas() {
 	// Apply filters - makes it easier to register new sidebars
 	$sidebars = apply_filters( 'wpex_register_sidebars_array', $sidebars );
 
-	// Register sidebars
-	if ( $sidebars ) {
+	// If there are no sidebars then return
+	if ( ! $sidebars ) {
+		return;
+	}
 
-		// Sidebar tags
-		$tag = wpex_get_mod( 'sidebar_headings' );
-		$tag = $tag ? $tag : 'div';
+	// Sidebar tags
+	$tag = wpex_get_mod( 'sidebar_headings' );
+	$tag = $tag ? $tag : 'div';
 
-		// Loop through sidebars and register them
-		foreach ( $sidebars as $id => $name ) {
-			register_sidebar( array(
-				'name'          => $name,
-				'id'            => $id,
-				'before_widget' => '<div id="%1$s" class="sidebar-box widget %2$s clr">',
-				'after_widget'  => '</div>',
-				'before_title'  => '<' . $tag . ' class="widget-title">',
-				'after_title'   => '</' . $tag . '>',
-			) );
+	// Loop through sidebars and register them
+	foreach ( $sidebars as $k => $v ) {
+
+		$args = array(
+			'id'            => $k,
+			'before_widget' => '<div id="%1$s" class="sidebar-box widget %2$s clr">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<' . $tag . ' class="widget-title">',
+			'after_title'   => '</' . $tag . '>',
+		);
+
+		if ( is_array( $v ) ) {
+			$args = wp_parse_args( $v, $args );
+		} else {
+			$args['name'] = $v;
 		}
+
+		register_sidebar( $args );
 
 	}
 

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -86,9 +86,6 @@ if ( $wpex_query->have_posts() ) :
 	if ( $classes ) {
 		$wrap_classes[] = vcex_get_extra_class( $classes );
 	}
-
-	// Entry css
-	$entry_css = $entry_css ? ' '. vc_shortcode_custom_css_class( $entry_css ) : '';
 
 	// Entry media classes
 	if ( 'true' == $media ) {
@@ -200,6 +197,12 @@ if ( $wpex_query->have_posts() ) :
 	// Begin output
 	$output .= '<div class="'. $wrap_classes .'"'. vcex_get_unique_id( $unique_id ) .' data-items="'. $items .'" data-slideby="'. $items_scroll .'" data-nav="'. $arrows .'" data-dots="'. $dots .'" data-autoplay="'. $auto_play .'" data-loop="'. $infinite_loop .'" data-autoplay-timeout="'. $timeout_duration .'" data-center="'. $center .'" data-margin="'. $items_margin .'" data-items-tablet="'. $tablet_items .'" data-items-mobile-landscape="'. $mobile_landscape_items .'" data-items-mobile-portrait="'. $mobile_portrait_items .'" data-smart-speed="'. $animation_speed .'">';
 
+		// Define entry classes
+		$entry_classes = array( 'wpex-carousel-slide', 'wpex-clr' );
+		if ( $entry_css ) {
+			$entry_classes[] = vc_shortcode_custom_css_class( $entry_css );
+		}
+
 		// Start loop
 		$lcount = 0;
 		while ( $wpex_query->have_posts() ) :
@@ -222,7 +225,7 @@ if ( $wpex_query->have_posts() ) :
 				|| 'true' == $read_more
 			) :
 
-				$output .= '<div class="wpex-carousel-slide wpex-clr'. $entry_css .'">';
+				$output .= '<div ' . vcex_grid_get_post_class( $entry_classes, $atts['post_id'] ) . '>';
 
 					// Display media
 					$media_output = '';

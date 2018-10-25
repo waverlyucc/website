@@ -25,7 +25,7 @@ class ImportExport {
 	 * @since 1.6.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'add_page' ), PHP_INT_MAX );
+		add_action( 'admin_menu', array( $this, 'add_page' ), 9999 );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_notices', array( $this, 'notices' ) );
 	}
@@ -41,7 +41,7 @@ class ImportExport {
 			esc_attr__( 'Import/Export', 'total' ), 
 			esc_attr__( 'Import/Export', 'total' ),
 			'manage_options',
-			WPEX_THEME_PANEL_SLUG .'-import-export',
+			WPEX_THEME_PANEL_SLUG . '-import-export',
 			array( $this, 'create_admin_page' )
 		);
 	}

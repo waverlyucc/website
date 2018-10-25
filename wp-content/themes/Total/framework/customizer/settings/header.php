@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.6.6
+ * @version 4.7.1
  */
 
 // Exit if accessed directly

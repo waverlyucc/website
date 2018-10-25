@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.7
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -37,10 +37,15 @@ if ( $post_id && $meta = get_post_meta( $post_id, 'wpex_callout_link_txt', true 
 	$link_text = wpex_get_mod( 'callout_link_txt', 'Get In Touch' );
 }
 
+// Translate Theme mods
+$link      = wpex_translate_theme_mod( 'callout_link', $link );
+$link_text = wpex_translate_theme_mod( 'callout_link_txt', $link_text );
+
 // Button Icon
 $icon = wpex_get_mod( 'callout_button_icon' );
 $icon_position = wpex_get_mod( 'callout_button_icon_position', 'after_text' );
 
+// Add Icon
 if ( $icon ) {
 
 	if ( 'before_text' == $icon_position ) {
@@ -50,10 +55,6 @@ if ( $icon ) {
 	}
 
 }
-
-// Translate Theme mods
-$link      = wpex_translate_theme_mod( 'callout_link', $link );
-$link_text = wpex_translate_theme_mod( 'callout_link_txt', $link_text );
 
 // Bail if conditions are not met
 if ( ! $content && ( ! $link || ! $link_text ) ) {
@@ -99,16 +100,20 @@ if ( $label = wpex_get_mod( 'footer_callout_aria_label' ) ) {
 		// Display footer callout button if callout link & text options are not blank in the admin
 		if ( $link ) : ?>
 
-			<div id="footer-callout-right" class="footer-callout-button wpex-clr">
-				<?php
-				// Display callout button
-				echo wpex_parse_html( 'a', array(
+			<div id="footer-callout-right" class="footer-callout-button wpex-clr"><?php
+
+				// Define callout button attributes
+				$button_attributes = apply_filters( 'wpex_callout_button_attributes', array(
 					'href'   => esc_url( $link ),
 					'class'  => wpex_get_button_classes( wpex_get_mod( 'callout_button_style' ), wpex_get_mod( 'callout_button_color' ) ),
 					'target' => wpex_get_mod( 'callout_button_target', 'blank' ),
 					'rel'    => wpex_get_mod( 'callout_button_rel' ),
-				), wp_kses_post( $link_text ) ); ?>
-			</div>
+				) );
+
+				// Display callout button
+				echo wpex_parse_html( 'a', $button_attributes, wp_kses_post( $link_text ) );
+
+			?></div>
 
 		<?php endif; ?>
 

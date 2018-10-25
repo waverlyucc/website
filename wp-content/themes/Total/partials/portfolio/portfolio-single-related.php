@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.5.4
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -82,7 +82,7 @@ if ( $wpex_related_query->have_posts() ) :
 			'apply_filters'	=> 'portfolio_related',
 		) ); ?>
 
-		<div class="wpex-row wpex-clr">
+		<div class="<?php echo esc_attr( apply_filters( 'wpex_related_portfolio_row_classes', 'wpex-row wpex-clr' ) ); ?>">
 
 			<?php
 			// Define post counter

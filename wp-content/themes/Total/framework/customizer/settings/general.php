@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.5.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -124,7 +124,7 @@ if ( $social_share_items ) {
 	$social_share_choices = array();
 
 	foreach ( $social_share_items as $k => $v ) {
-		$social_share_choices[$k] = $v['label'];
+		$social_share_choices[$k] = $v['site'];
 	}
 
 	$this->sections['wpex_social_sharing'] = array(

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Functions
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 if ( ! class_exists( 'VCEX_Recent_News_Shortcode' ) ) {
@@ -68,6 +68,12 @@ if ( ! class_exists( 'VCEX_Recent_News_Shortcode' ) ) {
 					// General
 					array(
 						'type' => 'textfield',
+						'heading' => __( 'Heading', 'total' ),
+						'param_name' => 'header',
+						'admin_label' => true,
+					),
+					array(
+						'type' => 'textfield',
 						'heading' => __( 'Unique Id', 'total' ),
 						'param_name' => 'unique_id',
 					),
@@ -76,12 +82,6 @@ if ( ! class_exists( 'VCEX_Recent_News_Shortcode' ) ) {
 						'heading' => __( 'Extra class name', 'total' ),
 						'description' => __( 'Style particular content element differently - add a class name and refer to it in custom CSS.', 'total' ),
 						'param_name' => 'classes',
-					),
-					array(
-						'type' => 'textfield',
-						'heading' => __( 'Heading', 'total' ),
-						'param_name' => 'header',
-						'admin_label' => true,
 					),
 					array(
 						'type' => 'vcex_visibility',

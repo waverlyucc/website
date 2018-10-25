@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 namespace TotalTheme;
@@ -51,6 +51,7 @@ class FooterBuilder {
 			if ( $is_admin ) {
 				add_filter( 'wpex_customizer_panels', array( $this, 'remove_customizer_panels' ) );
 				add_filter( 'wpex_customizer_sections', array( $this, 'alter_customizer_settings' ) );
+				add_filter( 'wpex_typography_settings', array( $this, 'remove_typography_settings' ) );
 			}
 
 			// Insert footer builder to site via theme hooks
@@ -573,10 +574,10 @@ class FooterBuilder {
 	 * @since 2.0.0
 	 */
 	public function remove_customizer_panels( $panels ) {
-		if ( ! wpex_get_mod( 'footer_builder_footer_widgets', false ) ) {
+		if ( ! get_theme_mod( 'footer_builder_footer_widgets', false ) ) {
 			unset( $panels['footer_widgets'] );
 		}
-		if ( ! wpex_get_mod( 'footer_builder_footer_bottom', false ) ) {
+		if ( ! get_theme_mod( 'footer_builder_footer_bottom', false ) ) {
 			unset( $panels['footer_bottom'] );
 		}
 		return $panels;
@@ -588,12 +589,32 @@ class FooterBuilder {
 	 * @since 2.0.0
 	 */
 	public function alter_customizer_settings( $sections ) {
-		if ( wpex_get_mod( 'footer_builder_footer_widgets', false ) ) {
+		if ( get_theme_mod( 'footer_builder_footer_widgets', false ) ) {
 			unset( $sections['wpex_footer_widgets']['settings']['footer_widgets'] );
 			unset( $sections['wpex_footer_widgets']['settings']['fixed_footer'] );
 			unset( $sections['wpex_footer_widgets']['settings']['footer_reveal'] );
 		}
+		if ( get_theme_mod( 'footer_builder_footer_bottom', false ) ) {
+			unset( $sections['wpex_footer_bottom']['settings']['footer_bottom'] );
+		}
 		return $sections;
+	}
+
+	/**
+	 * Remove typography settings
+	 *
+	 * @since 4.7.1
+	 */
+	public function remove_typography_settings( $settings ) {
+		if ( ! get_theme_mod( 'footer_builder_footer_widgets', false ) ) {
+			unset( $settings['footer_widgets'] );
+			unset( $settings['footer_widget_title'] );
+		}
+		if ( ! get_theme_mod( 'footer_builder_footer_bottom', false ) ) {
+			unset( $settings['copyright'] );
+			unset( $settings['footer_menu'] );
+		}
+		return $settings;
 	}
 
 	/**

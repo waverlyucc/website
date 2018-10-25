@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.7.1
  *
  */
 
@@ -34,7 +34,7 @@ function wpex_js_localize_data() {
 		'superfishSpeedOut'         => 'fast',
 		'menuWidgetAccordion'       => true,
 		'hasMobileMenu'             => wpex_header_has_mobile_menu(),
-		'mobileMenuBreakpoint'      => $mm_breakpoint ? $mm_breakpoint : '960',
+		'mobileMenuBreakpoint'      => $mm_breakpoint ? $mm_breakpoint : '959',
 		'mobileMenuStyle'           => esc_attr( $mm_style ),
 		'mobileMenuToggleStyle'     => $mm_toggle_style,
 		'scrollToHash'              => true,

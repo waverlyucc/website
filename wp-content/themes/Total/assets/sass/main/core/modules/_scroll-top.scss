@@ -2,6 +2,7 @@
 [Scroll Top]
 -------------------------------------------------------------------*/
 #site-scroll-top {
+    display: block;
     position: fixed;
     right: 30px;
     bottom: 30px;
@@ -28,7 +29,6 @@
 }
 
 #site-scroll-top.show {
-	display: block;
 	visibility: visible;
 	@include opacity( 1 );
 }

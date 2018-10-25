@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -18,7 +18,6 @@ $this->sections['wpex_footer_bottom'] = array(
 	'settings' => array(
 		array(
 			'id' => 'footer_bottom',
-			'transport' => 'partialRefresh',
 			'default' => true,
 			'control' => array(
 				'label' => __( 'Bottom Footer Area', 'total' ),

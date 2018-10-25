@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -81,7 +81,7 @@ if ( $wpex_query->have_posts() ) :
 	if ( '1' != $grid_columns ) {
 		$wrap_classes[] = 'wpex-row';
 		if ( $columns_gap ) {
-			$wrap_classes[] = 'gap-'. $columns_gap;
+			$wrap_classes[] = 'gap-' . $columns_gap;
 		}
 		$atts['columns'] = $grid_columns;
 		$grid_columns_class = vcex_get_grid_column_class( $atts );
@@ -175,7 +175,7 @@ if ( $wpex_query->have_posts() ) :
 	$wrap_classes = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $wrap_classes, 'vcex_recent_news', $atts );
 	
 	// Output module
-	$output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $unique_id ) .'>';
+	$output .= '<div class="' . esc_attr( $wrap_classes ) . '"' . vcex_get_unique_id( $unique_id ) . '>';
 	
 		// Display header if enabled
 		if ( $header ) {
@@ -183,7 +183,7 @@ if ( $wpex_query->have_posts() ) :
 			$output .= wpex_heading( array(
 				'echo'    => false,
 				'content' => $header,
-				'classes' => array( 'vcex-recent-news-header' ),
+				'classes' => array( 'vcex-recent-news-header vcex-module-heading' ),
 			) );
 
 		}
@@ -215,11 +215,11 @@ if ( $wpex_query->have_posts() ) :
 			// Open grid columns wrap
 			if ( $grid_columns > '1' ) {
 
-				$output .= '<div class="col '. $grid_columns_class .' vcex-recent-news-entry-wrap col-'. $count .'">';
+				$output .= '<div class="col ' . $grid_columns_class . ' vcex-recent-news-entry-wrap col-' . $count . '">';
 
 			}
 
-			$output .= '<article '. wpex_get_post_class( $entry_classes, $post->ID ) .''. $entry_style .'>';
+			$output .= '<article ' . wpex_get_post_class( $entry_classes, $post->ID ) . '' . $entry_style . '>';
 
 				// Display date
 				if ( 'true' == $date ) {
@@ -243,17 +243,17 @@ if ( $wpex_query->have_posts() ) :
 						// Close day
 						$output .= '</span>';
 
-						$output .= '<span class="month"'. $month_style .'>';
+						$output .= '<span class="month"' . $month_style . '>';
 
 							// Standard month year display
-							$month_year = '<span>'. get_the_time( 'M', $post->ID ) .'</span>';
-							$month_year .= ' <span class="year">'. get_the_time( 'y', $post->ID ) .'</span>';
+							$month_year = '<span>' . get_the_time( 'M', $post->ID ) . '</span>';
+							$month_year .= ' <span class="year">' . get_the_time( 'y', $post->ID ) . '</span>';
 
 							// Filter month/year display for tribe events calendar plugin
 							// @todo move to events config file
 							if ( 'tribe_events' == $post->type && function_exists( 'tribe_get_start_date' ) ) {
-								$month_year = '<span>'. tribe_get_start_date( $post->ID, false, 'M' ) .'</span>';
-								$month_year .= ' <span class="year">'. tribe_get_start_date( $post->ID, false, 'y' ) .'</span>';
+								$month_year = '<span>' . tribe_get_start_date( $post->ID, false, 'M' ) . '</span>';
+								$month_year .= ' <span class="year">' . tribe_get_start_date( $post->ID, false, 'y' ) . '</span>';
 							}
 
 							// Echo the month/year
@@ -274,14 +274,14 @@ if ( $wpex_query->have_posts() ) :
 						// Display video
 						if ( 'true' == $featured_video && $post->video_embed ) {
 
-							$output .= '<div class="vcex-news-entry-video clr">'. $post->video_embed .'</div>';
+							$output .= '<div class="vcex-news-entry-video clr">' . $post->video_embed . '</div>';
 
 						// Display featured image
 						} elseif ( has_post_thumbnail( $post->ID ) ) {
 
 							$output .= '<div class="vcex-news-entry-thumbnail clr">';
 
-								$output .= '<a href="'. $post->permalink .'" title="'. wpex_get_esc_title() .'">';
+								$output .= '<a href="' . $post->permalink . '" title="' . wpex_get_esc_title() . '">';
 
 									// Display thumbnail
 									$output .= wpex_get_post_thumbnail( array(
@@ -326,7 +326,7 @@ if ( $wpex_query->have_posts() ) :
 
 							if ( 'true' == $excerpt ) {
 
-								$output .= '<div class="entry"'. $excerpt_style .'>';
+								$output .= '<div class="entry"' . $excerpt_style . '>';
 
 									// Output excerpt
 									$output .= wpex_get_excerpt( array(
@@ -358,7 +358,7 @@ if ( $wpex_query->have_posts() ) :
 
 									if ( 'true' == $readmore_rarr ) {
 
-										$output .= '<span class="vcex-readmore-rarr">'. wpex_element( 'rarr' ) .'</span>';
+										$output .= '<span class="vcex-readmore-rarr">' . wpex_element( 'rarr' ) . '</span>';
 
 									}
 

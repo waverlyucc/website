@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.7
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -208,7 +208,7 @@ $wp_customize->selective_refresh->add_partial( 'callout_text', array(
 // Footer Bottom
 $wp_customize->selective_refresh->add_partial( 'footer_bottom', array(
 	'selector'            => '#footer-bottom',
-	'settings'            => array( 'footer_bottom', 'bottom_footer_text_align', 'footer_copyright_text' ),
+	'settings'            => array( 'bottom_footer_text_align', 'footer_copyright_text' ),
 	'primarySetting'      => 'footer_bottom',
 	'container_inclusive' => true,
 	'render_callback'     => function() {

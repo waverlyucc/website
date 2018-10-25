@@ -85,7 +85,7 @@ if ( $wpex_related_query->have_posts() ) :
 
 		endif; ?>
 
-		<div class="wpex-row wpex-clr">
+		<div class="<?php echo esc_attr( apply_filters( 'wpex_related_staff_row_classes', 'wpex-row wpex-clr' ) ); ?>">
 
 			<?php
 			// Define post counter

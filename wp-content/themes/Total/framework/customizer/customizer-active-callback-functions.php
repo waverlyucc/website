@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.4
+ * @version 4.7.1
  */
 
 /*-------------------------------------------------------------------------------*/
@@ -40,7 +40,11 @@ function wpex_cac_has_breadcrumbs() {
 }
 
 function wpex_cac_has_footer_widgets() {
-	return get_theme_mod( 'footer_widgets', true ) ? true : false;
+	if ( get_theme_mod( 'footer_builder_enable', true ) && get_theme_mod( 'footer_builder_page_id' ) ) {
+		return get_theme_mod( 'footer_builder_footer_widgets', false ) ? true : false;
+	} else {
+		return get_theme_mod( 'footer_widgets', true ) ? true : false;
+	}
 }
 
 function wpex_cac_supports_reveal() {
@@ -48,7 +52,11 @@ function wpex_cac_supports_reveal() {
 }
 
 function wpex_cac_has_footer_bottom() {
-	return get_theme_mod( 'footer_bottom', true ) ? true : false;
+	if ( get_theme_mod( 'footer_builder_enable', true ) && get_theme_mod( 'footer_builder_page_id' ) ) {
+		return get_theme_mod( 'footer_builder_footer_bottom', false ) ? true : false;
+	} else {
+		return get_theme_mod( 'footer_bottom', true ) ? true : false;
+	}
 }
 
 function wpex_cac_hasnt_custom_social_share() {

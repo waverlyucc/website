@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.1
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -56,6 +56,15 @@ if ( $wpex_query->have_posts() ) :
 	<div class="<?php echo esc_attr( $wrap_classes ); ?>"<?php vcex_unique_id( $atts['unique_id'] ); ?>>
 
 		<?php
+		//Heading
+		if ( ! empty( $atts[ 'heading' ] ) ) {
+			wpex_heading( array(
+				'tag'     => 'h2',
+				'content' => esc_html( $atts[ 'heading' ] ),
+				'classes' => array( 'vcex-module-heading' ),
+			) );
+		}
+
 		// Get loop top
 		get_template_part( 'partials/loop/loop-top', $post_type );
 

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7
+ * @version 4.7.1
  */
 
 namespace TotalTheme;
@@ -154,7 +154,7 @@ class AdvancedStyles {
 				$css .= '#site-navigation, #site-navigation .dropdown-menu a{font-size:'. intval( $font_size ) .'px;}';
 			}
 			if ( $bg = get_post_meta( $post_id, 'wpex_overlay_header_background', true ) ) {
-				$css .= '#site-header.overlay-header.white-style.dyn-styles{background:' . esc_attr( $bg ) .'; }';
+				$css .= '#site-header.overlay-header.dyn-styles{background:' . esc_attr( $bg ) .'; }';
 			}
 		}
 

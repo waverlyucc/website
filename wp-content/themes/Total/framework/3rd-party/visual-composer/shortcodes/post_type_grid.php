@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Functions
- * @version 4.6.5
+ * @version 4.7.1
  */
 
 if ( ! class_exists( 'VCEX_Post_Type_Grid_Shortcode' ) ) {
@@ -78,6 +78,11 @@ if ( ! class_exists( 'VCEX_Post_Type_Grid_Shortcode' ) ) {
 				'icon' => 'vcex-post-type-grid vcex-icon fa fa-files-o',
 				'params' => array(
 					// General
+					array(
+						'type' => 'textfield',
+						'heading' => __( 'Heading', 'total' ),
+						'param_name' => 'heading',
+					),
 					array(
 						'type' => 'textfield',
 						'heading' => __( 'Unique Id', 'total' ),

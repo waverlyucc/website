@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.6
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -37,18 +37,18 @@ if ( $content || ( wpex_get_mod( 'main_search', true ) && 'two' == $header_style
 		if ( wpex_get_mod( 'header_aside_search', true ) && 'two' == $header_style ) : ?>
 			<div id="header-two-search" class="clr">
 				<form method="get" class="header-two-searchform" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-					<input type="search" id="header-two-search-input" name="s" value="<?php esc_attr_e( 'search', 'total' ); ?>" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
+					<input type="search" id="header-two-search-input" name="s" value="<?php echo esc_attr( apply_filters( 'wpex_get_header_aside_search_form_placeholder', __( 'search', 'total' ) ) ); ?>" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
 					<?php if ( defined( 'ICL_LANGUAGE_CODE' ) ) : ?>
 						<input type="hidden" name="lang" value="<?php echo( ICL_LANGUAGE_CODE ); ?>"/>
 					<?php endif; ?>
 					<?php if ( WPEX_WOOCOMMERCE_ACTIVE && wpex_get_mod( 'woo_header_product_searchform', false ) ) { ?>
 						<input type="hidden" name="post_type" value="product" />
 					<?php } ?>
-					<?php $button_text = apply_filters( 'wpex_header_aside_search_button_text', '<span class="fa fa-search" aria-hidden="true"></span><span class="screen-reader-text"></span>' . __( 'Search', 'total' ) .'</span>' ); ?>
+					<?php $button_text = apply_filters( 'wpex_header_aside_search_button_text', '<span class="fa fa-search" aria-hidden="true"></span><span class="screen-reader-text">' . __( 'Search', 'total' ) . '</span>' ); ?>
 					<button type="submit" id="header-two-search-submit"><?php echo wp_kses_post( $button_text ); ?></button>
-				</form><!-- #header-two-searchform -->
-			</div><!-- #header-two-search -->
+				</form>
+			</div>
 		<?php endif; ?>
-	</aside><!-- #header-two-aside -->
+	</aside>
 
 <?php endif;

@@ -10,7 +10,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7
+ * @version 4.7.1
  */
 
 // Exit if accessed directly
@@ -696,6 +696,9 @@ function wpex_heading( $args = array() ) {
 		return;
 	}
 
+	// Sanitize args
+	$tag = esc_attr( $tag );
+
 	// Add custom classes
 	$add_classes = $classes;
 	$classes     = array(
@@ -709,15 +712,21 @@ function wpex_heading( $args = array() ) {
 	// Turn classes into space seperated string
 	$classes = implode( ' ', $classes );
 
-	$output .= '<'. esc_attr( $tag ) .' class="'. esc_attr( $classes ) .'">';
-		$output .= '<span class="text">'. $content .'</span>';
-	$output .= '</'. esc_attr( $tag ) .'>';
+	// Open heading tag
+	$output .= '<' . $tag . ' class="' . esc_attr( $classes ) . '">';
+
+		// Heading inner text
+		$output .= '<span class="text">' . $content . '</span>';
+
+	// Close heading tag
+	$output .= '</' . $tag . '>';
 
 	if ( $echo ) {
 		echo $output;
 	} else {
 		return $output;
 	}
+
 }
 
 /**
@@ -1928,7 +1937,7 @@ function wpex_get_gallery_ids( $post_id = '' ) {
 	}
 	$attachment_ids = $attachment_ids ? $attachment_ids : get_post_meta( $post_id, '_easy_image_gallery', true );
 	if ( $attachment_ids ) {
-		$attachment_ids = is_array( $attachment_ids ) ?  $attachment_ids : explode( ',', $attachment_ids );
+		$attachment_ids = is_array( $attachment_ids ) ? $attachment_ids : explode( ',', $attachment_ids );
 		return array_values( array_filter( $attachment_ids, 'wpex_sanitize_gallery_id' ) );
 	}
 }
