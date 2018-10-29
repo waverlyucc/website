@@ -1,6 +1,6 @@
 <?php
 
-define( 'ECN_VERSION', 12 );
+define( 'ECN_VERSION', 13 );
 define( 'ECN_SAVED_OPTIONS_NAME', 'ecn_saved_options' );
 define( 'ECN_CUSTOM_DATE_RANGE_DAYS', 0 );
 /**
@@ -111,6 +111,7 @@ class ECNAdmin {
     private function save_ecn_options( $options ) {
         if ( ! is_array( $options ) )
             throw new Exception( __( 'Invalid options array', 'event-calendar-newsletter' ) );
+        $options['wisdom_registered_setting'] = 1;
         add_option( ECN_SAVED_OPTIONS_NAME, $options );
         update_option( ECN_SAVED_OPTIONS_NAME, $options );
     }
@@ -366,7 +367,10 @@ class ECNAdmin {
 			$start_date = strtotime( $data['custom_date_from'] . ' 00:00:00' );
 			// Calculate the end date as the very beginning of the next day
 			$end_date = strtotime( $data['custom_date_to'] . ' 00:00:00' ) + 86400;
-		}
+		} elseif ( isset( $data['events_offset_in_days'] ) and intval( $data['events_offset_in_days'] ) > 0 ) {
+			$start_date += ( 86400 * ( intval( $data['events_offset_in_days'] ) ) );
+			$end_date += ( 86400 * ( intval( $data['events_offset_in_days'] ) ) );
+        }
 		return $feed->get_events( $start_date, $end_date, $data );
 	}
 
