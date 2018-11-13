@@ -2,6 +2,9 @@
 .well-known
 .user.ini
 
+# Don't include WordPress passwords.
+wp-config.php
+
 # Don't include caches.
 wp-content/cache
 
