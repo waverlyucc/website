@@ -268,7 +268,7 @@ Require not env bad_bot
 RewriteEngine On
 RewriteCond %{REQUEST_METHOD} POST
 RewriteCond %{REQUEST_URI} ^(.*)?wp-comments-post\.php(.*)$
-RewriteCond %{HTTP_REFERER} !^http(s)?://waverly\.rootwork\.org [NC,OR]
+RewriteCond %{HTTP_REFERER} !^http(s)?://waverlyucc\.org [NC,OR]
 RewriteCond %{HTTP_USER_AGENT} ^$
 RewriteRule .* http://127.0.0.1 [L]
 </IfModule>
@@ -279,7 +279,7 @@ RewriteEngine On
 RewriteCond %{HTTP_REFERER} !^$
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{REQUEST_FILENAME} \.(gif|jpe?g?|png)$ [NC]
-RewriteCond %{HTTP_REFERER} !^http(s)?://waverly\.rootwork\.org [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://waverlyucc\.org [NC]
 RewriteRule \.(gif|jpe?g?|png)$ - [F,NC,L]
 </IfModule>
 #AIOWPS_PREVENT_IMAGE_HOTLINKS_END
