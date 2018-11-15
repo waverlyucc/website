@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dashboard Widgets Suite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-14 23:28+0000\n"
+"POT-Creation-Date: 2018-11-14 21:44+0000\n"
 "POT-Revision-Date: Wed Aug 10 2016 17:30:58 GMT-0700 (PDT)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
@@ -32,245 +32,113 @@ msgid "Settings"
 msgstr ""
 
 #: dashboard-widgets.php:272
-msgid "Click here to rate and review this plugin on WordPress.org"
+msgid "Plugin Homepage"
 msgstr ""
 
 #: dashboard-widgets.php:273
+msgid "Homepage"
+msgstr ""
+
+#: dashboard-widgets.php:278
+msgid "Click here to rate and review this plugin on WordPress.org"
+msgstr ""
+
+#: dashboard-widgets.php:279
 msgid "Rate this plugin"
 msgstr ""
 
-#: dashboard-widgets.php:276
+#: dashboard-widgets.php:284
 msgid "Get Widgets Suite Pro!"
 msgstr ""
 
-#: dashboard-widgets.php:277
+#: dashboard-widgets.php:285
 msgid "Go&nbsp;Pro"
 msgstr ""
 
-#: dashboard-widgets.php:292
+#: dashboard-widgets.php:299
 msgid "Warning:"
 msgstr ""
 
-#: dashboard-widgets.php:292
+#: dashboard-widgets.php:299
 msgid ""
 "Pro version of Dashboard Widgets Suite currently active. Free and Pro "
 "versions cannot be activated at the same time. "
 msgstr ""
 
-#: dashboard-widgets.php:293 dashboard-widgets.php:307
+#: dashboard-widgets.php:300 dashboard-widgets.php:314
 msgid "Please return to the"
 msgstr ""
 
-#: dashboard-widgets.php:293 dashboard-widgets.php:307
+#: dashboard-widgets.php:300 dashboard-widgets.php:314
 msgid "WP Admin Area"
 msgstr ""
 
-#: dashboard-widgets.php:293
+#: dashboard-widgets.php:300
 msgid "and try again."
 msgstr ""
 
-#: dashboard-widgets.php:306
+#: dashboard-widgets.php:313
 msgid "requires WordPress "
 msgstr ""
 
-#: dashboard-widgets.php:306
+#: dashboard-widgets.php:313
 msgid " or higher, and has been deactivated!"
 msgstr ""
 
-#: dashboard-widgets.php:307
+#: dashboard-widgets.php:314
 msgid "to upgrade WordPress and try again."
 msgstr ""
 
-#: dashboard-widgets.php:319 dashboard-widgets.php:323
+#: dashboard-widgets.php:326 dashboard-widgets.php:330
 msgid "Cheatin&rsquo; huh?"
 msgstr ""
 
-#: widgets/widget-widget-box.php:23
-msgid "Example Widget"
-msgstr ""
-
-#: widgets/widget-widget-box.php:24
-msgid ""
-"To add, remove, and customize your Dashboard Widgets, visit Appearance &rarr;"
-" Widgets &rarr; "
-msgstr ""
-
-#: widgets/widget-control-panel.php:21 inc/widgets-enable.php:24 
-#: inc/settings-register.php:16
-msgid "Control Panel"
-msgstr ""
-
-#: widgets/widget-control-panel.php:22 inc/settings-display.php:16 
-#: inc/widgets-enable.php:164 inc/settings-register.php:24
-msgid "User Notes"
-msgstr ""
-
-#: widgets/widget-control-panel.php:23 inc/settings-display.php:17 
-#: inc/widgets-enable.php:78 inc/settings-register.php:39
-msgid "Feed Box"
-msgstr ""
-
-#: widgets/widget-control-panel.php:24 inc/settings-display.php:18 
-#: inc/widgets-enable.php:96 inc/settings-register.php:53
-msgid "Social Box"
-msgstr ""
-
-#: widgets/widget-control-panel.php:25 inc/settings-display.php:19 
-#: inc/widgets-enable.php:114 inc/settings-register.php:82
-msgid "List Box"
-msgstr ""
-
-#: widgets/widget-control-panel.php:26 inc/settings-display.php:20 
-#: inc/widgets-enable.php:132 inc/settings-register.php:91
-msgid "Widget Box"
-msgstr ""
-
-#: widgets/widget-control-panel.php:27 inc/settings-display.php:21 
-#: inc/widgets-enable.php:150 inc/settings-register.php:101
-msgid "System Info"
-msgstr ""
-
-#: widgets/widget-control-panel.php:28 inc/settings-display.php:22 
-#: inc/widgets-enable.php:42
-msgid "Debug Log"
-msgstr ""
-
-#: widgets/widget-control-panel.php:29 inc/settings-display.php:23 
-#: inc/widgets-enable.php:60
-msgid "Error Log"
-msgstr ""
-
-#: widgets/widget-control-panel.php:39
-msgid "Customize Widgets &rsaquo;"
-msgstr ""
-
-#: widgets/widget-control-panel.php:69 widgets/widget-notes-user.php:178
-msgid "Save Changes"
-msgstr ""
-
-#: widgets/widget-log-debug.php:33 widgets/widget-log-error.php:35
+#: widgets/widget-log-error.php:35 widgets/widget-log-debug.php:33
 msgid "Log file cleared."
 msgstr ""
 
-#: widgets/widget-log-debug.php:34 widgets/widget-log-error.php:36
+#: widgets/widget-log-error.php:36 widgets/widget-log-debug.php:34
 msgid "Reload page"
 msgstr ""
 
-#: widgets/widget-log-debug.php:39 widgets/widget-log-error.php:41
+#: widgets/widget-log-error.php:41 widgets/widget-log-debug.php:39
 msgid ""
 "The log file could not be cleared because it is not writable by the server. "
 msgstr ""
 
-#: widgets/widget-log-debug.php:40 widgets/widget-log-error.php:42
+#: widgets/widget-log-error.php:42 widgets/widget-log-debug.php:40
 msgid "Current file permissions = "
 msgstr ""
 
-#: widgets/widget-log-debug.php:73 widgets/widget-log-error.php:75
+#: widgets/widget-log-error.php:75 widgets/widget-log-debug.php:73
 msgid "Showing the latest "
 msgstr ""
 
-#: widgets/widget-log-debug.php:73 widgets/widget-log-error.php:75
+#: widgets/widget-log-error.php:75 widgets/widget-log-debug.php:73
 msgid " of "
 msgstr ""
 
-#: widgets/widget-log-debug.php:73 widgets/widget-log-error.php:75
+#: widgets/widget-log-error.php:75 widgets/widget-log-debug.php:73
 #, php-format
 msgid "%s error."
 msgid_plural "%s errors."
 msgstr[0] ""
 msgstr[1] ""
 
-#: widgets/widget-log-debug.php:75 widgets/widget-log-error.php:77
+#: widgets/widget-log-error.php:77 widgets/widget-log-debug.php:75
 msgid "Clear log file"
 msgstr ""
 
-#: widgets/widget-log-debug.php:120 widgets/widget-log-error.php:122
+#: widgets/widget-log-error.php:122 widgets/widget-log-debug.php:120
 msgid "Congrats, debug log is empty."
 msgstr ""
 
-#: widgets/widget-log-debug.php:124 widgets/widget-log-error.php:126
+#: widgets/widget-log-error.php:126 widgets/widget-log-debug.php:124
 msgid "Error display disabled via widget settings."
 msgstr ""
 
-#: widgets/widget-log-debug.php:132 widgets/widget-log-error.php:134
+#: widgets/widget-log-error.php:134 widgets/widget-log-debug.php:132
 msgid "There was a problem reading the log file."
-msgstr ""
-
-#: widgets/widget-notes-user.php:42
-msgid "Pat Smith"
-msgstr ""
-
-#: widgets/widget-notes-user.php:43
-msgid "Make sure you do something.."
-msgstr ""
-
-#: widgets/widget-notes-user.php:46
-msgid "Example Note"
-msgstr ""
-
-#: widgets/widget-notes-user.php:121
-msgid "To view your notes, adjust the setting &ldquo;Number of Notes&rdquo;."
-msgstr ""
-
-#: widgets/widget-notes-user.php:146 widgets/widget-notes-user.php:242 
-#: inc/resources-enqueue.php:182
-msgid "Add Note"
-msgstr ""
-
-#: widgets/widget-notes-user.php:161
-msgid "Any"
-msgstr ""
-
-#: widgets/widget-notes-user.php:168 widgets/widget-notes-user.php:202
-msgid "Note ID: "
-msgstr ""
-
-#: widgets/widget-notes-user.php:168
-msgid ", User Role: "
-msgstr ""
-
-#: widgets/widget-notes-user.php:169
-msgid " by "
-msgstr ""
-
-#: widgets/widget-notes-user.php:172 widgets/widget-notes-user.php:237
-msgid "Note"
-msgstr ""
-
-#: widgets/widget-notes-user.php:174 widgets/widget-notes-user.php:238
-msgid "Enter some notes.."
-msgstr ""
-
-#: widgets/widget-notes-user.php:179
-msgid "Delete Note"
-msgstr ""
-
-#: widgets/widget-notes-user.php:180 inc/resources-enqueue.php:181
-msgid "Cancel"
-msgstr ""
-
-#: widgets/widget-notes-user.php:203
-msgid " &ndash; "
-msgstr ""
-
-#: widgets/widget-notes-user.php:222 widgets/widget-notes-user.php:223
-msgid "Name"
-msgstr ""
-
-#: widgets/widget-notes-user.php:231 widgets/widget-notes-user.php:232
-msgid "Title"
-msgstr ""
-
-#: widgets/widget-notes-user.php:263
-msgid "Role required to view this note.."
-msgstr ""
-
-#: widgets/widget-notes-user.php:269 inc/settings-callbacks.php:83
-msgid "Any Role"
-msgstr ""
-
-#: widgets/widget-notes-user.php:275
-msgid "Role"
 msgstr ""
 
 #: widgets/widget-system-info.php:28
@@ -734,179 +602,168 @@ msgstr ""
 msgid "Not Installed"
 msgstr ""
 
-#: inc/settings-reset.php:15
-msgid "Default options restored."
+#: widgets/widget-widget-box.php:23
+msgid "Example Widget"
 msgstr ""
 
-#: inc/settings-reset.php:19
-msgid "No changes made to options."
+#: widgets/widget-widget-box.php:24
+msgid ""
+"To add, remove, and customize your Dashboard Widgets, visit Appearance &rarr;"
+" Widgets &rarr; "
 msgstr ""
 
-#: inc/settings-reset.php:27
-msgid "All User Notes deleted."
+#: widgets/widget-notes-user.php:42
+msgid "Pat Smith"
 msgstr ""
 
-#: inc/settings-reset.php:31
-msgid "No changes made to User Notes."
+#: widgets/widget-notes-user.php:43
+msgid "Make sure you do something.."
 msgstr ""
 
-#: inc/settings-display.php:15 inc/settings-register.php:12
+#: widgets/widget-notes-user.php:46
+msgid "Example Note"
+msgstr ""
+
+#: widgets/widget-notes-user.php:120
+msgid "To view your notes, adjust the setting &ldquo;Number of Notes&rdquo;."
+msgstr ""
+
+#: widgets/widget-notes-user.php:145 widgets/widget-notes-user.php:245 
+#: inc/resources-enqueue.php:182
+msgid "Add Note"
+msgstr ""
+
+#: widgets/widget-notes-user.php:160
+msgid "Any"
+msgstr ""
+
+#: widgets/widget-notes-user.php:167 widgets/widget-notes-user.php:201
+msgid "Note ID: "
+msgstr ""
+
+#: widgets/widget-notes-user.php:167
+msgid ", User Role: "
+msgstr ""
+
+#: widgets/widget-notes-user.php:168
+msgid " by "
+msgstr ""
+
+#: widgets/widget-notes-user.php:171 widgets/widget-notes-user.php:236
+msgid "Note"
+msgstr ""
+
+#: widgets/widget-notes-user.php:173 widgets/widget-notes-user.php:237
+msgid "Enter some notes.."
+msgstr ""
+
+#: widgets/widget-notes-user.php:177 widgets/widget-control-panel.php:69
+msgid "Save Changes"
+msgstr ""
+
+#: widgets/widget-notes-user.php:178
+msgid "Delete Note"
+msgstr ""
+
+#: widgets/widget-notes-user.php:179 inc/resources-enqueue.php:181
+msgid "Cancel"
+msgstr ""
+
+#: widgets/widget-notes-user.php:202
+msgid " &ndash; "
+msgstr ""
+
+#: widgets/widget-notes-user.php:221 widgets/widget-notes-user.php:222
+msgid "Name"
+msgstr ""
+
+#: widgets/widget-notes-user.php:230 widgets/widget-notes-user.php:231
+msgid "Title"
+msgstr ""
+
+#: widgets/widget-notes-user.php:266
+msgid "Role required to view this note.."
+msgstr ""
+
+#: widgets/widget-notes-user.php:272 inc/settings-callbacks.php:83
+msgid "Any Role"
+msgstr ""
+
+#: widgets/widget-notes-user.php:278
+msgid "Role"
+msgstr ""
+
+#: widgets/widget-notes-user.php:287
+msgid "Format.."
+msgstr ""
+
+#: widgets/widget-notes-user.php:288
+msgid "HTML"
+msgstr ""
+
+#: widgets/widget-notes-user.php:289
+msgid "Plain Text"
+msgstr ""
+
+#: widgets/widget-notes-user.php:290
+msgid "Code Snippet"
+msgstr ""
+
+#: widgets/widget-notes-user.php:291
+msgid "Format"
+msgstr ""
+
+#: widgets/widget-control-panel.php:21 inc/settings-register.php:16 
+#: inc/widgets-enable.php:24
+msgid "Control Panel"
+msgstr ""
+
+#: widgets/widget-control-panel.php:22 inc/settings-register.php:24 
+#: inc/widgets-enable.php:164 inc/settings-display.php:16
+msgid "User Notes"
+msgstr ""
+
+#: widgets/widget-control-panel.php:23 inc/settings-register.php:39 
+#: inc/widgets-enable.php:78 inc/settings-display.php:17
+msgid "Feed Box"
+msgstr ""
+
+#: widgets/widget-control-panel.php:24 inc/settings-register.php:53 
+#: inc/widgets-enable.php:96 inc/settings-display.php:18
+msgid "Social Box"
+msgstr ""
+
+#: widgets/widget-control-panel.php:25 inc/settings-register.php:82 
+#: inc/widgets-enable.php:114 inc/settings-display.php:19
+msgid "List Box"
+msgstr ""
+
+#: widgets/widget-control-panel.php:26 inc/settings-register.php:91 
+#: inc/widgets-enable.php:132 inc/settings-display.php:20
+msgid "Widget Box"
+msgstr ""
+
+#: widgets/widget-control-panel.php:27 inc/settings-register.php:101 
+#: inc/widgets-enable.php:150 inc/settings-display.php:21
+msgid "System Info"
+msgstr ""
+
+#: widgets/widget-control-panel.php:28 inc/widgets-enable.php:42 
+#: inc/settings-display.php:22
+msgid "Debug Log"
+msgstr ""
+
+#: widgets/widget-control-panel.php:29 inc/widgets-enable.php:60 
+#: inc/settings-display.php:23
+msgid "Error Log"
+msgstr ""
+
+#: widgets/widget-control-panel.php:39
+msgid "Customize Widgets &rsaquo;"
+msgstr ""
+
+#: inc/settings-register.php:12 inc/settings-display.php:15
 msgid "General Settings"
-msgstr ""
-
-#: inc/settings-display.php:116
-msgid "Banhammer WordPress security plugin"
-msgstr ""
-
-#: inc/settings-display.php:117
-msgid "USP Pro - Unlimited Front-end forms"
-msgstr ""
-
-#: inc/settings-display.php:118
-msgid "WordPress Themes In Depth - PDF/eBook"
-msgstr ""
-
-#: inc/settings-display.php:124
-msgid "WP Resources"
-msgstr ""
-
-#: inc/settings-display.php:125
-msgid "Check out more WordPress resources from this developer:"
-msgstr ""
-
-#: inc/widgets-helper.php:190
-msgid "Dashboard Widgets Suite"
-msgstr ""
-
-#: inc/widgets-helper.php:191
-msgid "Add widgets to the WordPress Dashboard"
-msgstr ""
-
-#: inc/widgets-helper.php:216 inc/widgets-helper.php:221
-msgid "Home Page"
-msgstr ""
-
-#: inc/widgets-helper.php:218 inc/widgets-helper.php:230 
-#: inc/widgets-helper.php:242
-msgid "This is an example link, edit as desired or delete if not needed."
-msgstr ""
-
-#: inc/widgets-helper.php:228 inc/widgets-helper.php:233
-msgid "Example Page"
-msgstr ""
-
-#: inc/widgets-helper.php:240 inc/widgets-helper.php:245
-msgid "Custom Page"
-msgstr ""
-
-#: inc/settings-callbacks.php:7
-msgid ""
-"Thank you for using the free version of Dashboard Widgets Suite. May your "
-"Dashboard serve you well.."
-msgstr ""
-
-#: inc/settings-callbacks.php:13
-msgid "This widget enables you to post notes for specific user levels. "
-msgstr ""
-
-#: inc/settings-callbacks.php:14
-msgid "Double-click on any note on the Dashboard to edit or delete."
-msgstr ""
-
-#: inc/settings-callbacks.php:20
-msgid "This widget enables you to view a custom RSS Feed on the Dashboard. "
-msgstr ""
-
-#: inc/settings-callbacks.php:26
-msgid ""
-"This widget enables you to link up your social media profiles. Leave any URL "
-"blank to disable. "
-msgstr ""
-
-#: inc/settings-callbacks.php:32
-msgid "This widget enables you to display a custom list on the Dashboard. "
-msgstr ""
-
-#: inc/settings-callbacks.php:33
-msgid ""
-"Visit Appearance &rarr; Menus &rarr; &ldquo;Dashboard Widgets Suite&rdquo; "
-"to customize the list. "
-msgstr ""
-
-#: inc/settings-callbacks.php:39
-msgid "This widget enables you to display any widget on the Dashboard. "
-msgstr ""
-
-#: inc/settings-callbacks.php:40
-msgid ""
-"Visit Appearance &rarr; Widgets &rarr; &ldquo;Dashboard Widgets Suite&rdquo; "
-"to add, remove, and customize widgets. "
-msgstr ""
-
-#: inc/settings-callbacks.php:46
-msgid ""
-"This widget displays information about your server and WordPress. Displayed "
-"only to Admins by default. "
-msgstr ""
-
-#: inc/settings-callbacks.php:52
-msgid "This widget displays your WP Debug Log when WP_DEBUG is enabled."
-msgstr ""
-
-#: inc/settings-callbacks.php:54
-msgid "Learn how to enable WP_DEBUG&nbsp;&rsaquo;"
-msgstr ""
-
-#: inc/settings-callbacks.php:60
-msgid ""
-"This widget displays your server&rsquo;s Error Log. Consult your hosting "
-"docs for more info."
-msgstr ""
-
-#: inc/settings-callbacks.php:274
-msgid "Restore default plugin options"
-msgstr ""
-
-#: inc/settings-callbacks.php:284 inc/settings-register.php:34
-msgid "Delete all User Notes"
-msgstr ""
-
-#: inc/settings-callbacks.php:291
-msgid ""
-"Help keep Dashboard Widgets Suite going strong! A huge THANK YOU for your "
-"support!"
-msgstr ""
-
-#: inc/settings-callbacks.php:292
-msgid "Show support with a 5-star rating&nbsp;&raquo;"
-msgstr ""
-
-#: inc/resources-enqueue.php:143
-msgid "Confirm Reset"
-msgstr ""
-
-#: inc/resources-enqueue.php:144
-msgid "Restore default options?"
-msgstr ""
-
-#: inc/resources-enqueue.php:145 inc/resources-enqueue.php:150
-msgid "Yes, make it so."
-msgstr ""
-
-#: inc/resources-enqueue.php:146 inc/resources-enqueue.php:151
-msgid "No, abort mission."
-msgstr ""
-
-#: inc/resources-enqueue.php:148
-msgid "Confirm Delete"
-msgstr ""
-
-#: inc/resources-enqueue.php:149
-msgid "Delete all User Notes?"
-msgstr ""
-
-#: inc/resources-enqueue.php:183
-msgid "Delete this note?"
 msgstr ""
 
 #: inc/settings-register.php:15
@@ -1018,6 +875,10 @@ msgstr ""
 
 #: inc/settings-register.php:34
 msgid "Delete Notes"
+msgstr ""
+
+#: inc/settings-register.php:34 inc/settings-callbacks.php:289
+msgid "Delete all User Notes"
 msgstr ""
 
 #: inc/settings-register.php:41
@@ -1270,6 +1131,173 @@ msgstr ""
 
 #: inc/settings-register.php:130
 msgid "Enter the absolute path to your error log (ask host if unsure)"
+msgstr ""
+
+#: inc/settings-display.php:116
+msgid "Banhammer WordPress security plugin"
+msgstr ""
+
+#: inc/settings-display.php:117
+msgid "USP Pro - Unlimited Front-end forms"
+msgstr ""
+
+#: inc/settings-display.php:118
+msgid "WordPress Themes In Depth - PDF/eBook"
+msgstr ""
+
+#: inc/settings-display.php:124
+msgid "WP Resources"
+msgstr ""
+
+#: inc/settings-display.php:125
+msgid "Check out more WordPress resources from this developer:"
+msgstr ""
+
+#: inc/settings-callbacks.php:7
+msgid ""
+"Thank you for using the free version of Dashboard Widgets Suite. May your "
+"Dashboard serve you well.."
+msgstr ""
+
+#: inc/settings-callbacks.php:13
+msgid "This widget enables you to post notes for specific user levels. "
+msgstr ""
+
+#: inc/settings-callbacks.php:14
+msgid "Double-click on any note on the Dashboard to edit or delete."
+msgstr ""
+
+#: inc/settings-callbacks.php:20
+msgid "This widget enables you to view a custom RSS Feed on the Dashboard. "
+msgstr ""
+
+#: inc/settings-callbacks.php:26
+msgid ""
+"This widget enables you to link up your social media profiles. Leave any URL "
+"blank to disable. "
+msgstr ""
+
+#: inc/settings-callbacks.php:32
+msgid "This widget enables you to display a custom list on the Dashboard. "
+msgstr ""
+
+#: inc/settings-callbacks.php:33
+msgid ""
+"Visit Appearance &rarr; Menus &rarr; &ldquo;Dashboard Widgets Suite&rdquo; "
+"to customize the list. "
+msgstr ""
+
+#: inc/settings-callbacks.php:39
+msgid "This widget enables you to display any widget on the Dashboard. "
+msgstr ""
+
+#: inc/settings-callbacks.php:40
+msgid ""
+"Visit Appearance &rarr; Widgets &rarr; &ldquo;Dashboard Widgets Suite&rdquo; "
+"to add, remove, and customize widgets. "
+msgstr ""
+
+#: inc/settings-callbacks.php:46
+msgid ""
+"This widget displays information about your server and WordPress. Displayed "
+"only to Admins by default. "
+msgstr ""
+
+#: inc/settings-callbacks.php:52
+msgid "This widget displays your WP Debug Log when WP_DEBUG is enabled."
+msgstr ""
+
+#: inc/settings-callbacks.php:54
+msgid "Learn how to enable WP_DEBUG&nbsp;&rsaquo;"
+msgstr ""
+
+#: inc/settings-callbacks.php:60
+msgid ""
+"This widget displays your server&rsquo;s Error Log. Consult your hosting "
+"docs for more info."
+msgstr ""
+
+#: inc/settings-callbacks.php:279
+msgid "Restore default plugin options"
+msgstr ""
+
+#: inc/settings-callbacks.php:296
+msgid ""
+"Help keep Dashboard Widgets Suite going strong! A huge THANK YOU for your "
+"support!"
+msgstr ""
+
+#: inc/settings-callbacks.php:297
+msgid "Show support with a 5-star rating&nbsp;&raquo;"
+msgstr ""
+
+#: inc/widgets-helper.php:190
+msgid "Dashboard Widgets Suite"
+msgstr ""
+
+#: inc/widgets-helper.php:191
+msgid "Add widgets to the WordPress Dashboard"
+msgstr ""
+
+#: inc/widgets-helper.php:216 inc/widgets-helper.php:221
+msgid "Home Page"
+msgstr ""
+
+#: inc/widgets-helper.php:218 inc/widgets-helper.php:230 
+#: inc/widgets-helper.php:242
+msgid "This is an example link, edit as desired or delete if not needed."
+msgstr ""
+
+#: inc/widgets-helper.php:228 inc/widgets-helper.php:233
+msgid "Example Page"
+msgstr ""
+
+#: inc/widgets-helper.php:240 inc/widgets-helper.php:245
+msgid "Custom Page"
+msgstr ""
+
+#: inc/settings-reset.php:15
+msgid "Default options restored."
+msgstr ""
+
+#: inc/settings-reset.php:19
+msgid "No changes made to options."
+msgstr ""
+
+#: inc/settings-reset.php:27
+msgid "All User Notes deleted."
+msgstr ""
+
+#: inc/settings-reset.php:31
+msgid "No changes made to User Notes."
+msgstr ""
+
+#: inc/resources-enqueue.php:143
+msgid "Confirm Reset"
+msgstr ""
+
+#: inc/resources-enqueue.php:144
+msgid "Restore default options?"
+msgstr ""
+
+#: inc/resources-enqueue.php:145 inc/resources-enqueue.php:150
+msgid "Yes, make it so."
+msgstr ""
+
+#: inc/resources-enqueue.php:146 inc/resources-enqueue.php:151
+msgid "No, abort mission."
+msgstr ""
+
+#: inc/resources-enqueue.php:148
+msgid "Confirm Delete"
+msgstr ""
+
+#: inc/resources-enqueue.php:149
+msgid "Delete all User Notes?"
+msgstr ""
+
+#: inc/resources-enqueue.php:183
+msgid "Delete this note?"
 msgstr ""
 
 #. Description of the plugin

@@ -72,8 +72,6 @@ function dashboard_widgets_suite_notes_user_form($data) {
 	
 	global $dws_options_notes_user;
 	
-	$allowed_tags = dashboard_widgets_suite_allowed_tags();
-	
 	$count    = isset($dws_options_notes_user['widget_notes_count'])    ? $dws_options_notes_user['widget_notes_count']    : 0;
 	$edit     = isset($dws_options_notes_user['widget_notes_edit'])     ? $dws_options_notes_user['widget_notes_edit']     : null;
 	$username = isset($dws_options_notes_user['widget_notes_username']) ? $dws_options_notes_user['widget_notes_username'] : false;
@@ -88,23 +86,24 @@ function dashboard_widgets_suite_notes_user_form($data) {
 		
 		if ($i === $count) break;
 		
-		$id    = isset($value['id'])    ? intval($value['id']) : '';
-		$date  = isset($value['date'])  ? sanitize_text_field($value['date'])  : '';
-		$name  = isset($value['name'])  ? sanitize_text_field($value['name'])  : '';
-		$role  = isset($value['role'])  ? sanitize_text_field($value['role'])  : '';
-		$time  = isset($value['time'])  ? sanitize_text_field($value['time'])  : '';
-		$title = isset($value['title']) ? sanitize_text_field(stripslashes_deep($value['title'])) : '';
-		$note  = isset($value['note'])  ? wp_kses(stripslashes_deep($value['note']), $allowed_tags) : '';
+		$id     = isset($value['id'])     ? intval($value['id']) : '';
+		$date   = isset($value['date'])   ? sanitize_text_field($value['date']) : '';
+		$name   = isset($value['name'])   ? sanitize_text_field($value['name']) : '';
+		$role   = isset($value['role'])   ? sanitize_text_field($value['role']) : '';
+		$time   = isset($value['time'])   ? sanitize_text_field($value['time']) : '';
+		$title  = isset($value['title'])  ? sanitize_text_field(stripslashes_deep($value['title'])) : '';
+		$format = isset($value['format']) ? sanitize_text_field($value['format']) : 'text';
+		$note   = isset($value['note'])   ? stripslashes_deep($value['note']) : '';
 		
 		if (dashboard_widgets_suite_check_role($edit)) {
 			
-			$return .= dashboard_widgets_suite_notes_user_form_edit($id, $date, $name, $role, $time, $title, $note, $key);
+			$return .= dashboard_widgets_suite_notes_user_form_edit($id, $date, $name, $role, $time, $title, $format, $note, $key);
 			
 			$i++;
 			
 		} elseif (dashboard_widgets_suite_check_role($role)) {
 			
-			$return .= dashboard_widgets_suite_notes_user_form_view($id, $date, $name, $time, $title, $note);
+			$return .= dashboard_widgets_suite_notes_user_form_view($id, $date, $name, $time, $title, $format, $note);
 			
 			$i++;
 			
@@ -156,11 +155,11 @@ function dashboard_widgets_suite_notes_user_form($data) {
 	
 }
 
-function dashboard_widgets_suite_notes_user_form_edit($id, $date, $name, $role, $time, $title, $note, $key) { 
+function dashboard_widgets_suite_notes_user_form_edit($id, $date, $name, $role, $time, $title, $format, $note, $key) { 
 	
 	$user_role = ($role === 'all') ? esc_attr__('Any', 'dashboard-widgets-suite') : ucfirst($role);
 	
-	$form  = '<div class="dws-notes-user">';
+	$form  = '<div class="dws-notes-user dws-notes-user-format-'. esc_attr($format) .'">';
 	$form .= '<form method="post" action="">';
 	
 	$form .= '<div class="dws-notes-user-meta">';
@@ -193,9 +192,9 @@ function dashboard_widgets_suite_notes_user_form_edit($id, $date, $name, $role, 
 	
 }
 
-function dashboard_widgets_suite_notes_user_form_view($id, $date, $name, $time, $title, $note) { 
+function dashboard_widgets_suite_notes_user_form_view($id, $date, $name, $time, $title, $format, $note) { 
 	
-	$form  = '<div class="dws-notes-user">';
+	$form  = '<div class="dws-notes-user dws-notes-user-format-'. esc_attr($format) .'">';
 	
 	$form .= '<div class="dws-notes-user-meta">';
 	$form .= '<span class="fa fa-pad fa-file-text-o"></span> ';
@@ -237,8 +236,12 @@ function dashboard_widgets_suite_notes_user_form_add($display_name) {
 	$form .= '<label for="dws-notes-user[note]">'. esc_html__('Note', 'dashboard-widgets-suite') .'</label>';
 	$form .= '<textarea name="dws-notes-user[note]" data-key="0" data-rows="3" rows="3" cols="50" placeholder="'. esc_attr__('Enter some notes..', 'dashboard-widgets-suite') .'"></textarea>';
 	
-	$form .= '<div class="dws-notes-user-buttons">';
+	$form .= '<div class="dws-notes-user-options">';
 	$form .= dashboard_widgets_suite_notes_user_roles();
+	$form .= dashboard_widgets_suite_notes_format();
+	$form .= '</div>';
+	
+	$form .= '<div class="dws-notes-user-buttons">';
 	$form .= '<input class="button button-secondary" type="submit" name="dws-notes-user[add]" value="'. esc_attr__('Add Note', 'dashboard-widgets-suite') .'">';
 	$form .= '</div>';
 	
@@ -273,6 +276,19 @@ function dashboard_widgets_suite_notes_user_roles() {
 	}
 	
 	$field .= '</select> <label for="dws-notes-user[role]">'. esc_html__('Role', 'dashboard-widgets-suite') .'</label>';
+	
+	return $field;
+	
+}
+
+function dashboard_widgets_suite_notes_format() {
+	
+	$field  = '<select name="dws-notes-user[format]">';
+	$field .= '<option value="text">'. esc_html__('Format..',       'dashboard-widgets-suite') .'</option>';
+	$field .= '<option value="text">'. esc_html__('Text (default)', 'dashboard-widgets-suite') .'</option>';
+	$field .= '<option value="html">'. esc_html__('HTML',           'dashboard-widgets-suite') .'</option>';
+	$field .= '<option value="code">'. esc_html__('Code',           'dashboard-widgets-suite') .'</option>';
+	$field .= '</select> <label for="dws-notes-user[format]">'. esc_html__('Format', 'dashboard-widgets-suite') .'</label>';
 	
 	return $field;
 	

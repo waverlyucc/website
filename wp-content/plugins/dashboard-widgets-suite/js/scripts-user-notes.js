@@ -26,12 +26,12 @@ jQuery(document).ready(function($) {
 		
 	});
 	
-	$('div[data-key]').on('dblclick', function() {
+	$('.dws-notes-user div[data-key]').on('dblclick', function() {
 		
 		var id         = $(this).attr('data-key');
 		var height     = $(this).innerHeight();
 		var min_height = $(this).inlineStyle('min-height');
-		var textarea   = $('textarea[data-key="'+ id +'"]');
+		var textarea   = $('textarea[name="dws-notes-user[note]"][data-key="'+ id +'"]');
 		
 		if (min_height) textarea.css('min-height', height);
 		
@@ -48,35 +48,16 @@ jQuery(document).ready(function($) {
 		var id = $(this).attr('data-key');
 		
 		$(this).closest('div.dws-notes-user-buttons').hide();
-		$('textarea[data-key="'+ id +'"]').hide();
-		$('div[data-key="'+ id +'"]').show();
+		$('textarea[name="dws-notes-user[note]"][data-key="'+ id +'"]').hide();
+		$('div.dws-notes-user-note[data-key="'+ id +'"]').show();
 		
 		return false;
 		
 	});
 	
-	$('textarea[name="dws-notes-user[note]"]').each(function() {
-		
-		prepareString($(this));
-		
-	}).keyup(function() {
-		
-		prepareString($(this));
-		
-	});
-	
-	$('div.dws-notes-user-note').each(function() {
-		
-		var val = $(this).html();
-		var br  = /(\r\n|\n\r|\r|\n)/g;
-		
-		$(this).html(val.replace(br, '<br />'));
-		
-	});
-	
 	$('div.dws-notes-user').each(function(index, value) {
 		
-		var id = 'textarea[data-key="'+ index +'"]';
+		var id = 'textarea[name="dws-notes-user[note]"][data-key="'+ index +'"]';
 		
 		$(document).one('focus.textarea', id, function() {
 			
@@ -97,19 +78,57 @@ jQuery(document).ready(function($) {
 		
 	});
 	
+	$('textarea[name="dws-notes-user[note]"]').each(function() {
+		
+		prepareString($(this), $(this).val());
+		
+	}).keyup(function() {
+		
+		prepareString($(this), $(this).val());
+		
+	});
+	
+	$('div.dws-notes-user-note').each(function() {
+		
+		prepareString($(this), $(this).html());
+		
+	});
+	
 });
 
-function prepareString($this) {
+function prepareString(el, val) {
 	
-	var val    = $this.val();
-	var id     = $this.attr('data-key');
-	var div    = 'div[data-key="'+ id +'"]';
-	var br     = /(\r\n|\n\r|\r|\n)/g;
-	var script = /<(java)?script(.*)?>(.*)?(<\/(java)?script>)?/gi;
+	var key = jQuery(el).data('key');
+	var el = 'div.dws-notes-user-note[data-key="'+ key +'"]';
 	
-	jQuery(div).html(val.replace(br, '<br />').replace(script, ''));
+	if (key !== 0) filterString(el, val);
 	
-};
+}
+
+function filterString(el, val) {
+	
+	var js  = /<(java)?script(.*)?>(.*)?(<\/(java)?script>)?/gi;
+	var br  = /(\r\n|\n\r|\r|\n)/g;
+	var lb  = /(&lt;br&gt;)/gi;
+	var php = /(\<\!--\?php)/gi;
+	var lt  = /\</g;
+	var gt  = /\>/g;
+	
+	if (jQuery(el).parents('.dws-notes-user-format-code').length) {
+		
+		jQuery(el).html(val.replace(br, '<br>').replace(lt, '&lt;').replace(gt, '&gt;').replace(lb, '<br>'));
+		
+	} else if (jQuery(el).parents('.dws-notes-user-format-text').length) {
+		
+		jQuery(el).html(val.replace(br, '<br>').replace(js, ''));
+		
+	} else {
+		
+		jQuery(el).html(val.replace(js, ''));
+		
+	}
+	
+}
 
 jQuery.fn.inlineStyle = function(prop) {
 	
@@ -119,7 +138,7 @@ jQuery.fn.inlineStyle = function(prop) {
 
 jQuery.fn.selectRange = function(start, end) {
 	
-	if(!end) end = start;
+	if (!end) end = start;
 	
 	return this.each(function() {
 		

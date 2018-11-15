@@ -322,6 +322,7 @@ function dashboard_widgets_suite_allowed_tags() {
 			'title' => array(),
 		),
 		'code' => array(),
+		'pre' => array(),
 		'del' => array(
 			'datetime' => array(),
 			'title' => array(),

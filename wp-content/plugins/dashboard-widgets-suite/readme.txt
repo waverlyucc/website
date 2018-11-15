@@ -9,9 +9,9 @@ Contributors: specialk
 Author URI: https://plugin-planet.com/
 Donate link: https://monzillamedia.com/donate.html
 Requires at least: 4.1
-Tested up to: 4.9.8
-Stable tag: 1.8
-Version: 1.8
+Tested up to: 5.0
+Stable tag: 1.9
+Version: 1.9
 Requires PHP: 5.2
 Text Domain: dashboard-widgets-suite
 Domain Path: /languages
@@ -41,9 +41,9 @@ Dashboard Widgets Suite provides an entire set of awesome widgets that you can a
 * __Debug Log__     - Display, customize, reset your WP debug log
 * __PHP Error Log__ - Display, customize, reset your server error log
 
-Each widget includes its own set of options for customizing display. 
+Each widget includes its own set of options for customizing display :)
 
-The notes widget is super awesome, designed for serious note takers :)
+The notes widget is super awesome, designed for serious note takers. You can choose from 3 note formats: Text, HTML, or Code. Check out [Installation](https://wordpress.org/plugins/dashboard-widgets-suite/#installation) for more about the User Notes Widget.
 
 _[Suggest a widget!](https://perishablepress.com/contact/)_
 
@@ -104,6 +104,25 @@ Tip: you can enable/disable widgets via the plugin settings or via the Control P
 
 _[More info on installing WP plugins](http://codex.wordpress.org/Managing_Plugins#Installing_Plugins)_
 
+
+**Like the plugin?**
+
+If you like Dashboard Widgets Suite, please take a moment to [give a 5-star rating](https://wordpress.org/support/plugin/dashboard-widgets-suite/reviews/?rate=5#new-post). It helps to keep development and support going strong. Thank you!
+
+
+**User Notes Widget**
+
+As of DWS version 1.9, you can choose a format for each user note:
+
+* Text (default)
+* HTML
+* Code
+
+How to choose a note format:
+
+1. Click the "Add Note" link
+2. In the "Format" select menu, choose your format
+3. Write your note how you want, click the "Add Note" button and done!
 
 
 **Debug and Error Logs**
@@ -308,6 +327,16 @@ Links, tweets and likes also appreciated. Thank you! :)
 
 
 == Changelog ==
+
+**1.9 (2018/11/12)**
+
+* Adds 3 format options to each User Note: Text (default), HTML, and Code
+* Replaces global variable variables with regular variables (for PHP 7 compat.)
+* Resolves conflict with Ultimate Member plugin
+* Changes default number of notes to 3
+* Adds homepage link to Plugins screen
+* Updates default translation template
+* Tests on WordPress 5.0 (beta)
 
 **1.8 (2018/08/14)**
 

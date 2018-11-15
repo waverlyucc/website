@@ -140,7 +140,8 @@ function dashboard_widgets_suite_callback_select($args) {
 	
 	$setting = 'dws_options_'. $section;
 	
-	global ${$setting};
+	global $dws_options_feed_box, $dws_options_notes_user, $dws_options_social_box, $dws_options_general, $dws_options_list_box, 
+			$dws_options_log_debug, $dws_options_log_error, $dws_options_system_info, $dws_options_widget_box;
 	
 	$options = ${$setting};
 	
@@ -192,7 +193,8 @@ function dashboard_widgets_suite_callback_text($args) {
 	
 	$setting = 'dws_options_'. $section;
 	
-	global ${$setting};
+	global $dws_options_feed_box, $dws_options_notes_user, $dws_options_social_box, $dws_options_general, $dws_options_list_box, 
+			$dws_options_log_debug, $dws_options_log_error, $dws_options_system_info, $dws_options_widget_box;
 	
 	$options = ${$setting};
 	
@@ -211,7 +213,8 @@ function dashboard_widgets_suite_callback_textarea($args) {
 	
 	$setting = 'dws_options_'. $section;
 	
-	global ${$setting};
+	global $dws_options_feed_box, $dws_options_notes_user, $dws_options_social_box, $dws_options_general, $dws_options_list_box, 
+			$dws_options_log_debug, $dws_options_log_error, $dws_options_system_info, $dws_options_widget_box;
 	
 	$options = ${$setting};
 	
@@ -232,7 +235,8 @@ function dashboard_widgets_suite_callback_checkbox($args) {
 	
 	$setting = 'dws_options_'. $section;
 	
-	global ${$setting};
+	global $dws_options_feed_box, $dws_options_notes_user, $dws_options_social_box, $dws_options_general, $dws_options_list_box, 
+			$dws_options_log_debug, $dws_options_log_error, $dws_options_system_info, $dws_options_widget_box;
 	
 	$options = ${$setting};
 	
@@ -251,7 +255,8 @@ function dashboard_widgets_suite_callback_number($args) {
 	
 	$setting = 'dws_options_'. $section;
 	
-	global ${$setting};
+	global $dws_options_feed_box, $dws_options_notes_user, $dws_options_social_box, $dws_options_general, $dws_options_list_box, 
+			$dws_options_log_debug, $dws_options_log_error, $dws_options_system_info, $dws_options_widget_box;
 	
 	$options = ${$setting};
 	

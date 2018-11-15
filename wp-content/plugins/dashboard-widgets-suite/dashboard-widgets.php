@@ -9,9 +9,9 @@
 	Author URI: https://plugin-planet.com/
 	Donate link: https://monzillamedia.com/donate.html
 	Requires at least: 4.1
-	Tested up to: 4.9.8
-	Stable tag: 1.8
-	Version: 1.8
+	Tested up to: 5.0
+	Stable tag: 1.9
+	Version: 1.9
 	Requires PHP: 5.2
 	Text Domain: dashboard-widgets-suite
 	Domain Path: /languages
@@ -158,7 +158,7 @@ if (!class_exists('Dashboard_Widgets_Suite')) {
 				'widget_notes_user'        => false, 
 				'widget_notes_user_front'  => false, 
 				'widget_notes_username'    => false,
-				'widget_notes_count'       => 1, 
+				'widget_notes_count'       => 3, 
 				'widget_notes_edit'        => 'administrator', 
 				'widget_notes_view'        => 'administrator', 
 				'widget_notes_message'     => esc_html__('Congrats! No notes to display.', 'dashboard-widgets-suite'), 
@@ -230,7 +230,7 @@ if (!class_exists('Dashboard_Widgets_Suite')) {
 		}
 		
 		private function constants() {
-			if (!defined('DWS_VERSION')) define('DWS_VERSION', '1.8');
+			if (!defined('DWS_VERSION')) define('DWS_VERSION', '1.9');
 			if (!defined('DWS_REQUIRE')) define('DWS_REQUIRE', '4.1');
 			if (!defined('DWS_NAME'))    define('DWS_NAME',    'Dashboard Widgets Suite');
 			if (!defined('DWS_AUTHOR'))  define('DWS_AUTHOR',  'Jeff Starr');
@@ -268,9 +268,17 @@ if (!class_exists('Dashboard_Widgets_Suite')) {
 		public function plugin_links($links, $file) {
 			if ($file == plugin_basename(__FILE__)) {
 				
+				$home_href  = 'https://perishablepress.com/dashboard-widgets-suite/';
+				$home_title = esc_attr__('Plugin Homepage', 'dashboard-widgets-suite');
+				$home_text  = esc_html__('Homepage', 'dashboard-widgets-suite');
+				
+				$links[] = '<a target="_blank" rel="noopener noreferrer" href="'. $home_href .'" title="'. $home_title .'">'. $home_text .'</a>';
+				
 				$rate_href  = 'https://wordpress.org/support/plugin/'. DWS_SLUG .'/reviews/?rate=5#new-post';
 				$rate_title = esc_attr__('Click here to rate and review this plugin on WordPress.org', 'dashboard-widgets-suite');
 				$rate_text  = esc_html__('Rate this plugin', 'dashboard-widgets-suite') .'&nbsp;&raquo;';
+				
+				// $links[]    = '<a target="_blank" rel="noopener noreferrer" href="'. $pro_href .'" title="'. $pro_title .'" style="'. $pro_style .'">'. $pro_text .'</a>';
 				
 				$pro_href   = 'https://plugin-planet.com/dws-pro/?plugin';
 				$pro_title  = esc_attr__('Get Widgets Suite Pro!', 'dashboard-widgets-suite');
@@ -278,7 +286,6 @@ if (!class_exists('Dashboard_Widgets_Suite')) {
 				$pro_style  = 'padding:1px 5px;color:#eee;background:#333;border-radius:1px;';
 				
 				$links[]    = '<a target="_blank" rel="noopener noreferrer" href="'. $rate_href .'" title="'. $rate_title .'">'. $rate_text .'</a>';
-				// $links[]    = '<a target="_blank" rel="noopener noreferrer" href="'. $pro_href .'" title="'. $pro_title .'" style="'. $pro_style .'">'. $pro_text .'</a>';
 				
 			}
 			return $links;

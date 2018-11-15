@@ -89,8 +89,6 @@ function dashboard_widgets_suite_notes_user_submit() {
 	
 	global $dws_options_notes_user;
 	
-	$allowed_tags = dashboard_widgets_suite_allowed_tags();
-	
 	$required_role = isset($dws_options_notes_user['widget_notes_edit']) ? $dws_options_notes_user['widget_notes_edit'] : null;
 	
 	if (!dashboard_widgets_suite_check_role($required_role)) return false;
@@ -103,11 +101,12 @@ function dashboard_widgets_suite_notes_user_submit() {
 		elseif (isset($_POST['dws-notes-user']['edit']))   $query = 'edit';
 		elseif (isset($_POST['dws-notes-user']['delete'])) $query = 'delete';
 		
-		$id    = isset($_POST['dws-notes-user']['id'])    ? intval($_POST['dws-notes-user']['id']) : '';
-		$name  = isset($_POST['dws-notes-user']['name'])  ? sanitize_text_field($_POST['dws-notes-user']['name'])  : '';
-		$role  = isset($_POST['dws-notes-user']['role'])  ? sanitize_text_field($_POST['dws-notes-user']['role'])  : '';
-		$title = isset($_POST['dws-notes-user']['title']) ? sanitize_text_field(stripslashes_deep($_POST['dws-notes-user']['title'])) : '';
-		$note  = isset($_POST['dws-notes-user']['note'])  ? wp_kses(stripslashes_deep($_POST['dws-notes-user']['note']), $allowed_tags) : '';
+		$id     = isset($_POST['dws-notes-user']['id'])     ? intval($_POST['dws-notes-user']['id']) : '';
+		$name   = isset($_POST['dws-notes-user']['name'])   ? sanitize_text_field($_POST['dws-notes-user']['name']) : '';
+		$role   = isset($_POST['dws-notes-user']['role'])   ? sanitize_text_field($_POST['dws-notes-user']['role']) : '';
+		$title  = isset($_POST['dws-notes-user']['title'])  ? sanitize_text_field(stripslashes_deep($_POST['dws-notes-user']['title'])) : '';
+		$format = isset($_POST['dws-notes-user']['format']) ? sanitize_text_field($_POST['dws-notes-user']['format']) : 'text';
+		$note   = isset($_POST['dws-notes-user']['note'])   ? stripslashes_deep($_POST['dws-notes-user']['note']) : '';
 		
 		list($date, $time) = dashboard_widgets_suite_get_date();
 		
@@ -123,13 +122,14 @@ function dashboard_widgets_suite_notes_user_submit() {
 			
 			$add = array(
 				array(
-					'date'  => $date, 
-					'id'    => $id, 
-					'name'  => $name, 
-					'note'  => $note, 
-					'role'  => $role, 
-					'time'  => $time, 
-					'title' => $title, 
+					'date'   => $date, 
+					'id'     => $id, 
+					'name'   => $name, 
+					'note'   => $note, 
+					'role'   => $role, 
+					'time'   => $time, 
+					'title'  => $title, 
+					'format' => $format,
 				)
 			);
 			
