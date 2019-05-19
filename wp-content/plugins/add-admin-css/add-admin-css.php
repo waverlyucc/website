@@ -1,16 +1,16 @@
 <?php
 /**
  * Plugin Name: Add Admin CSS
- * Version:     1.6
+ * Version:     1.7
  * Plugin URI:  http://coffee2code.com/wp-plugins/add-admin-css/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
  * Text Domain: add-admin-css
  * License:     GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: Interface for easily defining additional CSS (inline and/or by URL) to be added to all administration pages.
  *
- * Compatible with WordPress 4.6+ through 4.9+
+ * Compatible with WordPress 4.7+ through 5.1+
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
  * =>> Also, visit the plugin's homepage for additional information and updates.
@@ -18,7 +18,7 @@
  *
  * @package Add_Admin_CSS
  * @author  Scott Reilly
- * @version 1.6
+ * @version 1.7
  **/
 
 /*
@@ -26,7 +26,7 @@
  */
 
 /*
-	Copyright (c) 2010-2018 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2010-2019 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -49,7 +49,23 @@ if ( is_admin() && ! class_exists( 'c2c_AddAdminCSS' ) ) :
 
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
-final class c2c_AddAdminCSS extends c2c_AddAdminCSS_Plugin_046 {
+final class c2c_AddAdminCSS extends c2c_AddAdminCSS_Plugin_049 {
+
+	/**
+	 * Name of plugin's setting.
+	 *
+	 * @since 1.7
+	 * @var string
+	 */
+	const SETTING_NAME = 'c2c_add_admin_css';
+
+	/**
+	 * Name of query parameter for disabling CSS output.
+	 *
+	 * @since 1.7
+	 * @var string
+	 */
+	const NO_CSS_QUERY_PARAM = 'c2c-no-css';
 
 	/**
 	 * The one true instance.
@@ -91,7 +107,7 @@ final class c2c_AddAdminCSS extends c2c_AddAdminCSS_Plugin_046 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '1.6', 'add-admin-css', 'c2c', __FILE__, array( 'settings_page' => 'themes' ) );
+		parent::__construct( '1.7', 'add-admin-css', 'c2c', __FILE__, array( 'settings_page' => 'themes' ) );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
@@ -114,7 +130,7 @@ final class c2c_AddAdminCSS extends c2c_AddAdminCSS_Plugin_046 {
 	 * @since 1.1
 	 */
 	public static function uninstall() {
-		delete_option( 'c2c_add_admin_css' );
+		delete_option( self::SETTING_NAME );
 	}
 
 	/**
@@ -150,8 +166,10 @@ final class c2c_AddAdminCSS extends c2c_AddAdminCSS_Plugin_046 {
 	public function register_filters() {
 		add_action( 'admin_init', array( $this, 'register_css_files' ) );
 		add_action( 'admin_head', array( $this, 'add_css' ) );
+		add_action( 'admin_notices',         array( $this, 'recovery_mode_notice' ) );
 		add_action( 'admin_notices', array( $this, 'show_admin_notices' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_codemirror' ) );
+		add_filter( 'wp_redirect',           array( $this, 'remove_query_param_from_redirects' ) );
 	}
 
 	/**
@@ -230,6 +248,30 @@ HTML;
 	}
 
 	/**
+	 * Outputs admin notice on plugin's setting page if recovery mode is active.
+	 *
+	 * @since 1.7
+	 */
+	public function recovery_mode_notice() {
+		if ( get_current_screen()->id === $this->options_page && ! $this->can_show_css() ) {
+			if ( defined( 'C2C_ADD_ADMIN_CSS_DISABLED' ) && C2C_ADD_ADMIN_CSS_DISABLED ) {
+				$msg = sprintf(
+					__( "<strong>RECOVERY MODE ENABLED:</strong> CSS output for this plugin is currently disabled for the entire admin area via use of the <code>%s</code> constant.", 'add-admin-css' ),
+					'C2C_ADD_ADMIN_CSS_DISABLED'
+				);
+			} else {
+				$msg = __( "<strong>RECOVERY MODE ENABLED:</strong> CSS output for this plugin is disabled on this page view.", 'add-admin-css' );;
+			}
+
+			echo <<<HTML
+				<div class="error">
+					<p>{$msg}</p>
+				</div>
+HTML;
+		}
+	}
+
+	/**
 	 * Shows settings admin notices.
 	 *
 	 * Settings notices are only shown for admin pages listed under Settings.
@@ -254,7 +296,14 @@ HTML;
 	public function get_css_files() {
 		$options = $this->get_options();
 
-		return apply_filters( 'c2c_add_admin_css_files', $options['files'] );
+		/**
+		 * Filters the list of CSS files to enqueue in the admin.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $files Array of CSS files.
+		 */
+		return (array) apply_filters( 'c2c_add_admin_css_files', $options['files'] );
 	}
 
 	/**
@@ -292,10 +341,60 @@ HTML;
 	}
 
 	/**
+	 * Removes the query parameter to disable CSS output from redirect URLs.
+	 *
+	 * Needed to prevent the query parameter from propagating from page view
+	 * through to form submission.
+	 *
+	 * @since 1.7
+	 *
+	 * @param string $url The redirect URL.
+	 * @return string
+	 */
+	public function remove_query_param_from_redirects( $url ) {
+		if ( is_admin() ) {
+			$url = remove_query_arg( self::NO_CSS_QUERY_PARAM, $url );
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Determines if CSS can be output under current conditions.
+	 *
+	 * CSS will always be output in the admin unless:
+	 * - The C2C_ADD_ADMIN_CSS_DISABLED constant is defined and true.
+	 * - The 'c2c-no-css' query parameter is present with a value of '1'.
+	 *
+	 * @since 1.7
+	 *
+	 * @return bool True if CSS can be shown, otherwise false.
+	 */
+	public function can_show_css() {
+		$can_show = true;
+
+		// Recovery mode enabled via constant.
+		if ( $can_show && defined( 'C2C_ADD_ADMIN_CSS_DISABLED' ) && C2C_ADD_ADMIN_CSS_DISABLED ) {
+			$can_show = false;
+		}
+
+		// Recovery mode enabled via query parameter.
+		if ( $can_show && isset( $_GET[ self::NO_CSS_QUERY_PARAM ] ) && '1' === $_GET[ self::NO_CSS_QUERY_PARAM ] ) {
+			$can_show = false;
+		}
+
+		return $can_show;
+	}
+
+	/**
 	 * Outputs CSS as header links and/or inline header styles
 	 */
 	public function add_css() {
 		global $wp_styles;
+
+		if ( ! $this->can_show_css() ) {
+			return;
+		}
 
 		$options = $this->get_options();
 
@@ -303,6 +402,13 @@ HTML;
 			$wp_styles->do_items( $this->css_file_handles );
 		}
 
+		/**
+		 * Filters the CSS that should be added directly to all admin pages.
+		 *
+		 * @since 1.0
+		 *
+		 * @param string $files CSS code (without `<style>` tag).
+		 */
 		$css = trim( apply_filters( 'c2c_add_admin_css', $options['css'] . "\n" ) );
 
 		if ( ! empty( $css ) ) {
@@ -350,6 +456,6 @@ HTML;
 
 } // end c2c_AddAdminCSS
 
-c2c_AddAdminCSS::instance();
+add_action( 'plugins_loaded', array( 'c2c_AddAdminCSS', 'instance' ) );
 
 endif; // end if !class_exists()

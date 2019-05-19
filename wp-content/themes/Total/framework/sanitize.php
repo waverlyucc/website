@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.5.4
+ * @version 4.8
  */
 
 /**
@@ -111,6 +111,7 @@ function wpex_sanitize_font_family( $font_family ) {
 		$font_family = wpex_get_system_ui_font_stack();
 	}
 	$font_family = str_replace( "``", "'", $font_family ); // Fix issue with fonts saved in shortcodes
+	$font_family = wpex_get_font_family_stack( $font_family );
 	return htmlspecialchars_decode( $font_family );
 }
 
@@ -120,7 +121,7 @@ function wpex_sanitize_font_family( $font_family ) {
  * @since 4.3
  */
 function wpex_sanitize_font_size( $input ) {
-	if ( strpos( $input, 'px' ) || strpos( $input, 'em' ) ) {
+	if ( strpos( $input, 'px' ) || strpos( $input, 'em' ) || strpos( $input, 'vw' ) || strpos( $input, 'vmin' ) || strpos( $input, 'vmax' ) ) {
 		$input = esc_html( $input );
 	} else {
 		$input = absint( $input ) . 'px';
@@ -137,7 +138,7 @@ function wpex_sanitize_font_size( $input ) {
  * @since 4.3
  */
 function wpex_sanitize_letter_spacing( $input ) {
-	if ( strpos( $input, 'px' ) || strpos( $input, 'em' ) ) {
+	if ( strpos( $input, 'px' ) || strpos( $input, 'em' ) || strpos( $input, 'vmin' ) || strpos( $input, 'vmax' ) ) {
 		$input = esc_attr( $input );
 	} else {
 		$input = absint( $input ) . 'px';
@@ -160,14 +161,14 @@ function wpex_sanitize_line_height( $input ) {
  * @since 4.3
  */
 function wpex_sanitize_customizer_select( $input, $setting ) {
-		 
+
 	// Input must be a slug: lowercase alphanumeric characters, dashes and underscores are allowed only
 	$input = sanitize_key( $input );
 
-	// Get the list of possible select options 
+	// Get the list of possible select options
 	$choices = $setting->manager->get_control( $setting->id )->choices;
 
 	// Return input if valid or return default option
 	return ( array_key_exists( $input, $choices ) ? $input : $setting->default );
-	 
+
 }

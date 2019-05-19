@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.7
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -96,7 +96,6 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 				),
 				'footer_widgets' => array(
 					'title' => __( 'Footer Widgets', 'total' ),
-					'is_section' => true,
 				),
 				'footer_bottom' => array(
 					'title' => __( 'Footer Bottom', 'total' ),
@@ -158,14 +157,14 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 			wp_enqueue_script(
 				'wpex-chosen-js',
 				wpex_asset_url( 'lib/chosen/chosen.jquery.min.js' ),
-				array( 'customize-controls', 'jquery' ),
+				array( 'customize-controXls', 'jquery' ),
 				'1.4.1'
 			);
 
 			// Controls JS
 			wp_enqueue_script(
 				'wpex-customizer-controls',
-				wpex_asset_url( 'js/dynamic/wpex-customizer-controls.js' ),
+				wpex_asset_url( 'js/dynamic/customizer/wpex-controls.min.js' ),
 				array( 'customize-controls', 'wpex-chosen-js', 'jquery' ),
 				WPEX_THEME_VERSION
 			);
@@ -240,7 +239,7 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 			$portfolio_icon    = wpex_dashicon_css_content( wpex_get_portfolio_menu_icon() );
 			$staff_icon        = wpex_dashicon_css_content( wpex_get_staff_menu_icon() );
 			$testimonials_icon = wpex_dashicon_css_content( wpex_get_testimonials_menu_icon() ); ?>
-			
+
 			 <style id="wpex-customizer-controls-css">
 
 				/* Icons */
@@ -256,13 +255,13 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 				#accordion-panel-wpex_staff > h3:before,
 				#accordion-panel-wpex_testimonials > h3:before,
 				#accordion-panel-wpex_callout > h3:before,
-				#accordion-section-wpex_footer_widgets > h3:before,
+				#accordion-panel-wpex_footer_widgets > h3:before,
 				#accordion-section-wpex_footer_bottom > h3:before,
 				#accordion-section-wpex_visual_composer > h3:before,
 				#accordion-panel-wpex_woocommerce > h3:before,
 				#accordion-section-wpex_tribe_events > h3:before,
 				#accordion-section-wpex_bbpress > h3:before { display: inline-block; width: 20px; height: 20px; font-size: 20px; line-height: 1; font-family: dashicons; text-decoration: inherit; font-weight: 400; font-style: normal; vertical-align: top; text-align: center; -webkit-transition: color .1s ease-in 0; transition: color .1s ease-in 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color: #298cba; margin-right: 10px; font-family: "dashicons"; content: "\f108"; }
-				
+
 				<?php if ( is_rtl() ) { ?>
 					.rtl #accordion-panel-wpex_general > h3:before,
 					.rtl #accordion-panel-wpex_typography > h3:before,
@@ -276,7 +275,7 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 					.rtl #accordion-panel-wpex_staff > h3:before,
 					.rtl #accordion-section-wpex_testimonials > h3:before,
 					.rtl #accordion-panel-wpex_callout > h3:before,
-					.rtl #accordion-section-wpex_footer_widgets > h3:before,
+					.rtl #accordion-panel-wpex_footer_widgets > h3:before,
 					.rtl #accordion-section-wpex_footer_bottom > h3:before,
 					.rtl #accordion-section-wpex_visual_composer > h3:before,
 					.rtl #accordion-panel-wpex_woocommerce > h3:before,
@@ -295,7 +294,7 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 				#accordion-panel-wpex_staff > h3:before { content: "\<?php echo esc_attr( $staff_icon ); ?>" }
 				#accordion-panel-wpex_testimonials > h3:before { content: "\<?php echo esc_attr( $testimonials_icon ); ?>" }
 				#accordion-panel-wpex_callout > h3:before { content: "\f488" }
-				#accordion-section-wpex_footer_widgets > h3:before { content: "\f209" }
+				#accordion-panel-wpex_footer_widgets > h3:before { content: "\f209" }
 				#accordion-section-wpex_footer_bottom > h3:before { content: "\f209"; }
 				#accordion-section-wpex_visual_composer > h3:before { content: "\f540" }
 				#accordion-panel-wpex_woocommerce > h3:before { content: "\f174" }
@@ -314,15 +313,12 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 		public function remove_core_sections( $wp_customize ) {
 
 			// Tweak default controls => causes issues with icon setting
+			// @todo add partial refresh for logo so we can than enable this?
 			// $wp_customize->get_setting( 'blogname' )->transport = 'postMessage';
 
 			// Remove core sections
 			$wp_customize->remove_section( 'colors' );
-			//$wp_customize->remove_section( 'nav' );
-			//$wp_customize->remove_section( 'themes' );
-			//$wp_customize->remove_section( 'title_tagline' );
 			$wp_customize->remove_section( 'background_image' );
-			//$wp_customize->remove_section( 'static_front_page' );
 
 			// Remove core controls
 			$wp_customize->remove_control( 'blogdescription' );
@@ -333,9 +329,6 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 			// Remove default settings
 			$wp_customize->remove_setting( 'background_color' );
 			$wp_customize->remove_setting( 'background_image' );
-
-			// Remove widgets
-			//$wp_customize->remove_panel( 'widgets' ); // Re-added in 3.3.0 after WP 4.4 Customizer improvements
 
 		}
 
@@ -429,7 +422,7 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 			//print_r( $this->sections );
 
 		}
- 
+
 		/**
 		 * Registers new controls
 		 * Removes default customizer sections and settings
@@ -642,7 +635,7 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 			}
 
 			wp_enqueue_script( 'wpex-customizer-preview',
-				wpex_asset_url( 'js/dynamic/wpex-customizer-preview.js' ),
+				wpex_asset_url( 'js/dynamic/customizer/wpex-preview.min.js' ),
 				array( 'customize-preview' ),
 				WPEX_THEME_VERSION,
 				true
@@ -674,11 +667,11 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 		 * @since 4.1
 		 */
 		public function loop_through_array( $return = 'css' ) {
-			
+
 			if ( 'css' == $return && $this->inline_css_settings ) {
 				return $this->inline_css_settings;
 			}
-			
+
 			if ( 'control_visibility' == $return && $this->control_visibility ) {
 				return $this->control_visibility;
 			}
@@ -686,15 +679,15 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 			$css_settings       = array();
 			$control_visibility = array();
 			$settings           = wp_list_pluck( $this->sections, 'settings' );
-			
+
 			if ( ! $settings || ! is_array( $settings ) ) {
 				return;
 			}
-			
+
 			foreach ( $settings as $settings_array ) {
 
 				foreach ( $settings_array as $setting ) {
-					
+
 					// CSS
 					if ( isset( $setting['inline_css'] ) ) {
 						$css_settings[$setting['id']] = $setting['inline_css'];
@@ -763,9 +756,7 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 				$setting_id = $key;
 
 				// Conditional CSS check to add CSS or not
-				if ( isset( $inline_css['condition'] )
-					&& ! call_user_func( $inline_css['condition'] )
-				) {
+				if ( isset( $inline_css['condition'] ) && ! call_user_func( $inline_css['condition'] ) ) {
 					continue;
 				}
 
@@ -805,7 +796,7 @@ if ( ! class_exists( 'WPEX_Customizer' ) ) {
 				if ( 'preview_styles' == $return ) {
 					$preview_styles[$setting_id] = '';
 				}
- 
+
 				// Target and alter vars are required, if they are empty continue onto the next setting
 				if ( ! $target || ! $alter ) {
 					continue;

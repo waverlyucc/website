@@ -65,7 +65,7 @@ if ( $attachment_ids ) : ?>
 					<div class="wpex-slider-slide sp-slide">
 						<?php wpex_post_thumbnail( array(
 							'attachment' => $attachment_id,
-							'size'       => 'shop_catalog',
+							'size'       => 'shop_catalog wp-post-image',
 						) ); ?>
 					</div><!-- .wpex-slider-slide -->
 

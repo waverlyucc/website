@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.4.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -43,7 +43,7 @@ if ( $icon && 'fontawesome' != $icon_type ) {
 	vcex_enqueue_icon_font( $icon_type );
 }
 
-// Icon Classes 
+// Icon Classes
 $wrap_classes = array( 'vcex-module', 'vcex-icon', 'clr' );
 if ( $style ) {
 	$wrap_classes[] = 'vcex-icon-'. $style;
@@ -79,7 +79,7 @@ $wrap_classes = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, implode( ' ',
 
 // Open link wrapper
 $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $unique_id ) .'>';
-	
+
 	// Open custom link
 	if ( $link_url ) {
 
@@ -165,7 +165,7 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 	if ( $link_url ) {
 
 		$output .= '</a>';
-		
+
 	}
 
 $output .= '</div>';

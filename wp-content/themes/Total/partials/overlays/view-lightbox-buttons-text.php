@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -23,10 +23,10 @@ wpex_enqueue_ilightbox_skin();
 // Lightbox
 $lightbox_link = ! empty( $args['lightbox_link'] ) ? $args['lightbox_link'] : wpex_get_lightbox_image();
 $lightbox_data = '';
-if ( ! empty( $args['lightbox_data'] ) && is_array( $args['lightbox_data'] ) ) {
-	$lightbox_data = ' '. implode( ' ', $args['lightbox_data'] );
+if ( ! empty( $args['lightbox_data'] ) ) {
+	$lightbox_data = is_array( $args['lightbox_data'] ) ? ' ' . implode( ' ', $args['lightbox_data'] ) : $args['lightbox_data'];
 }
-$lightbox_class = ! empty( $args['lightbox_class'] ) ? $args['lightbox_class'] : 'wpex-lightbox';
+$lightbox_class = 'wpex-lightbox'; // can't use galleries in this overlay style due to duplicate links
 
 // Custom Link
 $link = isset( $args['overlay_link'] ) ? $args['overlay_link'] : wpex_get_permalink();
@@ -52,14 +52,14 @@ $output = '<div class="overlay-view-lightbox-text overlay-hide theme-overlay tex
 
 		$output .= '<div class="overlay-table-cell clr">';
 
-			$output .= '<a href="'. $lightbox_link .'" class="' . $lightbox_class . '"' . $lightbox_data . '>' .  esc_html__( 'Zoom', 'total' ) . '<span class="fa fa-search" aria-hidden="true"></span></a>';
-			
-			$output .= '<a href="' . $link . '" class="view-post"' . $target . '>' . esc_html__( 'View', 'total' ) . '<span class="fa fa-arrow-right" aria-hidden="true"></span></a>';
-		
+			$output .= '<a href="'. $lightbox_link .'" class="' . $lightbox_class . '"' . $lightbox_data . '>' .  esc_html__( 'Zoom', 'total' ) . '<span class="ticon ticon-search" aria-hidden="true"></span></a>';
+
+			$output .= '<a href="' . $link . '" class="view-post"' . $target . '>' . esc_html__( 'View', 'total' ) . '<span class="ticon ticon-arrow-right" aria-hidden="true"></span></a>';
+
 		$output .= '</div>';
-	
+
 	$output .= '</div>';
-	
+
 $output .= '</div>';
 
 echo $output;

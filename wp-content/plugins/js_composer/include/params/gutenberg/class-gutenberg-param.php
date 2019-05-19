@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Gutenberg_Param {
 	protected $postTypeSlug = 'wpb_gutenberg_param';
-	protected $removeGutenberg = null;
 
 	public function __construct() {
 		add_action( 'init', array(
@@ -18,8 +17,9 @@ class Gutenberg_Param {
 	}
 
 	public function initialize() {
-		global $pagenow;
-		if ( function_exists( 'gutenberg_pre_init' ) && 'post-new.php' === $pagenow && vc_user_access()->wpAll( 'edit_posts' )->get() && vc_request_param( 'post_type' ) === $this->postTypeSlug ) {
+		global $pagenow, $wp_version;
+		if ( version_compare( $wp_version, '4.9.8', '>' ) && 'post-new.php' === $pagenow && vc_user_access()->wpAll( 'edit_posts' )
+				->get() && vc_request_param( 'post_type' ) === $this->postTypeSlug ) {
 			$this->registerGutenbergAttributeType();
 			add_action( 'admin_print_styles', array(
 				$this,
@@ -31,44 +31,40 @@ class Gutenberg_Param {
 	public function removeAdminUi() {
 		$style = '
 		<style>
-			#adminmenumain, #wpadminbar {
-				display: none;
-			}
+            #adminmenumain, #wpadminbar {
+                display: none;
+            }
 
-			html.wp-toolbar {
-				padding: 0 !important;
-			}
+            html.wp-toolbar {
+                padding: 0 !important;
+            }
 
-			.wp-toolbar #wpcontent {
-				margin: 0;
-			}
+            .wp-toolbar #wpcontent {
+                margin: 0;
+            }
 
-			.wp-toolbar #wpbody {
-				padding-top: 0;
-			}
+            .wp-toolbar #wpbody {
+                padding-top: 0;
+            }
 
-			.gutenberg .gutenberg__editor .edit-post-layout .edit-post-header {
-				top: 0;
-				left: 0;
-			}
+            .gutenberg .gutenberg__editor .edit-post-layout .edit-post-header, html .block-editor-page .edit-post-header {
+                top: 0;
+                left: 0;
+            }
 
-			.gutenberg .gutenberg__editor .edit-post-layout.is-sidebar-opened .edit-post-layout__content {
-				margin-right: 0;
-			}
+            .gutenberg .gutenberg__editor .edit-post-layout.is-sidebar-opened .edit-post-layout__content, html .block-editor-page .edit-post-layout.is-sidebar-opened .edit-post-layout__content {
+                margin-right: 0;
+            }
 
-			.gutenberg .gutenberg__editor .edit-post-layout .editor-post-publish-panel {
-				display: none;
-			}
-		</style>';
+            .gutenberg .gutenberg__editor .edit-post-layout .editor-post-publish-panel, html .block-editor-page .edit-post-layout .editor-post-publish-panel, html .block-editor-page .edit-post-header__settings {
+                display: none;
+            }
+            .editor-post-title {
+                display: none !important;
+            }
+        </style>
+';
 		echo $style;
-	}
-
-	protected function getGutenberg() {
-		add_action( 'admin_enqueue_scripts', 'gutenberg_editor_scripts_and_styles' );
-		add_filter( 'screen_options_show_screen', '__return_false' );
-		add_filter( 'admin_body_class', 'gutenberg_add_admin_body_class' );
-		require_once ABSPATH . 'wp-admin/admin-header.php';
-		the_gutenberg_project();
 	}
 
 	protected function registerGutenbergAttributeType() {
@@ -100,8 +96,8 @@ class Gutenberg_Param {
 		);
 		$args = array(
 			'labels' => $labels,
-			'public' => false,
-			'publicly_queryable' => false,
+			'public' => true,
+			'publicly_queryable' => true,
 			'show_ui' => true,
 			'show_in_menu' => false,
 			'query_var' => false,

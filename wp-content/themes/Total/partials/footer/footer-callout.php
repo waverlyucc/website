@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -49,9 +49,9 @@ $icon_position = wpex_get_mod( 'callout_button_icon_position', 'after_text' );
 if ( $icon ) {
 
 	if ( 'before_text' == $icon_position ) {
-		$link_text = '<span class="theme-button-icon-left fa fa-' . esc_html( $icon ) .'"></span>' . $link_text;
+		$link_text = '<span class="theme-button-icon-left ticon ticon-' . esc_html( $icon ) .'"></span>' . $link_text;
 	} else {
-		$link_text = $link_text . '<span class="theme-button-icon-right fa fa-' . esc_html( $icon ) .'"></span>';
+		$link_text = $link_text . '<span class="theme-button-icon-right ticon ticon-' . esc_html( $icon ) .'"></span>';
 	}
 
 }
@@ -78,7 +78,7 @@ $attrs = array(
 if ( $label = wpex_get_mod( 'footer_callout_aria_label' ) ) {
 	$attrs['aria-label'] = esc_attr( $label );
 } ?>
-	
+
 <div <?php echo wpex_parse_attrs( $attrs ); ?><?php wpex_aria_landmark( 'footer_callout' ); ?>>
 
 	<div id="footer-callout" class="clr<?php if ( $content ) echo ' container'; ?>">

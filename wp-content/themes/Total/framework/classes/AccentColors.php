@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -41,9 +41,9 @@ class AccentColors {
 		$texts = apply_filters( 'wpex_accent_texts', array(
 			'a',
 			'.wpex-accent-color',
-			'.main-navigation .dropdown-menu a:hover',
-			'.main-navigation .dropdown-menu > .current-menu-item > a',
-			'.main-navigation .dropdown-menu > .current-menu-parent > a',
+			'#site-navigation .dropdown-menu > li.menu-item > a:hover',
+			'#site-navigation .dropdown-menu > li.menu-item.current-menu-item > a',
+			'#site-navigation .dropdown-menu > li.menu-item.current-menu-parent > a',
 			'h1 a:hover',
 			'h2 a:hover',
 			'a:hover h2',
@@ -55,34 +55,36 @@ class AccentColors {
 			'.modern-menu-widget a:hover',
 			'.theme-button.outline',
 			'.theme-button.clean',
+			'.meta a:hover',
 		) );
 
 		// Backgrounds
 		$backgrounds = apply_filters( 'wpex_accent_backgrounds', array(
-			
+
 			'.wpex-accent-bg',
 			'.post-edit a',
 			'.background-highlight',
 			'input[type="submit"]',
 			'.theme-button',
 			'button',
+			'.button',
 			'.theme-button.outline:hover',
 			'.active .theme-button',
 			'.theme-button.active',
-			'#main .tagcloud a:hover',
+			'.tagcloud a:hover',
 			'.post-tags a:hover',
 			'.wpex-carousel .owl-dot.active',
 			'.wpex-carousel .owl-prev',
 			'.wpex-carousel .owl-next',
 			'body #header-two-search #header-two-search-submit',
 			'#site-navigation .menu-button > a > span.link-inner',
-			'.modern-menu-widget li.current-menu-item a',
+			'.modern-menu-widget li.menu-item.current-menu-item a',
 			'#sidebar .widget_nav_menu .current-menu-item > a',
-			'.widget_nav_menu_accordion .widget_nav_menu .current-menu-item > a',
+			'.widget_nav_menu_accordion .widget_nav_menu li.menu-item.current-menu-item > a',
 			'#wp-calendar caption',
 			'#wp-calendar tbody td:hover a',
-			'.navbar-style-six .dropdown-menu > .current-menu-item > a',
-			'.navbar-style-six .dropdown-menu > .current-menu-parent > a',
+			'.navbar-style-six .dropdown-menu > li.menu-item.current-menu-item > a',
+			'.navbar-style-six .dropdown-menu > li.menu-item.current-menu-parent > a',
 			'#wpex-sfb-l,#wpex-sfb-r,#wpex-sfb-t,#wpex-sfb-b',
 			'#site-scroll-top:hover',
 
@@ -95,6 +97,7 @@ class AccentColors {
 			'.theme-button:hover',
 			'input[type="submit"]:hover',
 			'button:hover',
+			'.button:hover',
 			'.wpex-carousel .owl-prev:hover',
 			'.wpex-carousel .owl-next:hover',
 			'#site-navigation .menu-button > a > span.link-inner:hover',
@@ -105,7 +108,6 @@ class AccentColors {
 		$borders = apply_filters( 'wpex_accent_borders', array(
 			'.theme-button.outline',
 			'#searchform-dropdown',
-			'.toggle-bar-btn:hover' => array( 'top', 'right' ),
 			'body #site-navigation-wrap.nav-dropdown-top-border .dropdown-menu > li > ul' => array( 'top' ),
 			'.theme-heading.border-w-color span.text' => array( 'bottom' ),
 		) );
@@ -171,13 +173,13 @@ class AccentColors {
 					foreach ( $val as $key => $val ) {
 						$css .= 'border-' . $val . '-color:' . $custom_accent . ';';
 					}
-					$css .= '}'; 
+					$css .= '}';
 				} else {
 					$css .= $val . '{border-color:' . $custom_accent . ';}';
 				}
 			}
 		}
-		
+
 		// Return CSS
 		if ( $css ) {
 			return $css;

@@ -6,7 +6,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7
+ * @version 4.8.3
  */
 
 namespace TotalTheme;
@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Start class
 class MetaBoxes {
 	public $post_types;
+	public $settings;
 
 	/**
 	 * Register this class with the WordPress API
@@ -56,7 +57,7 @@ class MetaBoxes {
 		// Loop through post types and add metabox to corresponding post types
 		if ( $this->post_types ) {
 			foreach( $this->post_types as $key => $val ) {
-				add_action( 'add_meta_boxes_'. $val, array( $this, 'post_meta' ), 11 );
+				add_action( 'add_meta_boxes_' . $val, array( $this, 'post_meta' ), 11 );
 			}
 		}
 
@@ -78,6 +79,11 @@ class MetaBoxes {
 		// Disable on footer builder
 		$footer_builder_page = wpex_get_mod( 'footer_builder_page_id' );
 		if ( 'page' == get_post_type( $post->ID ) && $footer_builder_page == $post->ID ) {
+			return;
+		}
+
+		// Check if settings are empty
+		if ( ! $this->meta_array( $post ) ) {
 			return;
 		}
 
@@ -149,7 +155,7 @@ class MetaBoxes {
 		// Enqueue metabox js
 		wp_enqueue_script(
 			'wpex-post-metabox',
-			wpex_asset_url( 'js/dynamic/wpex-metabox.js' ),
+			wpex_asset_url( 'js/dynamic/admin/wpex-metabox.min.js' ),
 			array( 'jquery', 'wp-color-picker' ),
 			WPEX_THEME_VERSION,
 			true
@@ -179,12 +185,9 @@ class MetaBoxes {
 		// Get tabs
 		$tabs = $this->meta_array( $post );
 
-		// Empty notice
-		$empty_notice = '<p>'. esc_html__( 'No meta settings available for this post type or user.', 'total' ) .'</p>';
-
 		// Make sure tabs aren't empty
 		if ( empty( $tabs ) ) {
-			echo $empty_notice; return;
+			return;
 		}
 
 		// Store tabs that should display on this specific page in an array for use later
@@ -223,7 +226,7 @@ class MetaBoxes {
 				$tab_title = $tab['title'] ? $tab['title'] : esc_html__( 'Other', 'total' );
 
 				$tabs_output .= '<li' . $active_class . '>';
-					
+
 					$tabs_output .= '<a href="javascript:;" data-tab="#wpex-mb-tab-' . $count . '">';
 
 						if ( isset( $tab['icon'] ) ) {
@@ -325,7 +328,7 @@ class MetaBoxes {
 									<td>
 
 										<div class="wpex-mb-btn-group">
-											
+
 											<?php
 											// Default
 											$active = ! $meta_value ? 'wpex-mb-btn wpex-default active' : 'wpex-mb-btn wpex-default'; ?>
@@ -357,9 +360,15 @@ class MetaBoxes {
 							// Date Field
 							elseif ( 'date' == $type ) {
 
+								$meta_value = $meta_value ? date( get_option( 'date_format' ), $meta_value ) : '';
+
 								wp_enqueue_script( 'jquery-ui' );
 
 								wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery-ui' ) );
+
+								if ( function_exists( 'wp_localize_jquery_ui_datepicker' ) ) {
+									wp_localize_jquery_ui_datepicker();
+								}
 
 								wp_enqueue_style(
 									'jquery-ui-datepicker-style',
@@ -436,9 +445,9 @@ class MetaBoxes {
 								if ( ! empty( $options ) ) { ?>
 
 									<td><select id="<?php echo esc_attr( $meta_id ); ?>" name="<?php echo esc_attr( $meta_id ); ?>">
-									
+
 									<?php foreach ( $options as $option_value => $option_name ) { ?>
-										
+
 										<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $meta_value, $option_value, true ); ?>><?php echo esc_attr( $option_name ); ?></option>
 
 									<?php } ?>
@@ -467,7 +476,7 @@ class MetaBoxes {
 										$meta_value = '';
 									}
 								} ?>
-								
+
 								<td>
 									<div class="wpex-image-select">
 										<input class="wpex-input" type="text" name="<?php echo esc_attr( $meta_id ); ?>" value="<?php echo esc_attr( $meta_value ); ?>">
@@ -582,7 +591,7 @@ class MetaBoxes {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				return;
 			}
-			
+
 		}
 
 		/* OK, it's safe for us to save the data now. Now we can loop through fields */
@@ -752,6 +761,11 @@ class MetaBoxes {
 	 * @since 1.0.0
 	 */
 	private function meta_array( $post = null ) {
+
+		// We've already got settings
+		if ( $this->settings ) {
+			return $this->settings;
+		}
 
 		// Prefix
 		$prefix = 'wpex_';
@@ -1343,8 +1357,8 @@ class MetaBoxes {
 				'settings' => array(
 					'featured_video' => array(
 						'title' => esc_html__( 'oEmbed URL', 'total' ),
-						'description' => esc_html__( 'Enter a URL that is compatible with WP\'s built-in oEmbed feature. This setting is used for your video and audio post formats.', 'total' ) .'<br /><a href="http://codex.wordpress.org/Embeds" target="_blank">'. esc_html__( 'Learn More', 'total' ) .' &rarr;</a>',
-						'id' => $prefix .'post_video',
+						'description' => esc_html__( 'Enter a URL that is compatible with WP\'s built-in oEmbed feature. This setting is used for your video and audio post formats.', 'total' ) . '<br /><a href="http://codex.wordpress.org/Embeds" target="_blank">' . esc_html__( 'Learn More', 'total' ) . ' &rarr;</a>',
+						'id' => $prefix . 'post_video',
 						'type' => 'text',
 					),
 					'post_video_embed' => array(
@@ -1359,8 +1373,11 @@ class MetaBoxes {
 
 		}
 
-		// Apply filter & return settings array
-		return apply_filters( 'wpex_metabox_array', $array, $post );
+		// Apply filters and set class variable
+		$this->settings = apply_filters( 'wpex_metabox_array', $array, $post );
+
+		// Return settings
+		return $this->settings;
 
 	}
 

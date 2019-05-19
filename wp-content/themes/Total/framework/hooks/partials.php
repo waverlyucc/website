@@ -5,7 +5,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Hooks
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -145,7 +145,7 @@ function wpex_header_inner_search_dropdown() {
 	}
 
 	// Only added in the header for certain styles
-	if ( in_array( wpex_header_style(), array( 'two', 'three', 'four', 'five', 'six' ) ) ) {
+	if ( in_array( wpex_header_style(), array( 'two', 'three', 'four', 'five', 'six', 'seven' ) ) ) {
 		return;
 	}
 
@@ -208,6 +208,17 @@ function wpex_overlay_header_wrap_close() {
 	}
 }
 
+/**
+ * Get the header buttons
+ *
+ * @todo Under Construction
+ */
+function wpex_header_buttons() {
+	if ( 'seven' == wpex_header_style() ) {
+		wpex_get_template_part( 'header_buttons' );
+	}
+}
+
 /*-------------------------------------------------------------------------------*/
 /* -  Menu
 /*-------------------------------------------------------------------------------*/
@@ -218,27 +229,27 @@ function wpex_overlay_header_wrap_close() {
  * @since 1.0.0
  */
 function wpex_header_menu() {
-	$get    = false;
-	$hstyle = wpex_header_style();
-	$filter = current_filter();
+	$get          = false;
+	$header_style = wpex_header_style();
+	$filter       = current_filter();
 
 	// Header Inner Hook
 	if ( 'wpex_hook_header_inner' == $filter ) {
-		if ( in_array( $hstyle, array( 'one', 'five', 'six', 'seven' ) ) ) {
+		if ( in_array( $header_style, array( 'one', 'five', 'six', 'vertical-2', 'seven' ) ) ) {
 			$get = true;
 		}
 	}
 
 	// Header Top Hook
 	elseif ( 'wpex_hook_header_top' == $filter ) {
-		if (  'four' == $hstyle ) {
+		if (  'four' == $header_style ) {
 			$get = true;
 		}
 	}
 
 	// Header bottom hook
 	elseif ( 'wpex_hook_header_bottom' == $filter ) {
-		if ( in_array( $hstyle, array( 'two', 'three' ) ) ) {
+		if ( in_array( $header_style, array( 'two', 'three' ) ) ) {
 			$get = true;
 		}
 	}
@@ -624,7 +635,16 @@ function wpex_footer_bottom_menu() {
 /*-------------------------------------------------------------------------------*/
 
 /**
- * Get togglebar layout template part if enabled.
+ * Site Overlay
+ *
+ * @since 3.4.0
+ */
+function wpex_site_overlay() {
+	echo '<div class="wpex-site-overlay"></div>';
+}
+
+/**
+ * Site Top div
  *
  * @since 3.4.0
  */

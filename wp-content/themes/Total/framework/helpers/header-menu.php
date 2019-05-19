@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7
+ * @version 4.8.3
  */
 
 // Exit if accessed directly
@@ -105,7 +105,7 @@ function wpex_header_menu_classes( $return = '' ) {
 		}
 
 		// Dropdown dropshadow
-		if ( 'one' == $header_style || 'five' == $header_style || $has_overlay ) {
+		if ( 'one' == $header_style || 'five' == $header_style || 'seven' == $header_style || $has_overlay ) {
 			$classes[] = 'wpex-dropdowns-caret';
 		}
 
@@ -130,6 +130,11 @@ function wpex_header_menu_classes( $return = '' ) {
 		// Center items
 		if ( 'two' == $header_style && wpex_get_mod( 'header_menu_center', false ) ) {
 			$classes[] = 'center-items';
+		}
+
+		// Add breakpoint class
+		if ( wpex_header_has_mobile_menu() ) {
+			$classes[] = 'hide-at-mm-breakpoint';
 		}
 
 		// Add clearfix
@@ -180,7 +185,7 @@ function wpex_header_menu_classes( $return = '' ) {
  */
 function wpex_header_menu_ul_classes() {
 	$classes = array();
-	if ( in_array( wpex_header_style(), array( 'seven' ) ) ) {
+	if ( in_array( wpex_header_style(), array( 'vertical-2' ) ) ) {
 		$classes[] = 'wpex-toggle-menu';
 	} else {
 		$classes[] = 'dropdown-menu';
@@ -206,8 +211,8 @@ if ( ! class_exists( 'WPEX_Dropdown_Walker_Nav_Menu' ) ) {
 			if ( ! empty( $children_elements[$element->$id_field] ) && ( $depth == 0 ) ) {
 				$element->classes[] = 'dropdown';
 				if ( wpex_get_mod( 'menu_arrow_down' ) ) {
-					$arrow_class = 'six' == $header_style ? 'fa-chevron-right' : 'fa-angle-down';
-					$element->title .= ' <span class="nav-arrow top-level fa '. $arrow_class .'"></span>';
+					$arrow_class = 'six' == $header_style ? 'ticon-chevron-right' : 'ticon-angle-down';
+					$element->title .= ' <span class="nav-arrow top-level ticon '. $arrow_class .'"></span>';
 				}
 			}
 
@@ -215,13 +220,13 @@ if ( ! class_exists( 'WPEX_Dropdown_Walker_Nav_Menu' ) ) {
 			if ( ! empty( $children_elements[$element->$id_field] ) && ( $depth > 0 ) ) {
 				$element->classes[] = 'dropdown';
 				if ( wpex_get_mod( 'menu_arrow_side', true ) ) {
-					if ( 'seven' == $header_style ) {
-						$element->title .= ' <span class="nav-arrow second-level fa fa-angle-down"></span>';
+					if ( 'vertical-2' == $header_style ) {
+						$element->title .= ' <span class="nav-arrow second-level ticon ticon-angle-down"></span>';
 					} else {
 						if ( is_rtl() ) {
-							$element->title .= '<span class="nav-arrow second-level fa fa-angle-left"></span>';
+							$element->title .= '<span class="nav-arrow second-level ticon ticon-angle-left"></span>';
 						} else {
-							$element->title .= '<span class="nav-arrow second-level fa fa-angle-right"></span>';
+							$element->title .= '<span class="nav-arrow second-level ticon ticon-angle-right"></span>';
 						}
 					}
 				}
@@ -261,8 +266,8 @@ function wpex_custom_menu() {
  */
 function wpex_add_search_to_menu( $items, $args ) {
 
-	// Only used on main menu
-	if ( 'main_menu' != $args->theme_location ) {
+	// Check menu location
+	if ( ! in_array( $args->theme_location, apply_filters( 'wpex_menu_search_icon_theme_locations', array( 'main_menu' ) ) ) ) {
 		return $items;
 	}
 
@@ -275,7 +280,7 @@ function wpex_add_search_to_menu( $items, $args ) {
 	}
 
 	// Define classes
-	$li_classes = 'search-toggle-li wpex-menu-extra';
+	$li_classes = 'search-toggle-li wpex-menu-extra menu-item';
 	$a_classes  = 'site-search-toggle';
 
 	// Get header style
@@ -290,7 +295,7 @@ function wpex_add_search_to_menu( $items, $args ) {
 		$a_classes .= ' search-header-replace-toggle';
 	}
 
-	// Add search item to menu
+	// Ubermenu Classes for search icon
 	if ( class_exists( 'UberMenu' ) && apply_filters( 'wpex_add_search_toggle_ubermenu_classes', true ) ) {
 		$li_classes .= ' ubermenu-item-level-0 ubermenu-item';
 		$a_classes  .= ' ubermenu-target ubermenu-item-layout-default ubermenu-item-layout-text_only';
@@ -304,22 +309,21 @@ function wpex_add_search_to_menu( $items, $args ) {
 
 			$menu_search .= '<span class="link-inner">';
 
-				$text = esc_html__( 'Search', 'total' );
-				$text = apply_filters( 'wpex_header_search_text', $text );
+				$text = apply_filters( 'wpex_header_search_text', esc_html__( 'Search', 'total' ) );
 
 				if ( 'six' == $header_style ) {
-					$menu_search .= '<span class="wpex-menu-search-icon fa fa-search"></span>';
-					$menu_search .= '<span class="wpex-menu-search-text">'. $text .'</span>';
+					$menu_search .= '<span class="wpex-menu-search-icon ticon ticon-search"></span>';
+					$menu_search .= '<span class="wpex-menu-search-text">' . esc_html( $text ) . '</span>';
 				} else {
-					$menu_search .= '<span class="wpex-menu-search-text">'. $text .'</span>';
-					$menu_search .= '<span class="wpex-menu-search-icon fa fa-search" aria-hidden="true"></span>';
+					$menu_search .= '<span class="wpex-menu-search-text">' . esc_html( $text ) . '</span>';
+					$menu_search .= '<span class="wpex-menu-search-icon ticon ticon-search" aria-hidden="true"></span>';
 				}
 
 			$menu_search .= '</span>';
 
 		$menu_search .= '</a>';
 
-		if ( in_array( $header_style, array( 'two', 'three', 'four', 'five', 'six' ) )
+		if ( in_array( $header_style, array( 'two', 'three', 'four', 'five', 'six', 'seven' ) )
 			&& 'drop_down' == wpex_header_menu_search_style()
 		) {
 			ob_start();
@@ -385,7 +389,7 @@ function wpex_header_menu_search_style() {
 
 	// Sanitize output so it's not empty and return
 	$style = $style ? $style : 'drop_down';
-	
+
 	// Return style
 	return $style;
 
@@ -455,6 +459,7 @@ function wpex_header_menu_mobile_style() {
  * Check if mobile menu is enabled
  *
  * @since 4.0
+ * @todo rename function to wpex_has_mobile_menu() ?
  */
 function wpex_header_has_mobile_menu() {
 
@@ -484,6 +489,16 @@ function wpex_header_has_mobile_menu() {
  *
  * @since 4.0
  */
+function wpex_header_mobile_menu_classes() {
+	$classes = 'wpex-mobile-menu-toggle show-at-mm-breakpoint wpex-clr';
+	return esc_attr( $classes );
+}
+
+/**
+ * Return correct header menu mobile toggle style
+ *
+ * @since 4.0
+ */
 function wpex_header_menu_mobile_toggle_style() {
 
 	// Set to false if header builder is enabled or mobile menu is disabled
@@ -491,14 +506,22 @@ function wpex_header_menu_mobile_toggle_style() {
 		return false;
 	}
 
-	// Get style
-	$style = wpex_get_mod( 'mobile_menu_toggle_style' );
+	// Get current header style
+	$header_style = wpex_header_style();
+
+	// Get toggle style
+	$toggle_style = wpex_get_mod( 'mobile_menu_toggle_style' );
+
+	// Limit the style for some headers
+	if ( 'seven' == $header_style ) {
+		$toggle_style = 'icon_buttons';
+	}
 
 	// Sanitize => can't be empty
-	$style = $style ? $style : 'icon_buttons';
+	$toggle_style = $toggle_style ? $toggle_style : 'icon_buttons';
 
 	// Apply filters and return style
-	return apply_filters( 'wpex_mobile_menu_toggle_style', $style );
+	return apply_filters( 'wpex_mobile_menu_toggle_style', $toggle_style );
 
 }
 
@@ -565,27 +588,26 @@ function wpex_has_mobile_menu_alt() {
 function wpex_get_mobile_menu_extra_icons() {
 
 	$output = '';
+	$menu_has_cart_icon = false;
 
 	if ( ( $locations = get_nav_menu_locations() ) && isset( $locations[ 'mobile_menu' ] ) ) {
-			
+
 		$menu = wp_get_nav_menu_object( $locations[ 'mobile_menu' ] );
-		
+
 		if ( ! empty( $menu ) ) {
-			
+
 			$menu_items = wp_get_nav_menu_items( $menu->term_id );
 
 			if ( $menu_items ) {
 
-				$menu_has_cart_icon = false;
-			
 				foreach ( $menu_items as $key => $menu_item ) {
-					
+
 					// Only add items if a correct font icon is added for the menu item label
 					if ( in_array( $menu_item->title, wpex_get_awesome_icons() ) ) {
 
 						$title      = $menu_item->title;
 						$attr_title = $menu_item->attr_title;
-						$link_icon  = '<span class="fa fa-' . esc_attr( $title ) . '" aria-hidden="true"></span>';
+						$link_icon  = '<span class="ticon ticon-' . esc_attr( $title ) . '" aria-hidden="true"></span>';
 						$classes    = 'mobile-menu-extra-icons mobile-menu-' . esc_attr( $title );
 
 						if ( 'shopping-cart' == $title || 'shopping-bag' == $title || 'shopping-basket' == $title ) {
@@ -598,7 +620,7 @@ function wpex_get_mobile_menu_extra_icons() {
 						if ( $is_shop_icon ) {
 							$classes .= ' wpex-shop';
 						}
-						
+
 						if ( ! empty( $menu_item->classes[0] ) ) {
 							$classes .= ' '. implode( ' ', array_filter( $menu_item->classes, 'trim' ) );
 						}
@@ -614,21 +636,21 @@ function wpex_get_mobile_menu_extra_icons() {
 
 						$inner_html = $link_icon . $reader_text;
 
-						if ( $is_shop_icon && function_exists( 'wpex_mobile_menu_cart_count' ) ) {
+						if ( $menu_has_cart_icon && $is_shop_icon && function_exists( 'wpex_mobile_menu_cart_count' ) ) {
 							$inner_html .= wpex_mobile_menu_cart_count();
 						}
 
 						$output .= wpex_parse_html( 'a', $link_attrs, $inner_html ); ?>
-				
+
 				<?php }
 
-				}
+				} // End foreach
 
 			}
 
 		}
 
-	}
+	} // End menu check
 
 	return apply_filters( 'wpex_get_mobile_menu_extra_icons', $output );
 

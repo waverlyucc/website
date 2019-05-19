@@ -70,7 +70,7 @@ class CategorySettings {
 			</select>
 		</td>
 		</tr>
-		
+
 		<?php
 		// Grid Columns
 		$grid_cols = ! empty( $term_meta['wpex_term_grid_cols'] ) ? $term_meta['wpex_term_grid_cols'] : ''; ?>
@@ -102,7 +102,7 @@ class CategorySettings {
 			</select>
 		</td>
 		</tr>
-		
+
 		<?php
 		// Pagination Type
 		$pagination = ! empty( $term_meta['wpex_term_pagination'] ) ? $term_meta['wpex_term_pagination'] : ''; ?>
@@ -118,7 +118,7 @@ class CategorySettings {
 			</select>
 		</td>
 		</tr>
-		
+
 		<?php
 		// Excerpt length
 		$excerpt_length = ! empty( $term_meta['wpex_term_excerpt_length'] ) ? intval( $term_meta['wpex_term_excerpt_length'] ) : ''; ?>
@@ -128,7 +128,7 @@ class CategorySettings {
 			<input type="number" name="term_meta[wpex_term_excerpt_length]" size="3" style="width:100px;" value="<?php echo esc_attr( $excerpt_length ); ?>">
 			</td>
 		</tr>
-		
+
 		<?php
 		// Posts Per Page
 		$posts_per_page = ! empty( $term_meta['wpex_term_posts_per_page'] ) ? intval( $term_meta['wpex_term_posts_per_page'] ) : ''; ?>
@@ -138,7 +138,7 @@ class CategorySettings {
 			<input type="number" name="term_meta[wpex_term_posts_per_page]" size="3" style="width:100px;" value="<?php echo esc_attr( $posts_per_page ); ?>">
 			</td>
 		</tr>
-		
+
 		<?php
 		// Image Width
 		$wpex_term_image_width = ! empty( $term_meta['wpex_term_image_width'] ) ? intval( $term_meta['wpex_term_image_width'] ) : '';?>
@@ -148,7 +148,7 @@ class CategorySettings {
 			<input type="number" name="term_meta[wpex_term_image_width]" size="3" style="width:100px;" value="<?php echo esc_attr( $wpex_term_image_width ); ?>">
 			</td>
 		</tr>
-			
+
 		<?php
 		// Image Height
 		$wpex_term_image_height = ! empty( $term_meta['wpex_term_image_height'] ) ? intval( $term_meta['wpex_term_image_height'] ) : ''; ?>

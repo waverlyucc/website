@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.4
  */
 
 namespace TotalTheme;
@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Start Class
 class TermThumbnails {
+	public $is_admin = false;
 
 	/**
 	 * Main constructor
@@ -24,15 +25,19 @@ class TermThumbnails {
 	 */
 	public function __construct() {
 
+		$this->is_admin = is_admin();
+
 		// Admin functions
-		if ( is_admin() ) {
+		if ( $this->is_admin ) {
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
 		}
 
-		// Display term thumbnail on the front-end if enabled
-		if ( ! is_admin() && apply_filters( 'wpex_enable_term_page_header_image', true ) ) {
-			add_filter( 'wpex_page_header_style', array( $this, 'page_header_style' ) );
-			add_filter( 'wpex_page_header_background_image', array( $this, 'page_header_bg' ) );
+		// Display term thumbnail on the front-end
+		if ( ! $this->is_admin || wp_doing_ajax() ) {
+			if ( apply_filters( 'wpex_enable_term_page_header_image', true ) ) {
+				add_filter( 'wpex_page_header_style', array( $this, 'page_header_style' ) );
+				add_filter( 'wpex_page_header_background_image', array( $this, 'page_header_bg' ) );
+			}
 		}
 
 	}
@@ -60,7 +65,7 @@ class TermThumbnails {
 			// Add forms
 			add_action( $taxonomy . '_add_form_fields', array( $this, 'add_form_fields' ), 10 );
 			add_action( $taxonomy . '_edit_form_fields', array( $this, 'edit_form_fields' ), 10, 2 );
-			
+
 			// Add columns
 			if ( 'product_cat' != $taxonomy ) {
 				add_filter( 'manage_edit-' . $taxonomy . '_columns', array( $this, 'admin_columns' ) );
@@ -349,7 +354,7 @@ class TermThumbnails {
 
 		// Update option
 		update_option( 'wpex_term_data', $term_data );
-		
+
 	}
 
 	/**
@@ -377,7 +382,7 @@ class TermThumbnails {
 	 * @since 2.1.0
 	 */
 	public function update_page_header_img( $term_id, $display ) {
-		
+
 		// Add option
 		if ( ! empty( $display ) ) {
 			$this->add_term_data( $term_id, 'page_header_bg', $display );
@@ -460,7 +465,7 @@ class TermThumbnails {
 		if ( $term_data && ! empty( $term_data['thumbnail'] ) ) {
 			return $term_data['thumbnail'];
 		}
-		
+
 	}
 
 	/**
@@ -493,7 +498,7 @@ class TermThumbnails {
 
 		// Return bool
 		return $bool;
-		
+
 	}
 
 	/**

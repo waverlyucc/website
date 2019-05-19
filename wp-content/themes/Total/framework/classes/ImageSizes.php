@@ -136,7 +136,7 @@ class ImageSizes {
 	 * @since 2.0.0
 	 */
 	public function add_sizes() {
-		
+
 		// Get sizes array
 		$sizes = $this->get_sizes();
 
@@ -199,7 +199,7 @@ class ImageSizes {
 	 * @since 2.0.0
 	 */
 	public function register_settings() {
-		register_setting( 'wpex_image_sizes', 'wpex_image_sizes', array( $this, 'admin_sanitize' ) ); 
+		register_setting( 'wpex_image_sizes', 'wpex_image_sizes', array( $this, 'admin_sanitize' ) );
 	}
 
 	/**
@@ -270,10 +270,10 @@ class ImageSizes {
 					'general' => esc_html__( 'General', 'total' ),
 					'blog'    => esc_html__( 'Blog', 'total' ),
 				) );
-				
+
 				// Add 'other' tab after filter so it's always at end
 				$tabs['other'] = esc_html__( 'Other', 'total' );
-				
+
 				// Loop through tabs and display them
 				$count = 0;
 				foreach ( $tabs as $key => $val ) {
@@ -288,11 +288,11 @@ class ImageSizes {
 			</h2>
 
 			<form method="post" action="options.php">
-				
+
 				<?php settings_fields( 'wpex_image_sizes' ); ?>
-				
+
 				<table class="form-table wpex-image-sizes-admin-table">
-					
+
 					<tr valign="top" class="wpex-tab-content wpex-general">
 						<th scope="row"><?php esc_html_e( 'Image Resizing', 'total' ); ?></th>
 						<td>

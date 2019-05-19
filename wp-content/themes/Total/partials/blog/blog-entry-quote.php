@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 3.0.0
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,7 +17,7 @@ $classes = wpex_blog_entry_classes(); ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( $classes ); ?>>
 	<div class="post-quote-entry-inner clr">
-		<span class="fa fa-quote-right"></span>
+		<span class="ticon ticon-quote-right"></span>
 		<?php
 		// Content for single posts
 		if ( is_singular( 'post' ) ) : ?>

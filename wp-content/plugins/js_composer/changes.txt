@@ -1,3 +1,15 @@
+13.02.2019 - ver 5.7
+  - Update: Compatibility with PHP 7.3
+  - Fix: WooCommerce corrected editable role
+  - Fix: Page preview styles independent from view page
+
+27.11.2018 - ver 5.6
+  - Update: Compatibility with Wordpress 5.0
+
+11.10.2018 - ver 5.5.5
+  - Fix: SSL issues for fonts
+  - Fix: Gutenberg improvements
+
 08.09.2018 - ver 5.5.4
   - Fix: Link selector works properly in Backend editor
 
@@ -246,7 +258,7 @@
    - Fixed: PrettyPhoto navigation in Image Carousel
    - Fixed: Loop builder in grid
    - Fixed: Woo Commerce product settings
-   
+
 15.04.2016 - ver 4.11.2.1
    - # is properly escaped for updated jQuery
 
@@ -475,7 +487,7 @@
 
 16.06.2015 - ver 4.5.3
    - prettyPhoto updated to 3.1.6 - latest stable and secure version
-   
+
 18.05.2015 - ver 4.5.2
    - Performance: Removed call to get taxonomies from vc_map and now it is called via ajax only when it is needed
    - Fixed: slug changing when Yoast SEO plugin activated

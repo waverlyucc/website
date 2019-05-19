@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -17,12 +17,6 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Deprecated Attributes
 if ( ! empty( $atts['term_slug'] ) && empty( $atts['include_categories']) ) {
 	$atts['include_categories'] = $atts['term_slug'];
@@ -31,11 +25,22 @@ if ( ! empty( $atts['term_slug'] ) && empty( $atts['include_categories']) ) {
 // Define output var
 $output = '';
 
+// Store orginal atts value for use in non-builder params
+$og_atts = $atts;
+
+// Define entry counter
+$entry_count = ! empty( $og_atts['entry_count'] ) ? $og_atts['entry_count'] : 0;
+
 // Get and extract shortcode attributes
 $atts = vc_map_get_attributes( 'vcex_staff_grid', $atts );
 
 // Extract shortcode atts
 extract( $atts );
+
+// Add paged attribute for load more button (used for WP_Query)
+if ( ! empty( $og_atts['paged'] ) ) {
+	$atts['paged'] = $og_atts['paged'];
+}
 
 // Define user-generated attributes
 $atts['post_type'] = 'staff';
@@ -63,9 +68,6 @@ if ( $wpex_query->have_posts() ) :
 	$excerpt_length     = $excerpt_length ? $excerpt_length : '30';
 	$css_animation      = ( $css_animation && 'true' != $filter ) ? vcex_get_css_animation( $css_animation ) : false;
 	$equal_heights_grid = ( 'true' == $equal_heights_grid && $columns > '1' ) ? true : false;
-	$overlay_style      = $overlay_style ? $overlay_style : 'none';
-	$title_tag          = apply_filters( 'vcex_grid_default_title_tag', $title_tag, $atts );
-	$title_tag          = $title_tag ? esc_attr( $title_tag ) : 'h2';
 
 	// Load lightbox scripts
 	if ( 'lightbox' == $thumb_link ) {
@@ -75,14 +77,6 @@ if ( $wpex_query->have_posts() ) :
 	// Enable Isotope
 	if ( 'true' == $filter || 'masonry' == $grid_style || 'no_margins' == $grid_style ) {
 		$is_isotope = true;
-	}
-
-	// No need for masonry if not enough columns and filter is disabled
-	if ( 'true' != $filter && 'masonry' == $grid_style ) {
-		$post_count = count( $wpex_query->posts );
-		if ( $post_count <= $columns ) {
-			$is_isotope = false;
-		}
 	}
 
 	// Get filter taxonomy
@@ -134,7 +128,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Grid classes
 	if ( $columns_gap ) {
-		$grid_classes[] = 'gap-'. $columns_gap;
+		$grid_classes[] = 'gap-' . $columns_gap;
 	}
 	if ( $is_isotope ) {
 		$grid_classes[] = 'vcex-isotope-grid';
@@ -149,9 +143,9 @@ if ( $wpex_query->have_posts() ) :
 		$grid_classes[] = 'match-height-grid';
 	}
 	if ( 'true' == $thumb_lightbox_gallery ) {
-		$grid_classes[] = ' lightbox-group';
+		$grid_classes[] = 'wpex-lightbox-group';
 		if ( $lightbox_skin ) {
-			$grid_data[] = 'data-skin="'. $lightbox_skin .'"';
+			$grid_data[] = 'data-skin="' . $lightbox_skin . '"';
 		}
 		$lightbox_single_class = ' wpex-lightbox-group-item';
 	} else {
@@ -164,10 +158,10 @@ if ( $wpex_query->have_posts() ) :
 			$grid_data[] = 'data-layout-mode="fitRows"';
 		}
 		if ( $filter_speed ) {
-			$grid_data[] = 'data-transition-duration="'. $filter_speed .'"';
+			$grid_data[] = 'data-transition-duration="' . $filter_speed . '"';
 		}
 		if ( ! empty( $filter_has_active_cat ) ) {
-			$grid_data[] = 'data-filter=".cat-'. $filter_active_category .'"';
+			$grid_data[] = 'data-filter=".cat-' . $filter_active_category . '"';
 		}
 	}
 
@@ -183,131 +177,9 @@ if ( $wpex_query->have_posts() ) :
 	// Entry columns class
 	$columns_class = vcex_get_grid_column_class( $atts );
 
-	// Media classes
-	$media_classes = array( 'staff-entry-media', 'entry-media', 'wpex-clr' );
-	if ( $img_filter ) {
-		$media_classes[] = wpex_image_filter_class( $img_filter );
-	}
-	if ( $img_hover_style ) {
-		$media_classes[] = wpex_image_hover_classes( $img_hover_style );
-	}
-	if ( 'none' != $overlay_style ) {
-		$media_classes[] = wpex_overlay_classes( $overlay_style );
-	}
-	$media_classes = implode( ' ', $media_classes );
-
 	// Entry CSS class
 	if ( $entry_css ) {
 		$entry_css = vc_shortcode_custom_css_class( $entry_css );
-	}
-
-	// Content Design
-	$content_style = array(
-		'color'   => $content_color,
-		'opacity' => $content_opacity,
-	);
-	if ( ! $content_css ) {
-		if ( isset( $content_background ) ) {
-			$content_style['background'] = $content_background;
-		}
-		if ( isset( $content_padding ) ) {
-			$content_style['padding'] = $content_padding;
-		}
-		if ( isset( $content_margin ) ) {
-			$content_style['margin'] = $content_margin;
-		}
-		if ( isset( $content_border ) ) {
-			$content_style['border'] = $content_border;
-		}
-	} else {
-		$content_css = vc_shortcode_custom_css_class( $content_css );
-	}
-	$content_style = vcex_inline_style( $content_style );
-
-	// Heading Design
-	if ( 'true' == $title ) {
-
-		$heading_style = vcex_inline_style( array(
-			'margin'         => $content_heading_margin,
-			'font_size'      => $content_heading_size,
-			'color'          => $content_heading_color,
-			'font_weight'    => $content_heading_weight,
-			'text_transform' => $content_heading_transform,
-			'line_height'    => $content_heading_line_height,
-		) );
-
-	}
-
-	// Heading Link style
-	$heading_link_style = vcex_inline_style( array(
-		'color' => $content_heading_color,
-	) );
-
-	// Position design
-	if ( 'true' == $position ) {
-		$position_style = vcex_inline_style( array(
-			'font_size'   => $position_size,
-			'font_weight' => $position_weight,
-			'margin'      => $position_margin,
-			'color'       => $position_color,
-		) );
-	}
-
-	// Categories design
-	if ( 'true' == $show_categories ) {
-		$categories_style = vcex_inline_style( array(
-			'padding'   => $categories_margin,
-			'font_size' => $categories_font_size,
-			'color'     => $categories_color,
-		) );
-		$categories_classes = 'staff-entry-categories wpex-clr';
-		if ( $categories_color ) {
-			$categories_classes .= ' wpex-child-inherit-color';
-		}
-	}
-
-	// Excerpt style
-	if ( 'true' == $excerpt ) {
-		$excerpt_style = vcex_inline_style( array(
-			'font_size' => $content_font_size,
-		) );
-	}
-
-	// Social links style
-	if ( 'true' == $social_links ) {
-		$social_links_inline_css = vcex_inline_style( array(
-			'padding' => $social_links_margin,
-		) );
-	}
-
-	// Readmore design
-	if ( 'true' == $read_more ) {
-
-		// Readmore classes
-		$readmore_classes = wpex_get_button_classes( $readmore_style, $readmore_style_color );
-
-		// Readmore style
-		$readmore_style = vcex_inline_style( array(
-			'background'    => $readmore_background,
-			'color'         => $readmore_color,
-			'font_size'     => $readmore_size,
-			'padding'       => $readmore_padding,
-			'border_radius' => $readmore_border_radius,
-			'margin'        => $readmore_margin,
-		) );
-
-		// Readmore hover data
-		$readmore_hover_data = array();
-		if ( $readmore_hover_background ) {
-			$readmore_hover_data['background'] = $readmore_hover_background;
-		}
-		if ( $readmore_hover_color ) {
-			$readmore_hover_data['color'] = $readmore_hover_color;
-		}
-		if ( $readmore_hover_data ) {
-			$readmore_hover_data = json_encode( $readmore_hover_data );
-		}
-
 	}
 
 	// Apply filters
@@ -385,12 +257,11 @@ if ( $wpex_query->have_posts() ) :
 
 		}
 
-		$output .= '<div class="'. $grid_classes .'"'. $grid_data .'>';
-
-			// Define counter var to clear floats
-			$count=0;
+		// Begin grid output
+		$output .= '<div class="' . $grid_classes . '"' . $grid_data . '>';
 
 			// Start loop
+			$first_run = true;
 			while ( $wpex_query->have_posts() ) :
 
 				// Get post from query
@@ -412,21 +283,21 @@ if ( $wpex_query->have_posts() ) :
 				}
 
 				// Add to the counter var
-				$count++;
+				$entry_count++;
 
 				// Add classes to the entries
-				$entry_classes = array( 'staff-entry' );
+				$entry_classes = array( 'staff-entry', 'vcex-grid-item' );
 				$entry_classes[] = $columns_class;
 				if ( $content_alignment ) {
-					$entry_classes[] = 'text'. $content_alignment;
+					$entry_classes[] = 'text' . $content_alignment;
 				}
 				if ( 'false' == $columns_responsive ) {
 					$entry_classes[] = 'nr-col';
 				} else {
 					$entry_classes[] = 'col';
 				}
-				if ( $count ) {
-					$entry_classes[] = 'col-'. $count;
+				if ( $entry_count ) {
+					$entry_classes[] = 'col-' . $entry_count;
 				}
 				if ( 'true' == $read_more ) {
 					$entry_classes[] = 'has-readmore';
@@ -444,7 +315,7 @@ if ( $wpex_query->have_posts() ) :
 				$output .= '<div '. vcex_grid_get_post_class( $entry_classes, $atts['post_id'] ) .'>';
 
 					$output .= '<div class="staff-entry-inner entry-inner clr';
-						
+
 						if ( $entry_css ) {
 							$output .= ' '. $entry_css;
 						}
@@ -455,7 +326,27 @@ if ( $wpex_query->have_posts() ) :
 						$media_output = '';
 						if ( 'true' == $entry_media && has_post_thumbnail() ) :
 
-							$media_output .= '<div class="'. $media_classes .'">';
+							if ( $first_run ) {
+
+								// Overlay style
+								$overlay_style = $overlay_style ? $overlay_style : 'none';
+
+								// Media classes
+								$media_classes = array( 'staff-entry-media', 'entry-media', 'wpex-clr' );
+								if ( $img_filter ) {
+									$media_classes[] = wpex_image_filter_class( $img_filter );
+								}
+								if ( $img_hover_style ) {
+									$media_classes[] = wpex_image_hover_classes( $img_hover_style );
+								}
+								if ( 'none' != $overlay_style ) {
+									$media_classes[] = wpex_overlay_classes( $overlay_style );
+								}
+								$media_classes = implode( ' ', $media_classes );
+
+							}
+
+							$media_output .= '<div class="' . $media_classes . '">';
 
 								// Thumbnail with link
 								if ( ! in_array( $thumb_link, array( 'none', 'nowhere' ) ) ) :
@@ -472,25 +363,25 @@ if ( $wpex_query->have_posts() ) :
 											// Lightbox data
 											$atts['lightbox_data'] = array();
 											if ( $lightbox_skin ) {
-												$atts['lightbox_data'][] = 'data-skin="'. $lightbox_skin .'"';
+												$atts['lightbox_data'][] = 'data-skin="' . $lightbox_skin . '"';
 											}
 											if ( 'true' == $thumb_lightbox_title ) {
-												$atts['lightbox_data'][] = 'data-title="'. $atts['post_esc_title'] .'"';
+												$atts['lightbox_data'][] = 'data-title="' . $atts['post_esc_title'] . '"';
 											} else {
 												$atts['lightbox_data'][] = 'data-show_title="false"';
 											}
 											if ( 'true' == $thumb_lightbox_caption && $atts['post_excerpt'] ) {
-												$atts['lightbox_data'][] = 'data-caption="'. str_replace( '"',"'", $atts['post_excerpt'] ) .'"';
+												$atts['lightbox_data'][] = 'data-caption="' . str_replace( '"',"'", $atts['post_excerpt'] ) . '"';
 											}
-											$lightbox_data = ' '. implode( ' ', $atts['lightbox_data'] );
+											$lightbox_data = ' ' . implode( ' ', $atts['lightbox_data'] );
 										}
 
-										$media_output .= '<a href="'. $atts['lightbox_link'] .'" title="'. $atts['post_esc_title'] .'" class="staff-entry-media-link'. $lightbox_single_class .'"'. $lightbox_data .'>';
+										$media_output .= '<a href="' . $atts['lightbox_link'] . '" title="' . $atts['post_esc_title'] . '" class="staff-entry-media-link' . $lightbox_single_class . '"' . $lightbox_data . '>';
 
 									// Standarad post link
 									else :
 
-										$media_output .= '<a href="'. $atts['post_permalink'] .'" title="'. $atts['post_esc_title'] .'" class="staff-entry-media-link"'. vcex_html( 'target_attr', $link_target ) .'>';
+										$media_output .= '<a href="' . $atts['post_permalink'] . '" title="' . $atts['post_esc_title'] . '" class="staff-entry-media-link"'. vcex_html( 'target_attr', $link_target ) .'>';
 
 									endif;
 
@@ -551,10 +442,37 @@ if ( $wpex_query->have_posts() ) :
 							|| 'true' == $social_links
 						) :
 
+							if ( $first_run ) {
+
+								// Content Design
+								$content_style = array(
+									'color'   => $content_color,
+									'opacity' => $content_opacity,
+								);
+								if ( ! $content_css ) {
+									if ( isset( $content_background ) ) {
+										$content_style[ 'background' ] = $content_background;
+									}
+									if ( isset( $content_padding ) ) {
+										$content_style[ 'padding' ] = $content_padding;
+									}
+									if ( isset( $content_margin ) ) {
+										$content_style[ 'margin' ] = $content_margin;
+									}
+									if ( isset( $content_border ) ) {
+										$content_style[ 'border' ] = $content_border;
+									}
+								} else {
+									$content_css = vc_shortcode_custom_css_class( $content_css );
+								}
+								$content_style = vcex_inline_style( $content_style );
+
+							}
+
 							$output .= '<div class="staff-entry-details entry-details wpex-clr';
 
 								if ( $content_css ) {
-									$output .= ' '. $content_css;
+									$output .= ' ' . $content_css;
 								}
 
 								$output .= '"';
@@ -573,13 +491,29 @@ if ( $wpex_query->have_posts() ) :
 								$title_output = '';
 								if ( 'true' == $title ) :
 
+									if ( $first_run ) {
+										$title_tag     = apply_filters( 'vcex_grid_default_title_tag', $title_tag, $atts );
+										$title_tag     = $title_tag ? $title_tag : 'h2';
+										$heading_style = vcex_inline_style( array(
+											'margin'         => $content_heading_margin,
+											'font_size'      => $content_heading_size,
+											'color'          => $content_heading_color,
+											'font_weight'    => $content_heading_weight,
+											'text_transform' => $content_heading_transform,
+											'line_height'    => $content_heading_line_height,
+										) );
+										$heading_link_style = vcex_inline_style( array(
+											'color' => $content_heading_color,
+										) );
+									}
+
 									// Open title tag
-									$title_output .= '<' . $title_tag . ' class="staff-entry-title entry-title"'. $heading_style .'>';
+									$title_output .= '<' . esc_attr( $title_tag ) . ' class="staff-entry-title entry-title"' . $heading_style . '>';
 
 										// Display title and link to post
 										if ( 'post' == $title_link ) :
 
-											$title_output .= '<a href="'. $atts['post_permalink'] .'"'. $heading_link_style .''. vcex_html( 'target_attr', $link_target ) .'>'. wp_kses_post( $atts['post_title'] ) .'</a>';
+											$title_output .= '<a href="' . $atts['post_permalink'] . '"' . $heading_link_style . '' . vcex_html( 'target_attr', $link_target ) . '>' . wp_kses_post( $atts['post_title'] ) . '</a>';
 
 										// Display title and link to lightbox
 										elseif ( 'lightbox' == $title_link ) :
@@ -587,7 +521,7 @@ if ( $wpex_query->have_posts() ) :
 											// Load lightbox script
 											vcex_enque_style( 'ilightbox', $lightbox_skin );
 
-											$title_output .= '<a href="'. wpex_get_lightbox_image() .'"'. $heading_link_style .' class="wpex-lightbox">'. wp_kses_post( $atts['post_title'] ) .'</a>';
+											$title_output .= '<a href="' . wpex_get_lightbox_image() . '"' . $heading_link_style . ' class="wpex-lightbox">' . wp_kses_post( $atts['post_title'] ) . '</a>';
 
 										// Display title without link
 										else :
@@ -597,7 +531,7 @@ if ( $wpex_query->have_posts() ) :
 										endif;
 
 									// Close title tag
-									$title_output .= '</' . $title_tag . '>';
+									$title_output .= '</' . esc_attr( $title_tag ) . '>';
 
 								endif;
 
@@ -605,9 +539,16 @@ if ( $wpex_query->have_posts() ) :
 
 								/*** Position ***/
 								$position_output = '';
-								if ( 'true' == $position
-									&& $get_position = get_post_meta( $atts['post_id'], 'wpex_staff_position', true )
-								) :
+								if ( 'true' == $position && $get_position = get_post_meta( $atts['post_id'], 'wpex_staff_position', true ) ) :
+
+									if ( $first_run ) {
+										$position_style = vcex_inline_style( array(
+											'font_size'   => $position_size,
+											'font_weight' => $position_weight,
+											'margin'      => $position_margin,
+											'color'       => $position_color,
+										) );
+									}
 
 									$position_output .= '<div class="staff-entry-position"' . $position_style . '>';
 
@@ -623,7 +564,19 @@ if ( $wpex_query->have_posts() ) :
 								$categories_output = '';
 								if ( 'true' == $show_categories ) :
 
-									$categories_output .= '<div class="'. $categories_classes .'"'. $categories_style .'>';
+									if ( $first_run ) {
+										$categories_style = vcex_inline_style( array(
+											'padding'   => $categories_margin,
+											'font_size' => $categories_font_size,
+											'color'     => $categories_color,
+										) );
+										$categories_classes = 'staff-entry-categories wpex-clr';
+										if ( $categories_color ) {
+											$categories_classes .= ' wpex-child-inherit-color';
+										}
+									}
+
+									$categories_output .= '<div class="' . $categories_classes . '"' . $categories_style . '>';
 
 										if ( 'true' == $show_first_category_only ) {
 
@@ -645,6 +598,12 @@ if ( $wpex_query->have_posts() ) :
 								$excerpt_output = '';
 								if ( 'true' == $excerpt && $atts['post_excerpt'] ) :
 
+									if ( $first_run ) {
+										$excerpt_style = vcex_inline_style( array(
+											'font_size' => $content_font_size,
+										) );
+									}
+
 									$excerpt_output .= '<div class="staff-entry-excerpt entry-excerpt wpex-clr"'. $excerpt_style .'>';
 
 										$excerpt_output .= $atts['post_excerpt'];
@@ -659,7 +618,13 @@ if ( $wpex_query->have_posts() ) :
 								$social_output = '';
 								if ( 'true' == $social_links ) :
 
-									$social_output .= '<div class="staff-entry-social-links wpex-clr"'. $social_links_inline_css .'>';
+									if ( $first_run ) {
+										$social_links_inline_css = vcex_inline_style( array(
+											'padding' => $social_links_margin,
+										) );
+									}
+
+									$social_output .= '<div class="staff-entry-social-links wpex-clr"' . $social_links_inline_css . '>';
 
 										$social_output .= wpex_get_staff_social( array(
 											'style'     => $social_links_style,
@@ -675,6 +640,33 @@ if ( $wpex_query->have_posts() ) :
 								/*** Read More ***/
 								$readmore_output = '';
 								if ( 'true' == $read_more && $read_more_text ) :
+
+									if ( $first_run ) {
+										// Readmore classes
+										$readmore_classes = wpex_get_button_classes( $readmore_style, $readmore_style_color );
+
+										// Readmore style
+										$readmore_style = vcex_inline_style( array(
+											'background'    => $readmore_background,
+											'color'         => $readmore_color,
+											'font_size'     => $readmore_size,
+											'padding'       => $readmore_padding,
+											'border_radius' => $readmore_border_radius,
+											'margin'        => $readmore_margin,
+										) );
+
+										// Readmore hover data
+										$readmore_hover_data = array();
+										if ( $readmore_hover_background ) {
+											$readmore_hover_data['background'] = $readmore_hover_background;
+										}
+										if ( $readmore_hover_color ) {
+											$readmore_hover_data['color'] = $readmore_hover_color;
+										}
+										if ( $readmore_hover_data ) {
+											$readmore_hover_data = json_encode( $readmore_hover_data );
+										}
+									}
 
 									$readmore_output .= '<div class="staff-entry-readmore-wrap entry-readmore-wrap clr">';
 
@@ -695,7 +687,7 @@ if ( $wpex_query->have_posts() ) :
 											$readmore_output .= esc_html( $read_more_text );
 
 											if ( 'true' == $readmore_rarr ) {
-												$readmore_output .= '<span class="vcex-readmore-rarr">'. wpex_element( 'rarr' ) .'</span>';
+												$readmore_output .= '<span class="vcex-readmore-rarr">' . wpex_element( 'rarr' ) . '</span>';
 											}
 
 										$readmore_output .= '</a>';
@@ -722,19 +714,30 @@ if ( $wpex_query->have_posts() ) :
 				$output .= '</div>'; // Entry
 
 				// Reset counter
-				if ( $count == $columns ) {
-					$count=0;
+				if ( $entry_count == $columns ) {
+					$entry_count = 0;
 				}
 
+			// End loop
+			$first_run = false;
 			endwhile;
 
 		$output .= '</div>';
 
 		// Display pagination if enabled
-		if ( 'true' == $pagination ) {
+		if ( ( 'true' == $atts['pagination'] || ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) ) )
+			&& 'true' != $atts['pagination_loadmore']
+		) {
 
 			$output .= wpex_pagination( $wpex_query, false );
 
+		}
+
+		// Load more button
+		if ( 'true' == $atts['pagination_loadmore'] && ! empty( $wpex_query->max_num_pages ) ) {
+			vcex_loadmore_scripts();
+			$og_atts['entry_count'] = $entry_count; // Update counter
+			$output .= vcex_get_loadmore_button( 'vcex_staff_grid', $og_atts, $wpex_query );
 		}
 
 	$output .= '</div>';

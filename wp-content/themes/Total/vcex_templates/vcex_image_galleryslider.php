@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -114,7 +108,7 @@ if ( $custom_links && 'custom_link' == $thumbnail_link ) {
 } else {
 
 	$attachments = array_combine( $attachments, $attachments );
-	
+
 };
 
 // Output gallery
@@ -228,13 +222,16 @@ if ( $attachments ) :
 		$wrap_classes[] = $visibility;
 	}
 	if ( 'lightbox' == $thumbnail_link ) {
-		$wrap_classes[] = ' lightbox-group';
+		$wrap_classes[] = 'wpex-lightbox-group';
 		if ( $lightbox_skin ) {
 			$wrap_attributes[] = 'data-skin="' . $lightbox_skin . '"';
 			vcex_enque_style( 'ilightbox', $lightbox_skin );
 		}
 		if ( $lightbox_path ) {
 			$wrap_attributes[] = 'data-path="' . $lightbox_path . '"';
+		}
+		if ( ! $lightbox_title || 'none' == $lightbox_title ) {
+			$wrap_attributes[] = 'data-show_title="false"';
 		}
 	}
 
@@ -256,22 +253,26 @@ if ( $attachments ) :
 	}
 
 	// Preloader image
-	$output .= '<div class="wpex-slider-preloaderimg ' . $visibility . '">';
+	if ( 'true' != $randomize ) {
 
-		$first_attachment = reset( $attachments );
+		$output .= '<div class="wpex-slider-preloaderimg ' . $visibility . '">';
 
-		$output .= wpex_get_post_thumbnail( array(
-			'attachment'    => current( array_keys( $attachments ) ),
-			'size'          => $img_size,
-			'crop'          => $img_crop,
-			'width'         => $img_width,
-			'height'        => $img_height,
-			'attributes'    => array( 'data-no-lazy' => 1 ),
-			'apply_filters' => 'vcex_image_galleryslider_thumbnail_args',
-			'filter_arg1'   => $atts,
-		) );
+			$first_attachment = reset( $attachments );
 
-	$output .= '</div>';
+			$output .= wpex_get_post_thumbnail( array(
+				'attachment'    => current( array_keys( $attachments ) ),
+				'size'          => $img_size,
+				'crop'          => $img_crop,
+				'width'         => $img_width,
+				'height'        => $img_height,
+				'attributes'    => array( 'data-no-lazy' => 1 ),
+				'apply_filters' => 'vcex_image_galleryslider_thumbnail_args',
+				'filter_arg1'   => $atts,
+			) );
+
+		$output .= '</div>';
+
+	}
 
 	// Main output begins
 	$output .= '<div class="' . esc_attr( $wrap_classes ) .'"' . vcex_get_unique_id( $unique_id ) . $wrap_attributes . '>';
@@ -279,8 +280,9 @@ if ( $attachments ) :
 		$output .= '<div class="wpex-slider-slides sp-slides">';
 
 			// Loop through attachments
+			$first_run = true;
 			foreach ( $attachments as $attachment => $custom_link ) :
-			
+
 				// Attachment VARS
 				$custom_link      = ( '#' != $custom_link ) ? $custom_link : '';
 				$attachment_link  = get_post_meta( $attachment, '_wp_attachment_url', true );
@@ -312,7 +314,7 @@ if ( $attachments ) :
 						if ( $attachment_video ) :
 
 							$output .= '<div class="wpex-slider-video responsive-video-wrap">';
-						
+
 								$output .= wpex_video_oembed( $attachment_video, 'sp-video', array(
 									'youtube' => array(
 										'enablejsapi' => '1',
@@ -333,8 +335,6 @@ if ( $attachments ) :
 									} elseif ( esc_attr( $attachment_data['alt'] ) ) {
 										$lightbox_data_attributes .= ' data-title="'. esc_attr( $attachment_data['alt'] ) .'"';
 									}
-								} else {
-									$lightbox_data_attributes .= ' data-show_title="false"';
 								}
 
 								// Caption data
@@ -343,9 +343,9 @@ if ( $attachments ) :
 								}
 
 								$output .= '<a href="' . wpex_get_lightbox_image( $attachment ) . '" class="vcex-galleryslider-entry-img wpex-lightbox-group-item"' . $lightbox_data_attributes . '>';
-								
+
 									$output .= $attachment_img;
-								
+
 								$output .= '</a>';
 
 							// Custom links
@@ -397,8 +397,9 @@ if ( $attachments ) :
 
 				$output .= '</div>';
 
-			endforeach;
-			
+			// End loop
+			$first_run = false; endforeach;
+
 		$output .= '</div>';
 
 		$output .= '<div class="wpex-slider-thumbnails sp-nc-thumbnails cols-' . $thumbnails_columns . '">';

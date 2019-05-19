@@ -28,7 +28,7 @@ if ( $attachment ) {
         'attachment' => $attachment,
         'size'       => 'shop_catalog',
         'alt'        => wpex_get_esc_title(),
-        'class'      => 'woo-entry-image-main',
+        'class'      => 'woo-entry-image-main wp-post-image',
     ) );
 
 }

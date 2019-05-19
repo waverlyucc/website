@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -62,7 +62,7 @@ class WidgetAreas {
 			</div>
 		  </script>
 		<?php
-	}        
+	}
 
 	/**
 	 * Create new Widget Area
@@ -97,9 +97,9 @@ class WidgetAreas {
 		$taken = array_merge( $taken, $this->widget_areas );
 
 		if ( in_array( $name, $taken ) ) {
-			$counter  = substr( $name, -1 );  
+			$counter  = substr( $name, -1 );
 			$new_name = "";
-			  
+
 			if ( ! is_numeric( $counter ) ) {
 				$new_name = $name . " 1";
 			} else {
@@ -142,7 +142,7 @@ class WidgetAreas {
 		// Get tag element from theme mod for the sidebar widget title
 		$tag = wpex_get_mod( 'sidebar_headings' );
 		$tag = $tag ? $tag : 'div';
-			 
+
 		// If widget areas are defined add a sidebar area for each
 		if ( is_array( $this->widget_areas ) ) {
 			foreach ( array_unique( $this->widget_areas ) as $widget_area ) {
@@ -190,11 +190,10 @@ class WidgetAreas {
 	 * @since 1.6.0
 	 */
 	public function wpex_delete_widget_area() {
-		// Check_ajax_referer('delete-wpex-widget_area-nonce');
 		if ( ! empty( $_REQUEST['name'] ) ) {
 			$name = strip_tags( ( stripslashes( $_REQUEST['name'] ) ) );
 			$this->widget_areas = $this->get_widget_areas();
-			$key = array_search($name, $this->widget_areas );
+			$key = array_search( $name, $this->widget_areas );
 			if ( $key >= 0 ) {
 				unset( $this->widget_areas[$key] );
 				$this->save_widget_areas();
@@ -216,7 +215,7 @@ class WidgetAreas {
 
 		wp_enqueue_script(
 			'wpex-widget-areas',
-			wpex_asset_url( 'js/dynamic/widget-areas.js' ), 
+			wpex_asset_url( 'js/dynamic/admin/widget-areas.js' ),
 			array( 'jquery' ),
 			WPEX_THEME_VERSION,
 			true
@@ -224,7 +223,7 @@ class WidgetAreas {
 
 		wp_enqueue_style(
 			'wpex-widget-areas',
-			wpex_asset_url( 'css/wpex-widget-areas.css' ), 
+			wpex_asset_url( 'css/wpex-widget-areas.css' ),
 			false,
 			WPEX_THEME_VERSION
 		);

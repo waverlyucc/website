@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.4.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -88,7 +88,7 @@ $this->sections['wpex_blog_archives'] = array(
 			'id' => 'category_description_position',
 			'default' => '',
 			'control' => array(
-				'label' => __( 'Category Description Position', 'total' ),
+				'label' => __( 'Category & Tag Description Position', 'total' ),
 				'type' => 'select',
 				'choices' => array(
 					''			 => __( 'Default', 'total' ),
@@ -320,7 +320,7 @@ $this->sections['wpex_blog_archives'] = array(
 
 // Single
 $this->sections['wpex_blog_single'] = array(
-	'title' => __( 'Single', 'total' ),
+	'title' => __( 'Single Post', 'total' ),
 	'panel' => 'wpex_blog',
 	'settings' => array(
 		array(
@@ -368,7 +368,7 @@ $this->sections['wpex_blog_single'] = array(
 			'id' => 'post_singular_template',
 			'default' => '',
 			'control' => array(
-				'label' => __( 'Dynamic Template (Advanced)', 'total' ),
+				'label' => __( 'Dynamic Template', 'total' ),
 				'type' => 'wpex-dropdown-templates',
 				'desc' => $template_desc,
 			),
@@ -382,7 +382,10 @@ $this->sections['wpex_blog_single'] = array(
 				'type' => 'wpex-sortable',
 				'choices' => $single_blocks,
 				'desc' => __( 'Click and drag and drop elements to re-order them.', 'total' ),
-				'active_callback' => 'wpex_cac_post_single_hasnt_custom_template',
+			),
+			'control_display' => array(
+				'check' => 'post_singular_template',
+				'value' => '',
 			),
 		),
 		array(

@@ -3,8 +3,8 @@ Contributors: brianhogg
 Donate link: https://eventcalendarnewsletter.com/
 Tags: events, calendar, event, newsletter, all-in-one, calendar manager, custom calendar, custom calendars, events feed, google calendar, google
 Requires at least: 4.1
-Tested up to: 4.9
-Stable tag: 2.7
+Tested up to: 5.1
+Stable tag: 2.9
 Requires PHP: 5.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -39,6 +39,7 @@ the [pro version](https://eventcalendarnewsletter.com/?utm_source=wordpress.org&
 
 * [Event Espresso](https://eventcalendarnewsletter.com/event-espresso/?utm_source=wordpress.org&utm_medium=link&utm_campaign=eventum-pro-calendar)
 * [EventON](http://www.myeventon.com/)
+* Calendarize it!
 * [Eventum (by Templatic)](https://eventcalendarnewsletter.com/eventum/?utm_source=wordpress.org&utm_medium=link&utm_campaign=eventum-pro-calendar)
 
 **Free version**
@@ -54,10 +55,11 @@ Event Calendar Newsletter is available as a pro version with lots of extra featu
 * Filter events - by category, tag or a specific calendar so you get only the events you want in your newsletter
 * Group events - by day or month so they're easier to read
 * Save multiple templates - quickly get the events you want in the right format
-* Ability to automatically insert events into MailChimp, MailPoet, Active Campaign, Aweber and others
+* Ability to automatically insert events into MailChimp, MailPoet and Newsletter plugins for WordPress, Active Campaign, Aweber and others
 * Ability to configure automatic mailings and reminders of upcoming events
 * Selecting less than a week (1-6 days) of events
 * Custom date range - select only the events you want, ie. if you're creating a future newsletter in advance
+* Start from date - start events a number of days in the future, letting you easily create sections in your newsletter (ie. next week, next weekend)
 * Email support - get questions quickly answered and submit feature requests
 
 [https://eventcalendarnewsletter.com](https://eventcalendarnewsletter.com/?utm_source=wordpress.org&utm_medium=link&utm_campaign=event-cal-readme&utm_content=description)
@@ -90,6 +92,15 @@ If you don't already have your event calendar plugin installed and configured, y
 4. Choose which events to include by how far in the future, Pro version can filter by categories or tags
 
 == Changelog ==
+
+= 2.9 =
+* Fix for if_end_date condition not really doing anything
+
+= 2.8 =
+* Fix for WordPress 5.0 not showing custom editor at the right height
+* Allowing custom added fields to be used with conditional checks
+* Ensuring excerpt is an option for Events Manager
+* Fix for Event Organiser not getting location_* field data properly
 
 = 2.7 =
 * Additional WP filters for date/time formatting and excerpt length

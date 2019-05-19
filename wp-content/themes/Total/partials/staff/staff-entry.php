@@ -25,7 +25,7 @@ $classes   = array();
 $classes[] = 'staff-entry';
 $classes[] = 'col';
 $classes[] = wpex_staff_column_class( $wpex_loop );
-$classes[] = 'col-'. $wpex_count;
+$classes[] = 'col-' . $wpex_count;
 
 // Get grid style
 $wpex_grid_style = wpex_get_mod( 'staff_archive_grid_style', 'fit-rows' );

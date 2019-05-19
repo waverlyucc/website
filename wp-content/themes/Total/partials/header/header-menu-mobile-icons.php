@@ -6,7 +6,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.7
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } ?>
 
-<div id="mobile-menu" class="clr wpex-mobile-menu-toggle wpex-hidden"><?php
-	
+<div id="mobile-menu" class="<?php echo wpex_header_mobile_menu_classes(); ?>"><?php
+
 	// Display mobile menu toggle icon
 	$toggle_icon = '';
 

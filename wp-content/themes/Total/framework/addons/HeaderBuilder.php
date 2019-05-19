@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Framework
- * @version 4.7.1
+ * @version 4.8.1
  */
 
 namespace TotalTheme;
@@ -224,7 +224,7 @@ class HeaderBuilder {
 				if ( $templates->have_posts() ) { ?>
 
 					<optgroup label="<?php esc_html_e( 'Templatera', 'total' ); ?>">
-						
+
 						<?php while ( $templates->have_posts() ) {
 
 							$templates->the_post();
@@ -248,7 +248,7 @@ class HeaderBuilder {
 				if ( $templates->have_posts() ) { ?>
 
 					<optgroup label="<?php esc_html_e( 'Elementor Templates', 'total' ); ?>">
-						
+
 						<?php while ( $templates->have_posts() ) {
 
 							$templates->the_post();
@@ -262,7 +262,7 @@ class HeaderBuilder {
 				<?php }
 
 			} ?>
-			
+
 			<optgroup label="<?php esc_html_e( 'Pages', 'total' ); ?>">
 				<?php
 				$pages = get_pages( array(
@@ -292,7 +292,7 @@ class HeaderBuilder {
 			<?php } ?>
 
 		</div>
-		
+
 	<?php }
 
 	// Background Setting
@@ -373,12 +373,12 @@ class HeaderBuilder {
 	public function create_admin_page() { ?>
 
 		<div id="wpex-admin-page" class="wrap">
-			
+
 			<h1><?php esc_html_e( 'Header Builder', 'total' ); ?> <a href="#" id="wpex-help-toggle" aria-hidden="true" style="text-decoration:none;"><span class="dashicons dashicons-editor-help" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'learn more', 'total' ); ?></span></a></h1>
-			
+
 			<div id="wpex-notice" class="wpex-help-notice notice notice-info">
 				<p>
-				<?php echo esc_html__( 'Use this setting to replace the default theme header with content created with the Visual Composer. When enabled all Customizer settings for the Header will be removed. This is an advanced functionality so if this is the first time you use the theme we recommend you first test out the built-in header which can be customized at Appearance > Customize > Header.', 'total' ); ?>	
+				<?php echo esc_html__( 'Use this setting to replace the default theme header with content created with the Visual Composer. When enabled all Customizer settings for the Header will be removed. This is an advanced functionality so if this is the first time you use the theme we recommend you first test out the built-in header which can be customized at Appearance > Customize > Header.', 'total' ); ?>
 				</p>
 			</div>
 
@@ -390,13 +390,13 @@ class HeaderBuilder {
 				echo '<div class="notice notice-warning"><p>' . esc_html__( 'It appears the page you had selected has been deleted, please re-save your settings to prevent issues.', 'total' ) . '</p></div>';
 
 			} ?>
-			
+
 			<form method="post" action="options.php">
 				<?php settings_fields( 'wpex_header_builder' ); ?>
 				<?php do_settings_sections( 'wpex-header-builder-admin' ); ?>
 				<?php submit_button(); ?>
 			</form>
-			
+
 			<script>
 				( function( $ ) {
 
@@ -443,15 +443,18 @@ class HeaderBuilder {
 	 */
 	public function alter_header() {
 
-		// Remove all actions in header hooks
+		// Remove all actions in header
 		$hooks = wpex_theme_hooks();
 		if ( isset( $hooks['header']['hooks'] ) ) {
 			foreach( $hooks['header']['hooks'] as $hook ) {
+				if ( 'wpex_hook_header_before' == $hook || 'wpex_hook_header_after' == $hook ) {
+					continue;
+				}
 				remove_all_actions( $hook, false );
 			}
 		}
 
-		// Insert footer builder to site via theme hooks
+		// Insert header template to site via theme hooks
 		$this->insert_hook     = apply_filters( 'wpex_header_builder_insert_hook', 'wpex_hook_header_inner' );
 		$this->insert_priority = apply_filters( 'wpex_header_builder_insert_priority', 0 );
 

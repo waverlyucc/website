@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.3
  */
 
 // Exit if accessed directly
@@ -50,7 +50,7 @@ function wpex_has_header( $post_id = '' ) {
 	}
 
 	// Apply filters and return
-	return apply_filters( 'wpex_display_header', $return );
+	return apply_filters( 'wpex_display_header', $return ); // @todo rename to wpex_has_header for consistency
 
 }
 
@@ -106,7 +106,7 @@ function wpex_header_style( $post_id = '' ) {
  * @since 4.0
  */
 function wpex_has_vertical_header() {
-	return in_array( wpex_header_style(), array( 'six', 'seven' ) );
+	return in_array( wpex_header_style(), array( 'six', 'vertical-2' ) );
 }
 
 /**
@@ -124,7 +124,7 @@ function wpex_header_classes() {
 	$classes = array();
 
 	// Main header style
-	$classes['header_style'] = 'header-'. $header_style;
+	$classes['header_style'] = 'header-' . $header_style;
 
 	// Non-Builder classes
 	if ( 'builder' != $header_style ) {
@@ -138,24 +138,15 @@ function wpex_header_classes() {
 			$classes[] = 'wpex-header-two-flex-v';
 		}
 
-		// Reposition cart and search dropdowns
-		if ( 'three' == $header_style
-			|| 'four' == $header_style
-			|| 'five' == $header_style
-			|| ( 'two' == $header_style && wpex_get_mod( 'header_menu_center', false ) )
-		) {
-			$classes[] = 'wpex-reposition-cart-search-drops';
-		}
-
 		// Dropdown style (must be added here so we can target shop/search dropdowns)
 		$dropdown_style = wpex_get_mod( 'menu_dropdown_style' );
 		if ( $dropdown_style && 'default' != $dropdown_style ) {
-			$classes['wpex-dropdown-style-'. $dropdown_style] = 'wpex-dropdown-style-'. $dropdown_style;
+			$classes['wpex-dropdown-style-' . $dropdown_style] = 'wpex-dropdown-style-' . $dropdown_style;
 		}
 
 		// Dropdown shadows
 		if ( $shadow = wpex_get_mod( 'menu_dropdown_dropshadow' ) ) {
-			$classes[] = 'wpex-dropdowns-shadow-'. $shadow;
+			$classes[] = 'wpex-dropdowns-shadow-' . $shadow;
 		}
 
 	}
@@ -188,10 +179,10 @@ function wpex_header_classes() {
 		if ( 'core' != $overlay_style ) {
 			if ( $post_id && $dropdown_style_meta = get_post_meta( $post_id, 'wpex_overlay_header_dropdown_style', true ) ) {
 				if ( 'default' != $dropdown_style_meta ) {
-					$classes[] = 'wpex-dropdown-style-'. $dropdown_style_meta;
+					$classes[] = 'wpex-dropdown-style-' . $dropdown_style_meta;
 				}
 			} else {
-				unset( $classes['wpex-dropdown-style-'. $dropdown_style] );
+				unset( $classes['wpex-dropdown-style-' . $dropdown_style] );
 				$classes[] = 'wpex-dropdown-style-black';
 			}
 		}
@@ -200,7 +191,7 @@ function wpex_header_classes() {
 		$classes[] = 'overlay-header';
 
 		// Add overlay header style class
-		$classes[] = $overlay_style .'-style';
+		$classes[] = $overlay_style . '-style';
 
 	}
 
@@ -321,7 +312,7 @@ function wpex_header_logo_icon() {
 
 	// Return icon
 	if ( $icon && 'none' != $icon ) {
-		return '<span id="site-logo-fa-icon" class="fa fa-'. $icon .'" aria-hidden="true"></span>';
+		return '<span id="site-logo-fa-icon" class="ticon ticon-' . $icon . '" aria-hidden="true"></span>';
 	}
 
 }
@@ -332,7 +323,7 @@ function wpex_header_logo_icon() {
  * @since 2.0.0
  */
 function wpex_header_logo_title() {
-	return apply_filters( 'wpex_logo_title', get_bloginfo( 'name' ) );
+	return apply_filters( 'wpex_logo_title', get_bloginfo( 'name' ) ); // @todo rename to wpex_header_logo_title
 }
 
 /**
@@ -366,7 +357,7 @@ function wpex_header_logo_url() {
 		$url = get_permalink();
 	}
 	$url = $url ? $url : home_url( '/' );
-	return apply_filters( 'wpex_logo_url', $url );
+	return apply_filters( 'wpex_logo_url', $url ); // @todo rename to wpex_header_logo_url
 }
 
 /**
@@ -413,7 +404,7 @@ function wpex_header_logo_classes() {
  * @since 4.0
  */
 function wpex_header_logo_img_height() {
-	$height = apply_filters( 'logo_height', wpex_get_mod( 'logo_height' ) );
+	$height = apply_filters( 'logo_height', wpex_get_mod( 'logo_height' ) ); // @todo rename to wpex_header_logo_height unless this is also a setting coming from WordPress
 	return $height ? $height : '';  // can't be empty or 0
 }
 
@@ -445,7 +436,8 @@ function wpex_header_logo_img_retina() {
 	}
 
 	// Apply filters
-	$logo = apply_filters( 'wpex_retina_logo_url', $logo ); // @todo deprecate using apply_filters_deprecated and rename to "wpex_header_logo_img_retina_url"
+	$logo = apply_filters( 'wpex_retina_logo_url', $logo ); // // @todo deprecate using apply_filters_deprecated
+	$logo = apply_filters( 'wpex_header_logo_img_retina_url', $logo );
 
 	// Convert to URL if it's an ID
 	if ( $logo && is_numeric( $logo ) ) {
@@ -518,7 +510,7 @@ function wpex_header_logo_img_retina_js() {
 
 			$output .= 'if ( window.devicePixelRatio >= 2 ) {';
 
-				$output .= '$("#site-logo img.logo-img").attr("src","'. $logo_url .'" ).css("max-height","'. absint( $logo_height ) .'px");';
+				$output .= '$("#site-logo img.logo-img").attr("src","' . $logo_url . '" ).css("max-height","' . absint( $logo_height ) . 'px");';
 
 			$output .= '}';
 
@@ -706,7 +698,7 @@ function wpex_has_sticky_header() {
 	else {
 
 		// Return true if header is not disabled and header style is either 1 or 2
-		if ( 'disabled' != wpex_sticky_header_style() && ( 'one' == $header_style || 'five' == $header_style ) ) {
+		if ( 'disabled' != wpex_sticky_header_style() && ( 'one' == $header_style || 'five' == $header_style || 'seven' == $header_style ) ) {
 			$return = true;
 		}
 
@@ -718,8 +710,7 @@ function wpex_has_sticky_header() {
 	}
 
 	// Apply filters and return
-	// @todo rename to wpex_has_sticky_header
-	return apply_filters( 'wpex_has_fixed_header', $return );
+	return apply_filters( 'wpex_has_fixed_header', $return ); // @todo rename to wpex_has_sticky_header
 
 }
 
@@ -855,7 +846,7 @@ function wpex_has_shrink_sticky_header() {
 			$header_style = wpex_header_style();
 
 			// Only enabled for header styles 1 and 5
-			if ( 'one' == $header_style || 'five' == $header_style ) {
+			if ( 'one' == $header_style || 'five' == $header_style || 'seven' == $header_style ) {
 				$bool = true;
 			}
 
@@ -917,7 +908,7 @@ function wpex_header_aside_content() {
 
 	// Check if content is a page ID and get page content
 	if ( is_numeric( $content ) ) {
-		$post_id = $content;
+		$post_id = wpex_parse_obj_id( $content, 'page' );
 		$post = get_post( $post_id );
 		if ( $post && ! is_wp_error( $post ) ) {
 			$content = $post->post_content;

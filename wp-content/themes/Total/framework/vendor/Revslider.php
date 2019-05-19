@@ -92,7 +92,17 @@ class RevSlider {
 	 * @since 4.6.5
 	 */
 	public function remove_metabox() {
-		remove_meta_box( 'mymetabox_revslider_0', array( 'vc_grid_item', 'templatera', 'wpex_sidebars' ), 'normal' );
+		remove_meta_box(
+			'mymetabox_revslider_0',
+			array(
+				'vc_grid_item',
+				'templatera',
+				'wpex_sidebars',
+				'ptu',
+				'ptu_tax'
+			),
+			'normal'
+		);
 	}
 
 	/**

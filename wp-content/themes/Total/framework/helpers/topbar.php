@@ -175,6 +175,6 @@ function wpex_topbar_social_alt_content( $post_id = '' ) {
 	}
 
 	// Return content
-	return $content;
+	return apply_filters( 'wpex_topbar_social_alt_content', $content );
 
 }

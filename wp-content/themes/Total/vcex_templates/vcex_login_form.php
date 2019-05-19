@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -73,7 +67,7 @@ else :
 	}
 
 	$output .= '<div class="'. esc_attr( $add_classes ) .'"'. $wrap_style . vcex_get_unique_id( $unique_id ) .'>';
-		
+
 		$output .= wp_login_form( array(
 			'echo'           => false,
 			'redirect'       => $redirect ? esc_url( $redirect ) : false,
@@ -86,11 +80,11 @@ else :
 			'value_username' => NULL,
 			'value_remember' => false,
 		) );
-		
+
 		if ( 'true' == $register || 'true' == $lost_password ) {
 
 			$output .= '<div class="vcex-login-form-nav clr">';
-			
+
 				if ( 'true' == $register ) {
 
 					$label        = $register_label ? $register_label :  esc_html__( 'Register', 'total' );
@@ -99,11 +93,11 @@ else :
 					$output .= '<a href="'. esc_url( $register_url ) .'" class="vcex-login-form-register">'. esc_html( $label ) .'</a>';
 
 				}
-				
+
 				if ( 'true' == $register && 'true' == $lost_password ) {
 					$output .= '<span class="pipe">|</span>';
 				}
-				
+
 				if ( 'true' == $lost_password ) {
 
 					$label    = $lost_password_label ? $lost_password_label :  esc_html__( 'Lost Password?', 'total' );

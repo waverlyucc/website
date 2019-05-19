@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -18,7 +18,7 @@ if ( ! isset( $wp_customize->selective_refresh ) ) {
 }
 
 // Social Sharing
-$wp_customize->selective_refresh->add_partial( 'social_share', array(
+$wp_customize->selective_refresh->add_partial( 'social_share_sites', array(
 	'selector'            => '.wpex-social-share',
 	'settings'            => array(
 		'social_share_sites',
@@ -26,7 +26,6 @@ $wp_customize->selective_refresh->add_partial( 'social_share', array(
 		'social_share_style',
 		'social_share_shortcode',
 		'social_share_heading',
-		'social_share_visibility',
 		'social_share_label',
 	),
 	'primarySetting'      => 'social_share_sites',
@@ -46,6 +45,7 @@ $wp_customize->selective_refresh->add_partial( 'breadcrumbs', array(
 		'breadcrumbs_title_trim',
 		'blog_page',
 		'breadcrumbs_first_cat_only',
+		'breadcrumbs_disable_taxonomies',
 	),
 	'primarySetting'      => 'breadcrumbs',
 	'container_inclusive' => true,

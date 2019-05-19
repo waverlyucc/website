@@ -15,9 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Global Object Class => Deprecated since 4.0
 require_once WPEX_FRAMEWORK_DIR . 'deprecated/global-object.php';
 
-// Skins => Deprecated since 3.0.0
-require_once WPEX_FRAMEWORK_DIR .'deprecated/skins/skins.php';
-
 /*-----------------------------------------------------------------------------------*/
 /* - Deprecated constants
 /*-----------------------------------------------------------------------------------*/

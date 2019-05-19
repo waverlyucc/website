@@ -10,7 +10,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -30,10 +30,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	# Taxonomy & Terms
 	# Sliders
 	# Images
-	# Buttons
+	# Icons
 	# Search Functions
 	# Lightbox
 	# Post Galleries
+	# WooCommerce
+	# Tribe Events
 	# PHP Helpers
 	# Other
 
@@ -59,8 +61,8 @@ function wpex_get_theme_branding() {
  * @since 4.4.1
  */
 function wpex_get_custom_accent_color() {
-	$custom_accent  = wpex_get_mod( 'accent_color' );
-	if ( $custom_accent == '#3b86b0' || $custom_accent == '#4a97c2' ) {
+	$custom_accent = wpex_get_mod( 'accent_color' );
+	if ( $custom_accent == '#3b86b0' || $custom_accent == '#4a97c2' || $custom_accent == '#2c87f0' ) {
 		return; // Default accents
 	}
 	if ( $custom_accent ) {
@@ -100,14 +102,14 @@ function wpex_recommended_plugins() {
 			'name'             => 'WPBakery Page Builder',
 			'slug'             => 'js_composer',
 			'version'          => WPEX_VC_SUPPORTED_VERSION,
-			'source'           => WPEX_FRAMEWORK_DIR_URI . 'plugins/js_composer.zip',
+			'source'           => 'http://totalwptheme.s3.amazonaws.com/plugins/js_composer.zip',
 			'required'         => false,
 			'force_activation' => false,
 		),
 		'templatera'           => array(
 			'name'             => 'Templatera',
 			'slug'             => 'templatera',
-			'source'           => WPEX_FRAMEWORK_DIR_URI . 'plugins/templatera.zip',
+			'source'           => 'http://totalwptheme.s3.amazonaws.com/plugins/templatera.zip',
 			'version'          => '1.1.12',
 			'required'         => false,
 			'force_activation' => false,
@@ -115,8 +117,8 @@ function wpex_recommended_plugins() {
 		'revslider'            => array(
 			'name'             => 'Slider Revolution',
 			'slug'             => 'revslider',
-			'version'          => '5.4.8',
-			'source'           => WPEX_FRAMEWORK_DIR_URI . 'plugins/revslider.zip',
+			'version'          => '5.4.8.3',
+			'source'           => 'http://totalwptheme.s3.amazonaws.com/plugins/revslider.zip',
 			'required'         => false,
 			'force_activation' => false,
 		),
@@ -225,6 +227,11 @@ function wpex_get_current_post_id() {
 	// Posts page
 	elseif ( is_home() && $page_for_posts = get_option( 'page_for_posts' ) ) {
 		$id = $page_for_posts;
+	}
+
+	// Get current shop ID
+	if ( ! $id && wpex_is_woo_shop() ) {
+		$id = wpex_parse_obj_id( wc_get_page_id( 'shop' ) );
 	}
 
 	// Apply filters and return
@@ -434,6 +441,11 @@ function wpex_content_area_layout( $post_id = '' ) {
 			return 'full-width'; // Always return full-width
 		}
 
+		// Elementor
+		elseif( 'elementor_library' == $post_type ) {
+			return 'full-width'; // Always return full-width
+		}
+
 	} // End singular
 
 	// 404 page => must check before archives due to WP bug with pagination
@@ -518,10 +530,12 @@ function wpex_get_index_loop_type() {
  *
  * @since  1.0.0
  */
-function wpex_get_sidebar( $sidebar = 'sidebar', $post_id = '' ) {
+function wpex_get_sidebar( $sidebar = '', $post_id = '' ) {
 	$instance    = '';
 	$is_singular = is_singular();
 	$type        = $is_singular ? get_post_type() : '';
+	$fallback    = apply_filters( 'wpex_sidebar_has_fallback', true );
+	$sidebar     = ( ! $sidebar && $fallback ) ? 'sidebar' : $sidebar;
 
 	// Page Sidebar
 	if ( $is_singular ) {
@@ -575,6 +589,14 @@ function wpex_get_sidebar( $sidebar = 'sidebar', $post_id = '' ) {
 
 	}
 
+	// WooCommerce sidebar
+	if ( function_exists( 'is_woocommerce' ) &&
+		wpex_get_mod( 'woo_custom_sidebar', true )
+		&& is_woocommerce()
+	) {
+		$sidebar = 'woo_sidebar';
+	}
+
 	/***
 	 * FILTER    => Add filter for tweaking the sidebar display via child theme's
 	 * IMPORTANT => Must be added before meta options so that it doesn't take priority
@@ -593,13 +615,15 @@ function wpex_get_sidebar( $sidebar = 'sidebar', $post_id = '' ) {
 	// get_term_meta introduced in WP 4.4.0
 	if ( function_exists( 'get_term_meta' ) ) {
 
+		$meta_sidebar = '';
+
 		if ( $is_singular ) {
 
 			if ( 'page' != $type ) {
-			
+
 				$meta = '';
 				$taxonomies = get_object_taxonomies( $type );
-				
+
 				foreach( $taxonomies as $taxonomy ) {
 					if ( $meta ) break; // stop loop we found a custom sidebar
 					$terms = get_the_terms( get_the_ID(), $taxonomy );
@@ -612,7 +636,7 @@ function wpex_get_sidebar( $sidebar = 'sidebar', $post_id = '' ) {
 				}
 
 				if ( $meta ) {
-					$sidebar = $meta;
+					$meta_sidebar = $meta;
 				}
 
 			}
@@ -623,14 +647,23 @@ function wpex_get_sidebar( $sidebar = 'sidebar', $post_id = '' ) {
 		elseif ( is_tax() || is_category() || is_tag() ) {
 			$term_id = get_queried_object()->term_id;
 			if ( $term_id && $meta = get_term_meta( $term_id, 'wpex_sidebar', true ) ) {
-				$sidebar = $meta;
+				$meta_sidebar = $meta;
 			}
+		}
+
+		// Check if taxonomy sidebar is active and exits and if not fallback to filter
+		global $wp_registered_sidebars;
+		if ( is_array( $wp_registered_sidebars )
+			&& array_key_exists( $meta_sidebar, $wp_registered_sidebars )
+			&& is_active_sidebar( $meta_sidebar )
+		) {
+			$sidebar = $meta_sidebar;
 		}
 
 	}
 
 	// Never show empty sidebar
-	if ( $sidebar && ! is_active_sidebar( $sidebar ) ) {
+	if ( $sidebar && $fallback && ! is_active_sidebar( $sidebar ) ) {
 		$sidebar = 'sidebar';
 	}
 
@@ -703,8 +736,10 @@ function wpex_heading( $args = array() ) {
 	$add_classes = $classes;
 	$classes     = array(
 		'theme-heading',
-		wpex_get_mod( 'theme_heading_style' )
 	);
+	if ( $theme_heading_style = wpex_get_mod( 'theme_heading_style' ) ) {
+		$classes[] = $theme_heading_style;
+	}
 	if ( $add_classes && is_array( $add_classes ) ) {
 		$classes = array_merge( $classes, $add_classes );
 	}
@@ -751,9 +786,9 @@ if ( ! function_exists( 'wpex_element' ) ) {
 		elseif ( 'angle_right' == $element ) {
 
 			if ( is_rtl() ) {
-				return '<span class="fa fa-angle-left"></span>';
+				return '<span class="ticon ticon-angle-left"></span>';
 			} else {
-				return '<span class="fa fa-angle-right"></span>';
+				return '<span class="ticon ticon-angle-right"></span>';
 			}
 
 		}
@@ -901,6 +936,7 @@ function wpex_sanitize_data( $data = '', $type = '' ) {
  */
 function wpex_parse_html( $tag = '', $attrs = array(), $content = '' ) {
 	$attrs = wpex_parse_attrs( $attrs );
+	$tag   = trim( wp_strip_all_tags( $tag ) );
 	$output = '<' . $tag . ' ' . $attrs . '>';
 	if ( $content ) {
 		$output .= $content;
@@ -926,15 +962,15 @@ function wpex_parse_attrs( $attrs = null ) {
 	// Loop through attributes
 	foreach ( $attrs as $key => $val ) {
 
+		// Attributes used for other things, we can skip these
+		if ( 'content' == $key ) {
+			continue;
+		}
+
 		// If the attribute is an array convert to string
 		if ( is_array( $val ) ) {
 			$val = array_filter( $val, 'trim' ); // Remove extra space
 			$val = implode( ' ', $val );
-		}
-
-		// Val required => no need for empty attributes unless it's a data attribute
-		if ( ! $val && strpos( $key, 'data' ) === false ) {
-			continue;
 		}
 
 		// Sanitize rel attribute
@@ -971,9 +1007,19 @@ function wpex_parse_attrs( $attrs = null ) {
 			}
 		}
 
-		// Only add empty data attributes (such as data-no-retina)
-		elseif ( strpos( $key, 'data-' ) !== false ) {
-			$output .= ' ' . $key;
+		// Items with empty vals
+		else {
+
+			// Empty alts are allowed
+			if ( 'alt' == $key ) {
+				$output .= " alt='" . esc_attr( $val ) . "'";
+			}
+
+			// Data attributes
+			elseif ( strpos( $key, 'data-' ) !== false ) {
+				$output .= ' ' . $key;
+			}
+
 		}
 
 	}
@@ -1066,21 +1112,24 @@ function wpex_get_archive_grid_entry_class() {
  * @since 3.2.0
  */
 function wpex_entry_blocks() {
-	$type = get_post_type();
-	return apply_filters( 'wpex_'. $type .'_entry_blocks', array(
+	$blocks = array(
 		'media'    => 'media',
 		'title'    => 'title',
 		'meta'     => 'meta',
 		'content'  => 'content',
 		'readmore' => 'readmore',
-	), $type );
+	);
+	$type   = get_post_type();
+	$blocks = apply_filters( 'wpex_' . $type . '_entry_blocks', $blocks, $type );
+	$blocks = apply_filters( 'wpex_entry_blocks', $blocks, $type );
+	return $blocks;
 }
 
 /**
  * Returns array of blocks for the single post type layout
  *
  * @since 3.2.0
- * @todo Update so all post types pass through the wpex_single_blocks filter. And update files so all post types use the wpex_single_blocks function. 
+ * @todo Update so all post types pass through the wpex_single_blocks filter. And update files so all post types use the wpex_single_blocks function.
  */
 function wpex_single_blocks( $post_type = '' ) {
 
@@ -1093,6 +1142,8 @@ function wpex_single_blocks( $post_type = '' ) {
 	// Get correct blocks by post type
 	if ( 'page' == $type ) {
 		$blocks = wpex_get_mod( 'page_composer', array( 'content' ) );
+	} elseif ( 'elementor_library' == $type ) {
+		return array( 'content' );
 	} elseif( 'post' == $type ) {
 		return wpex_blog_single_layout_blocks();
 	} elseif ( 'portfolio' == $type ) {
@@ -1161,19 +1212,15 @@ function wpex_get_term_thumbnail_id( $term_id = '' ) {
 	// Get thumbnail ID from term
 	if ( $term_id ) {
 
-		// Woo Check first
-		if ( function_exists( 'get_woocommerce_term_meta' )
-			&& $woo_id = get_woocommerce_term_meta( $term_id, 'thumbnail_id', true )
-		) {
+		$thumbnail_id = get_term_meta( $term_id, 'thumbnail_id', true );
 
-			$thumbnail_id = $woo_id;
+		// Check term meta first
+		if ( empty( $thumbnail_id ) ) {
 
-		} else {
-				
 			// Get data
 			$term_data = get_option( 'wpex_term_data' );
 			$term_data = ! empty( $term_data[ $term_id ] ) ? $term_data[ $term_id ] : '';
-			
+
 			// Return thumbnail ID
 			if ( $term_data && ! empty( $term_data['thumbnail'] ) ) {
 				return $term_data['thumbnail'];
@@ -1330,7 +1377,7 @@ function wpex_list_post_terms( $taxonomy = 'category', $show_links = true, $echo
 
 	// Turn into comma seperated string
 	if ( $list_terms && is_array( $list_terms ) ) {
-		$list_terms = implode( ', ', $list_terms );
+		$list_terms = implode( '<span class="wpex-sep">,</span> ', $list_terms );
 	} else {
 		return;
 	}
@@ -1652,8 +1699,28 @@ function wpex_image_filter_class( $filter ) {
 }
 
 /*-------------------------------------------------------------------------------*/
-/* [ Buttons ]
+/* [ Icons ]
 /*-------------------------------------------------------------------------------*/
+
+/**
+ * Returns Theme Icon HTML
+ *
+ * @since 4.8
+ */
+if ( ! function_exists( 'wpex_get_theme_icon_html' ) ) {
+	function wpex_get_theme_icon_html( $icon = '' ) {
+		return '<span class="ticon ticon-' . $icon . '" aria-hidden="true"></span>';
+	}
+}
+
+/**
+ * Echo Theme Icon HTML
+ *
+ * @since 4.8
+ */
+function wpex_theme_icon_html( $icon = '' ) {
+	return '<span class="ticon ticon-' . $icon . '" aria-hidden="true"></span>';
+}
 
 /**
  * Returns Font Awesome icons corresponding to post formats
@@ -1662,20 +1729,20 @@ function wpex_image_filter_class( $filter ) {
  */
 function wpex_get_post_format_icon( $format = '' ) {
 
-	$icon = 'fa fa-file-text-o';
+	$icon = 'ticon ticon-file-text-o';
 
 	// Get post format
 	$format = $format ? $format : get_post_format();
 
 	// Video
 	if ( 'video' == $format ) {
-		$icon = 'fa fa-video-camera';
+		$icon = 'ticon ticon-video-camera';
 	} elseif ( 'audio' == $format ) {
-		$icon = 'fa fa-music';
+		$icon = 'ticon ticon-music';
 	} elseif ( 'gallery' == $format ) {
-		$icon = 'fa fa-file-photo-o';
+		$icon = 'ticon ticon-file-photo-o';
 	} elseif ( 'quote' == $format ) {
-		$icon = 'fa fa-quote-left';
+		$icon = 'ticon ticon-quote-left';
 	}
 
 	// Apply filters for child theme editing and return
@@ -1900,9 +1967,44 @@ function wpex_enqueue_ilightbox_skin( $skin = null ) {
 	return TotalTheme\iLightbox::enqueue_style( $skin );
 }
 
-// Deprecated functions
+// Deprecated function
 function wpex_ilightbox_stylesheet( $skin = null ) {
 	return; // This function is no longer needed and shouldn't be used
+}
+
+/**
+ * Returns array for use with inline gallery lightbox
+ *
+ * @since 4.8
+ */
+function wpex_parse_inline_lightbox_gallery( $attachments = array() ) {
+	if ( ! $attachments ) {
+		return;
+	}
+	$gallery = array();
+	$has_titles   = apply_filters( 'wpex_inline_lightbox_gallery_titles', true );
+	$has_captions = apply_filters( 'wpex_inline_lightbox_gallery_captions', true );
+	$count = -1;
+	foreach ( $attachments as $id ) {
+		$count ++;
+		$gallery_image = esc_url( wpex_get_lightbox_image( $id ) );
+		$video         = esc_url( wpex_get_video_embed_url( wpex_get_attachment_data( $id, 'video' ) ) );
+		if ( $gallery_image || $video ) {
+			$gallery[$count]['URL'] = $video ? $video : $gallery_image;
+			if ( $has_titles ) {
+				$gallery[$count]['title'] = wpex_get_attachment_data( $id, 'alt' );
+			}
+			if ( $has_captions ) {
+				$gallery[$count]['caption'] = wpex_get_attachment_data( $id, 'caption' );
+			}
+			if ( $video ) {
+				$gallery[$count]['type']                  = 'iframe';
+				$gallery[$count]['options']['thumbnail']  = $gallery_image;
+				$gallery[$count]['options']['iframeType'] = 'video';
+			}
+		}
+	}
+	return htmlspecialchars( json_encode( $gallery ) );
 }
 
 /*-------------------------------------------------------------------------------*/
@@ -1916,8 +2018,8 @@ function wpex_ilightbox_stylesheet( $skin = null ) {
  */
 function wpex_post_has_gallery( $post_id = '' ) {
 	$post_id = $post_id ? $post_id : wpex_get_current_post_id();
-	if ( get_post_meta( $post_id, '_easy_image_gallery', true ) ) {
-		return true;
+	if ( get_post_meta( $post_id, '_easy_image_gallery', true ) || apply_filters( 'wpex_get_post_gallery_ids', null ) ) {
+		return true; // this is a quick check
 	}
 }
 
@@ -1938,7 +2040,8 @@ function wpex_get_gallery_ids( $post_id = '' ) {
 	$attachment_ids = $attachment_ids ? $attachment_ids : get_post_meta( $post_id, '_easy_image_gallery', true );
 	if ( $attachment_ids ) {
 		$attachment_ids = is_array( $attachment_ids ) ? $attachment_ids : explode( ',', $attachment_ids );
-		return array_values( array_filter( $attachment_ids, 'wpex_sanitize_gallery_id' ) );
+		$attachment_ids = array_values( array_filter( $attachment_ids, 'wpex_sanitize_gallery_id' ) );
+		return apply_filters( 'wpex_get_post_gallery_ids', $attachment_ids );
 	}
 }
 
@@ -1988,14 +2091,120 @@ function wpex_gallery_count( $post_id = '' ) {
 	return count( $ids );
 }
 
+/*-------------------------------------------------------------------------------*/
+/* [ WooCommerce ]
+/*-------------------------------------------------------------------------------*/
+
 /**
- * Check if lightbox is enabled
+ * Outputs placeholder image
  *
  * @since 1.0.0
  */
-function wpex_gallery_is_lightbox_enabled( $post_id = '' ) {
-	$post_id = $post_id ? $post_id : wpex_get_current_post_id();
-	return ( 'on' == get_post_meta( $post_id, '_easy_image_gallery_link_images', true ) ) ?  true : false;
+function wpex_woo_placeholder_img() {
+	if ( function_exists( 'wc_placeholder_img_src' ) && wc_placeholder_img_src() ) {
+		$placeholder = '<img src="'. wc_placeholder_img_src() .'" alt="'. esc_attr__( 'Placeholder Image', 'total' ) .'" class="woo-entry-image-main" />';
+		$placeholder = apply_filters( 'wpex_woo_placeholder_img_html', $placeholder );
+		if ( $placeholder ) {
+			echo $placeholder;
+		}
+	}
+}
+
+/**
+ * Check if product is in stock
+ *
+ * @since 1.0.0
+ */
+function wpex_woo_product_instock() {
+	global $product;
+	if ( ! $product || ( $product && $product->is_in_stock() ) ) {
+		return true;
+	}
+}
+
+/**
+ * Outputs product price
+ *
+ * @since 1.0.0
+ */
+function wpex_woo_product_price( $post_id = '' ) {
+	echo wpex_get_woo_product_price( $post_id );
+}
+
+/**
+ * Returns product price
+ *
+ * @since 1.0.0
+ */
+function wpex_get_woo_product_price( $post_id = '' ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+	if ( 'product' == get_post_type( $post_id ) ) {
+		$product = wc_get_product( $post_id );
+		$price   = $product->get_price_html();
+		if ( $price ) {
+			return $price;
+		}
+	}
+}
+
+/*-------------------------------------------------------------------------------*/
+/* [ Tribe Events ]
+/*-------------------------------------------------------------------------------*/
+
+/**
+ * Check if currently on a tribe events page
+ *
+ * @since 4.0
+ */
+function wpex_is_tribe_events() {
+	if ( is_search() ) {
+		return false; // fixes some bugs
+	}
+	if ( tribe_is_event()
+		|| tribe_is_view()
+		|| tribe_is_list_view()
+		|| tribe_is_event_category()
+		|| tribe_is_in_main_loop()
+		|| tribe_is_day()
+		|| tribe_is_month()
+		|| is_singular( 'tribe_events' ) ) {
+		return true;
+	}
+}
+
+/**
+ * Displays event date
+ *
+ * @since 3.3.3
+ */
+function wpex_get_tribe_event_date( $instance = '' ) {
+	return apply_filters(
+		'wpex_get_tribe_event_date',
+		tribe_get_start_date( get_the_ID(), false, get_option( 'date_format' ) ),
+		$instance
+	);
+}
+
+/**
+ * Gets correct tribe events page ID
+ *
+ * @since 3.3.3
+ */
+function wpex_get_tribe_events_main_page_id() {
+
+	// Check customizer setting
+	if ( $mod = wpex_get_mod( 'tribe_events_main_page' ) ) {
+		return $mod;
+	}
+
+	// Check from slug
+	elseif ( class_exists( 'Tribe__Settings_Manager' ) ) {
+		$page_slug = Tribe__Settings_Manager::get_option( 'eventsSlug', 'events' );
+		if ( $page_slug && $page = get_page_by_path( $page_slug ) ) {
+			return $page->ID;
+		}
+	}
+
 }
 
 /*-------------------------------------------------------------------------------*/
@@ -2039,7 +2248,7 @@ function wpex_array_insert_before( $key, array $array, $new_key, $new_value = nu
  *
  * @return array
  */
- 
+
 function wpex_array_insert_after( $key, array  $array, $new_key, $new_value = null ) {
 	if ( array_key_exists( $key, $array ) ) {
 		$new = array();
@@ -2071,14 +2280,14 @@ function wpex_user_can_access( $check, $custom_callback = '' ) {
 
 	// Logged in acccess
 	if ( 'logged_in' == $check ) {
-		
+
 		return is_user_logged_in();
 
 	}
 
 	// Logged out access
 	elseif ( 'logged_out' == $check ) {
-		
+
 		return is_user_logged_in() ? false : true;
 
 	}
@@ -2089,7 +2298,7 @@ function wpex_user_can_access( $check, $custom_callback = '' ) {
 		if ( ! is_callable( $custom_callback ) ) {
 			return true;
 		}
-		
+
 		return call_user_func( $custom_callback );
 
 	}
@@ -2189,9 +2398,9 @@ function wpex_get_star_rating( $rating = '', $post_id = '' ) {
 	$output = '';
 
 	// Star fonts
-	$full_star  = '<span class="fa fa-star" aria-hidden="true"></span>';
-	$half_star  = '<span class="fa fa-star-half-full" aria-hidden="true"></span>';
-	$empty_star = '<span class="fa fa-star-o" aria-hidden="true"></span>';
+	$full_star  = '<span class="ticon ticon-star" aria-hidden="true"></span>';
+	$half_star  = '<span class="ticon ticon-star-half-empty" aria-hidden="true"></span>';
+	$empty_star = '<span class="ticon ticon-star-empty" aria-hidden="true"></span>';
 
 	// Integers
 	if ( ( is_numeric( $rating ) && ( intval( $rating ) == floatval( $rating ) ) ) ) {

@@ -4,7 +4,7 @@ Plugin Name: WP YouTube Lyte
 Plugin URI: http://blog.futtta.be/wp-youtube-lyte/
 Description: Lite and accessible YouTube audio and video embedding.
 Author: Frank Goossens (futtta)
-Version: 1.7.5
+Version: 1.7.7
 Author URI: http://blog.futtta.be/
 Text Domain: wp-youtube-lyte
 Domain Path: /languages
@@ -13,7 +13,7 @@ Domain Path: /languages
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $debug=false;
-$lyte_version="1.7.0";
+$lyte_version="1.7.7";
 $lyte_db_version=get_option('lyte_version','none');
 
 /** have we updated? */
@@ -102,7 +102,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
         $the_content=preg_replace('/^https?:\/\/(www.)?youtu(be.com|.be)\/(watch\?v=)?/m','httpv://www.youtube.com/watch?v=',$the_content);
 
         // new: also replace original YT embed code (iframes)
-        if ( apply_filters( 'lyte_eats_yframes', true ) && preg_match_all('#<iframe(?:.*)?\ssrc=["|\']https:\/\/www\.youtube\.com\/embed\/(.*)["|\']\s(?:.*)><\/iframe>#Usm', $the_content, $matches, PREG_SET_ORDER)) {
+        if ( apply_filters( 'lyte_eats_yframes', true ) && preg_match_all('#<iframe(?:[^<]*)?\ssrc=["|\']https:\/\/www\.youtube(?:-nocookie)?\.com\/embed\/(.*)["|\'](?:.*)><\/iframe>#Usm', $the_content, $matches, PREG_SET_ORDER)) {
             foreach ($matches as $match) {
                 $the_content = str_replace($match[0], 'httpv://youtu.be/'.$match[1], $the_content);
             }
@@ -240,9 +240,12 @@ function lyte_parse($the_content,$doExcerpt=false) {
                     default:
                         $noscript_post="";
                         $lytelinks_txt="<div class=\"lL\" style=\"max-width:100%;width:".$lyteSettings[2]."px;".$lyteSettings['pos']."\">".__("Watch this video","wp-youtube-lyte")." <a href=\"".$lyteSettings['scheme']."://youtu.be/".$vid."\">".__("on YouTube","wp-youtube-lyte")."</a>.</div>";
-                    }
-
-                $noscript="<noscript><a href=\"".$lyteSettings['scheme']."://youtu.be/".$vid."\"><img src=\"".$lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/0.jpg\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$NSimgHeight."\" />".$noscript_post."</a></noscript>";
+                }
+                $thumbUrl = $lyteSettings['scheme']."://i.ytimg.com/vi/".$vid."/0.jpg";
+                if (get_option('lyte_local_thumb','0') === '1') {
+                        $thumbUrl = plugins_url( 'lyteThumbs.php?origThumbUrl=' . urlencode($thumbUrl) , __FILE__   );
+                }
+                $noscript="<noscript><a href=\"".$lyteSettings['scheme']."://youtu.be/".$vid."\"><img src=\"" . $thumbUrl . "\" alt=\"\" width=\"".$lyteSettings[2]."\" height=\"".$NSimgHeight."\" />".$noscript_post."</a></noscript>";
             }
             
             // add disclaimer to lytelinks
@@ -331,7 +334,7 @@ function lyte_parse($the_content,$doExcerpt=false) {
 
             // do we have to serve the thumbnail from local cache?
             if (get_option('lyte_local_thumb','0') === '1') {
-                    $thumbUrl = plugins_url( 'lyteThumbs.php?origThumbUrl=' . urlencode($thumbUrl) , __FILE__   );
+                $thumbUrl = plugins_url( 'lyteThumbs.php?origThumbUrl=' . urlencode($thumbUrl) , __FILE__   );
             }
 
             /** API: filter hook to override thumbnail URL */
@@ -619,12 +622,23 @@ function shortcode_lyte($atts) {
         "id"    => '',
         "audio" => '',
         "playlist" => '',
+        "start" => '',
+        "showinfo" => '',
+        "stepsize" => '',
+        "hqthumb" => '',
     ), $atts));
-        
+
+    $qs = '';
+
     if ($audio) {$proto="httpa";} else {$proto="httpv";}
+    if ($start !== '') { $qs .= "&amp;start=".$start; }
+    if ($showinfo === "false") { $qs .= "&amp;showinfo=0"; }
+    if ($hqthumb) { $qs .= "&amp;hqThumb=1"; }
+    if ($stepsize) { $qs .= "#stepSize=".$stepsize; }
     if ($playlist) {$action="playlist?list=";} else {$action="watch?v=";}
-        return lyte_parse($proto.'://www.youtube.com/'.$action.$id);
-    }
+
+    return lyte_parse($proto.'://www.youtube.com/'.$action.$id.$qs);
+}
 
 /** update functions */
 /** upgrade, so lyte should not be greedy */
@@ -634,6 +648,16 @@ function lyte_not_greedy() {
 
 /** function to flush YT responses from cache */
 function lyte_rm_cache() {
+    // remove thumbnail cache
+    if (get_option('lyte_local_thumb','0') === '1') {
+        if ( ! defined( 'LYTE_CACHE_DIR' ) ) {
+            define( 'LYTE_CACHE_CHILD_DIR', 'cache/lyteThumbs' );
+            define( 'LYTE_CACHE_DIR', WP_CONTENT_DIR .'/'. LYTE_CACHE_CHILD_DIR );
+        }
+        array_map('unlink', glob(LYTE_CACHE_DIR . "/*"));
+    }
+
+    // and remove cached YT data from postmeta
     try {
         ini_set('max_execution_time',90); // give PHP some more time for this, post-meta can be sloooooow
         

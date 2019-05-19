@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -24,6 +24,6 @@ $action      = apply_filters( 'wpex_search_action', esc_url( home_url( '/' ) ), 
 		<?php if ( WPEX_WOOCOMMERCE_ACTIVE && wpex_get_mod( 'woo_header_product_searchform', false ) ) { ?>
 			<input type="hidden" name="post_type" value="product" />
 		<?php } ?>
-		<button type="submit" class="searchform-submit" aria-label="<?php echo esc_attr_x( 'Submit search', 'aria-label', 'total' ); ?>"><span class="fa fa-search"></span></button>
+		<button type="submit" class="searchform-submit" aria-label="<?php echo esc_attr_x( 'Submit search', 'aria-label', 'total' ); ?>"><span class="ticon ticon-search"></span></button>
 	</form>
 </div>

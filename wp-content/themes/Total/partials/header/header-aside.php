@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -28,23 +28,29 @@ if ( $content || ( wpex_get_mod( 'main_search', true ) && 'two' == $header_style
 	}
 	if ( $header_style ) {
 		$classes .= ' header-' . $header_style . '-aside';
-	} ?>
+	}
+
+	// Placeholder
+	$placeholder = esc_attr( apply_filters( 'wpex_get_header_aside_search_form_placeholder', __( 'search', 'total' ) ) ); ?>
 
 	<aside id="header-aside" class="<?php echo esc_attr( $classes ); ?>">
 		<div class="header-aside-content clr"><?php echo do_shortcode( wp_kses_post( $content ) ); ?></div>
 		<?php
 		// Show header search field if enabled in the theme options panel and it's header style 2
-		if ( wpex_get_mod( 'header_aside_search', true ) && 'two' == $header_style ) : ?>
+		if ( 'two' == $header_style && wpex_get_mod( 'header_aside_search', true ) ) : ?>
 			<div id="header-two-search" class="clr">
 				<form method="get" class="header-two-searchform" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-					<input type="search" id="header-two-search-input" name="s" value="<?php echo esc_attr( apply_filters( 'wpex_get_header_aside_search_form_placeholder', __( 'search', 'total' ) ) ); ?>" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
+					<label>
+						<span class="screen-reader-text"><?php echo esc_attr( $placeholder ); ?></span>
+						<input type="search" id="header-two-search-input" name="s" placeholder="<?php echo esc_attr( $placeholder ); ?>">
+					</label>
 					<?php if ( defined( 'ICL_LANGUAGE_CODE' ) ) : ?>
 						<input type="hidden" name="lang" value="<?php echo( ICL_LANGUAGE_CODE ); ?>"/>
 					<?php endif; ?>
 					<?php if ( WPEX_WOOCOMMERCE_ACTIVE && wpex_get_mod( 'woo_header_product_searchform', false ) ) { ?>
 						<input type="hidden" name="post_type" value="product" />
 					<?php } ?>
-					<?php $button_text = apply_filters( 'wpex_header_aside_search_button_text', '<span class="fa fa-search" aria-hidden="true"></span><span class="screen-reader-text">' . __( 'Search', 'total' ) . '</span>' ); ?>
+					<?php $button_text = apply_filters( 'wpex_header_aside_search_button_text', '<span class="ticon ticon-search" aria-hidden="true"></span><span class="screen-reader-text">' . __( 'Search', 'total' ) . '</span>' ); ?>
 					<button type="submit" id="header-two-search-submit"><?php echo wp_kses_post( $button_text ); ?></button>
 				</form>
 			</div>

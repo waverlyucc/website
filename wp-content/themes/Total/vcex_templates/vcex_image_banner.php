@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -92,13 +86,13 @@ $output = '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 		$output .= '<a ' . wpex_parse_attrs( $link_attrs ) . '>';
 
 	}
-	
+
 	// Image
 	if ( 'featured' == $image_source ) {
-		$image = get_post_thumbnail_id( wpex_get_current_post_id() );
+		$image = get_post_thumbnail_id( wpex_get_dynamic_post_id() );
 	} elseif ( 'custom_field' == $image_source ) {
 		if ( $image_custom_field ) {
-			$custom_field_val = get_post_meta( wpex_get_current_post_id(), $image_custom_field, true );
+			$custom_field_val = get_post_meta( wpex_get_dynamic_post_id(), $image_custom_field, true );
 			$image = intval( $custom_field_val );
 		}
 	}
@@ -138,7 +132,7 @@ $output = '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 		$inner_style = $inner_style ? ' ' . $inner_style : '';
 
 		$output .= '<div class="vcex-ib-content clr"' . $inner_style . '>';
-	
+
 			// Heading
 			if ( $heading ) {
 

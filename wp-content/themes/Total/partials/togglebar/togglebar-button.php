@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.3
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -34,11 +34,11 @@ if ( 'visible' == $default_state ) {
 
 // Closed icon classes
 $closed_icon = wpex_get_mod( 'toggle_bar_button_icon', 'plus' );
-$closed_icon = esc_attr( apply_filters( 'wpex_togglebar_icon_class', 'fa fa-'. $closed_icon ) );
+$closed_icon = esc_attr( apply_filters( 'wpex_togglebar_icon_class', 'ticon ticon-'. $closed_icon ) );
 
 // Active icon classes
 $active_icon = wpex_get_mod( 'toggle_bar_button_icon_active', 'minus' );
-$active_icon = esc_attr( apply_filters( 'wpex_togglebar_icon_active_class', 'fa fa-'. $active_icon ) );
+$active_icon = esc_attr( apply_filters( 'wpex_togglebar_icon_active_class', 'ticon ticon-'. $active_icon ) );
 
 // Default icon
 $default_icon = ( 'visible' == $default_state ) ? $active_icon : $closed_icon;

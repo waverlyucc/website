@@ -1,0 +1,58 @@
+/*
+Theme Name: Waverly
+Theme URI: https://waverlyucc.org
+Description:  Waverly custom theme, a child theme of the "Total" theme.
+Author: Ivan Boothe
+Author URI: http://rootwork.org
+Template: Total
+Version: 1.0
+*/
+
+/* Parent stylesheet should be loaded from functions.php not using @import */
+
+/* Add a little extra spacing to menu items */
+.navbar-style-one .dropdown-menu > li {
+	margin-left: 8px
+}
+
+/* Remove margin from menu social icons and search */
+#site-navigation .dropdown-menu li.social-item,
+#site-navigation .dropdown-menu li.wpex-menu-extra {
+  margin-left: 0;
+}
+
+#site-navigation .dropdown-menu li.social-item .fa {
+  margin-right: 0;
+}
+
+/* Add background to centered minimal page header */
+.page-header.centered-minimal-page-header {
+  background: #f7f7f7;
+}
+
+/* Hide Social Icons From Mobile Menu */
+#sidr-id-menu-item-103, #sidr-id-menu-item-104, #sidr-id-menu-item-105 {
+  display: none;
+}
+
+/* Provide semantic visual hiding. (Thanks John Albin Wilkins!) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  word-wrap: normal;
+}
+
+.visually-hidden--off,
+.visually-hidden--focusable:active,
+.visually-hidden--focusable:focus,
+.visually-hidden.focusable:active,
+.visually-hidden.focusable:focus {
+  position: static !important;
+  clip: auto;
+  height: auto;
+  width: auto;
+  overflow: visible;
+}

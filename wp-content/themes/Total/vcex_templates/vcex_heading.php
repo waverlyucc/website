@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,28 +17,19 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' )
-	|| ! function_exists( 'vc_shortcode_custom_css_class' )
-	|| ! function_exists( 'vc_value_from_safe' )
-) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Get and extract shortcode attributes
 $atts = vcex_vc_map_get_attributes( 'vcex_heading', $atts );
 extract( $atts );
 
 // Get text
 if ( 'post_title' == $source ) {
-	$text = wpex_title( wpex_get_current_post_id() ); // Supports archives as well
+	$text = wpex_title( wpex_get_dynamic_post_id() ); // Supports archives as well
 } elseif ( 'post_date' == $source ) {
-	$text = get_the_date( '', wpex_get_current_post_id() );
+	$text = get_the_date( '', wpex_get_dynamic_post_id() );
 } elseif ( 'post_modified_date' == $source ) {
-	$text = get_the_modified_date( '', wpex_get_current_post_id() );
+	$text = get_the_modified_date( '', wpex_get_dynamic_post_id() );
 } elseif ( 'post_author' == $source ) {
-	$post_tmp = get_post( wpex_get_current_post_id() );
+	$post_tmp = get_post( wpex_get_dynamic_post_id() );
 	if ( $user = get_userdata( $post_tmp->post_author ) ) {
 		$text = $user->data->display_name;
 	} else {
@@ -47,7 +38,7 @@ if ( 'post_title' == $source ) {
 } elseif ( 'current_user' == $source ) {
 	$text = wp_get_current_user()->display_name;
 } elseif( 'custom_field' == $source ) {
-	$text = $custom_field ? get_post_meta( wpex_get_current_post_id(), $custom_field, true ) : '';
+	$text = $custom_field ? get_post_meta( wpex_get_dynamic_post_id(), $custom_field, true ) : '';
 } elseif( 'callback_function' == $source ) {
 	$text = ( $callback_function && function_exists( $callback_function ) ) ? call_user_func( $callback_function ) : '';
 } else {
@@ -241,7 +232,7 @@ $output .= '</'. $tag .'>';
 if ( $link_wrap_tag ) {
 
 	$output .= '</'. $link_wrap_tag .'>';
-	
+
 }
 
 // Echo heading

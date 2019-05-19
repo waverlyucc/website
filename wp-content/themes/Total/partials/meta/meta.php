@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.5.4.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -28,13 +28,13 @@ if ( ! empty( $blocks ) && is_array( $blocks ) ) : ?>
 			// Date
 			if ( 'date' == $val ) : ?>
 
-				<li class="meta-date"><span class="fa fa-clock-o" aria-hidden="true"></span><time class="updated" datetime="<?php esc_attr( the_date( 'Y-m-d' ) ); ?>"<?php wpex_schema_markup( 'publish_date' ); ?>><?php echo get_the_date(); ?></time></li>
+				<li class="meta-date"><span class="ticon ticon-clock-o" aria-hidden="true"></span><time class="updated" datetime="<?php esc_attr( the_date( 'Y-m-d' ) ); ?>"<?php wpex_schema_markup( 'publish_date' ); ?>><?php echo get_the_date(); ?></time></li>
 
 			<?php
 			// Author
 			elseif ( 'author' == $val ) : ?>
 
-				<li class="meta-author"><span class="fa fa-user" aria-hidden="true"></span><span class="vcard author"<?php wpex_schema_markup( 'author_name' ); ?>><span class="fn"><?php the_author_posts_link(); ?></span></span></li>
+				<li class="meta-author"><span class="ticon ticon-user-o" aria-hidden="true"></span><span class="vcard author"<?php wpex_schema_markup( 'author_name' ); ?>><span class="fn"><?php the_author_posts_link(); ?></span></span></li>
 
 			<?php
 			// Categories
@@ -44,7 +44,7 @@ if ( ! empty( $blocks ) && is_array( $blocks ) ) : ?>
 
 				if ( $taxonomy && $categories = wpex_list_post_terms( $taxonomy, true, false ) ) { ?>
 
-					<li class="meta-category"><span class="fa fa-folder-o" aria-hidden="true"></span><?php echo $categories; ?></li>
+					<li class="meta-category"><span class="ticon ticon-folder-o" aria-hidden="true"></span><?php echo $categories; ?></li>
 
 				<?php } ?>
 
@@ -54,7 +54,7 @@ if ( ! empty( $blocks ) && is_array( $blocks ) ) : ?>
 
 				<?php if ( comments_open() && ! post_password_required() ) { ?>
 				
-					<li class="meta-comments comment-scroll"><span class="fa fa-comment-o" aria-hidden="true"></span><?php comments_popup_link( esc_html__( '0 Comments', 'total' ), esc_html__( '1 Comment',  'total' ), esc_html__( '% Comments', 'total' ), 'comments-link' ); ?></li>
+					<li class="meta-comments comment-scroll"><span class="ticon ticon-comment-o" aria-hidden="true"></span><?php comments_popup_link( esc_html__( '0 Comments', 'total' ), esc_html__( '1 Comment',  'total' ), esc_html__( '% Comments', 'total' ), 'comments-link' ); ?></li>
 
 				<?php } ?>
 			

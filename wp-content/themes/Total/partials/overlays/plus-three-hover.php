@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 3.3.0
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,4 +17,4 @@ if ( 'inside_link' != $position ) {
 	return;
 } ?>
 
-<div class="overlay-plus-three-hover overlay-hide theme-overlay wpex-accent-color"><span class="fa fa-plus-circle"></span></div>
+<div class="overlay-plus-three-hover overlay-hide theme-overlay wpex-accent-color"><span class="ticon ticon-plus-circle"></span></div>

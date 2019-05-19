@@ -6,7 +6,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.7
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -19,10 +19,10 @@ $text = wpex_get_translated_theme_mod( 'mobile_menu_toggle_text' );
 $text = $text ? $text : esc_html__( 'Menu', 'total' );
 $text = apply_filters( 'wpex_mobile_menu_navbar_open_text', $text ); ?>
 
-<div id="wpex-mobile-menu-navbar" class="clr wpex-mobile-menu-toggle wpex-hidden">
+<div id="wpex-mobile-menu-navbar" class="<?php echo wpex_header_mobile_menu_classes(); ?>">
 	<div class="container clr">
 		<a href="#mobile-menu" class="mobile-menu-toggle">
-			<?php echo apply_filters( 'wpex_mobile_menu_navbar_open_icon', '<span class="fa fa-navicon" aria-hidden="true"></span>' ); ?><span class="wpex-text"><?php echo wp_kses_post( $text ); ?></span>
+			<?php echo apply_filters( 'wpex_mobile_menu_navbar_open_icon', '<span class="ticon ticon-navicon" aria-hidden="true"></span>' ); ?><span class="wpex-text"><?php echo wp_kses_post( $text ); ?></span>
 		</a>
 	</div>
 </div>

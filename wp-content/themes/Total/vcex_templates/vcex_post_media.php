@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,17 +17,13 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Get and extract shortcode attributes
 extract( vc_map_get_attributes( 'vcex_post_media', $atts ) );
 
-$post_id = wpex_get_current_post_id();
+// Get correct post ID
+$post_id = wpex_get_dynamic_post_id();
 
+// Thumbnail args
 $thumbnail_args = array(
 	'attachment' => get_post_thumbnail_id( $post_id ),
 	'size'       => $img_size,
@@ -36,6 +32,7 @@ $thumbnail_args = array(
 	'height'     => $img_height,
 );
 
+// Define wrap classes
 $wrap_class = 'vcex-post-media clr';
 
 if ( $css ) {
@@ -51,11 +48,12 @@ if ( $visibility ) {
 	$wrap_class .= ' ' . $visibility;
 }
 
+// Module output
 $output = '<div class="' . esc_attr( $wrap_class ) . '">';
 
 	$output .= wpex_get_post_media( $post_id, array(
 		'thumbnail_args' => $thumbnail_args,
-		'lightbox'       => ( $lightbox == true ) ? true : false,
+		'lightbox'       => ( $lightbox == 'true' ) ? true : false,
 	) );
 
 $output .= '</div>';

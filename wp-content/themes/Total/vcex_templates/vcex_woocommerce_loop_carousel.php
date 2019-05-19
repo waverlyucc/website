@@ -26,7 +26,7 @@ $atts['post_type'] = 'product';
 $atts['taxonomy']  = 'product_cat';
 $atts['tax_query'] = '';
 
-// Custom query_products_by argument 
+// Custom query_products_by argument
 if ( $atts['query_products_by'] ) {
 	if ( 'featured' == $atts['query_products_by'] ) {
 		$atts['featured_products_only'] = true;
@@ -75,15 +75,15 @@ if ( $wpex_query->have_posts() ) :
 	if ( wpex_get_mod( 'woo_entry_equal_height', false ) ) {
 		//$wrap_classes[] = 'match-height-grid';
 	}*/
-	
+
 	if ( $visibility ) {
 		$wrap_classes[] = $visibility;
 	}
-	
+
 	if ( $css_animation && 'none' != $css_animation ) {
 		$wrap_classes[] = vcex_get_css_animation( $css_animation );
 	}
-	
+
 	if ( $classes ) {
 		$wrap_classes[] = vcex_get_extra_class( $classes );
 	}

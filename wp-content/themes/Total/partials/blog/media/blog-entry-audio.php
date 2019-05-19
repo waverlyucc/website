@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -34,7 +34,7 @@ elseif ( $thumbnail = wpex_get_blog_entry_thumbnail() ) :
 			<?php if ( $overlay && 'none' != $overlay ) { ?>
 				<?php wpex_overlay( 'inside_link', $overlay ); ?>
 			<?php } elseif ( ! wpex_get_mod( 'thumbnail_format_icons' ) ) { ?>
-				<div class="blog-entry-music-icon-overlay"><span class="fa fa-music"></span></div>
+				<div class="blog-entry-music-icon-overlay"><span class="ticon ticon-music"></span></div>
 			<?php } ?>
 			<?php wpex_entry_media_after( 'blog' ); ?>
 		</a>

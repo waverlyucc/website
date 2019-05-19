@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.7.1
+ * @version 4.8.3
  */
 
 namespace TotalTheme;
@@ -36,7 +36,7 @@ class Typography {
 		}
 
 		// Admin functions
-		if ( is_admin() ) {
+		if ( is_admin() && wpex_get_mod( 'mce_buttons_fontselect', true ) ) {
 
 			// Add fonts to the mce editor
 			add_action( 'admin_init', array( $this, 'mce_scripts' ) );
@@ -105,12 +105,12 @@ class Typography {
 			),
 			'menu' => array(
 				'label' => __( 'Main Menu', 'total' ),
-				'target' => '#site-navigation .dropdown-menu a',
-				'exclude' => array( 'color', 'line-height' ),
+				'target' => '#site-navigation .dropdown-menu .link-inner', // @todo Should we add : #current-shop-items-dropdown, #searchform-dropdown input[type="search"] ??
+				'exclude' => array( 'color', 'line-height' ), // Can't include color causes issues with menu styling settings
 			),
 			'menu_dropdown' => array(
 				'label' => __( 'Main Menu: Dropdowns', 'total' ),
-				'target' => '#site-navigation .dropdown-menu ul a',
+				'target' => '#site-navigation .dropdown-menu ul .link-inner',
 				'exclude' => array( 'color' ),
 			),
 			'mobile_menu' => array(
@@ -135,9 +135,21 @@ class Typography {
 				'label' => __( 'Blog Entry Title', 'total' ),
 				'target' => '.blog-entry-title.entry-title, .blog-entry-title.entry-title a, .blog-entry-title.entry-title a:hover',
 			),
+			'blog_entry_meta' => array(
+				'label' => __( 'Blog Entry Meta', 'total' ),
+				'target' => '.blog-entry .meta',
+			),
+			'blog_entry_content' => array(
+				'label' => __( 'Blog Entry Excerpt', 'total' ),
+				'target' => '.blog-entry-excerpt',
+			),
 			'blog_post_title' => array(
 				'label' => __( 'Blog Post Title', 'total' ),
-				'target' => 'body .single-post-title',
+				'target' => 'body.single-post .single-post-title',
+			),
+			'blog_post_meta' => array(
+				'label' => __( 'Blog Post Meta', 'total' ),
+				'target' => '.single-post .meta',
 			),
 			'breadcrumbs' => array(
 				'label' => __( 'Breadcrumbs', 'total' ),
@@ -163,6 +175,10 @@ class Typography {
 				'margin' => true,
 				'exclude' => array( 'color' ),
 				'condition' => 'wpex_has_sidebar',
+			),
+			'post_content' => array(
+				'label' => __( 'Post Content', 'total' ),
+				'target' => '.single-blog-content, .vcex-post-content-c, .wpb_text_column, body.no-composer .single-content, .woocommerce-Tabs-panel--description',
 			),
 			'entry_h1' => array(
 				'label' => __( 'Post H1', 'total' ),
@@ -230,7 +246,7 @@ class Typography {
 	public function customize_preview_init() {
 
 		wp_enqueue_script( 'wpex-typography-customize-preview',
-			wpex_asset_url( 'js/dynamic/wpex-typography-customize-preview.js' ),
+			wpex_asset_url( 'js/dynamic/customizer/wpex-typography.min.js' ),
 			array( 'customize-preview' ),
 			WPEX_THEME_VERSION,
 			true
@@ -255,7 +271,7 @@ class Typography {
 				'margin',
 			),
 		) );
-		
+
 	}
 
 	/**
@@ -381,7 +397,7 @@ class Typography {
 		$s_capitalize     = __( 'Capitalize', 'total' );
 		$s_lowercase      = __( 'Lowercase', 'total' );
 		$s_uppercase      = __( 'Uppercase', 'total' );
-		$s_em_px          = __( 'Value in px or em. ', 'total' );
+		$s_em_px          = __( 'Please specify a unit (px, em, vm, vmax, vmin). If no unit is specified px will be used by default.', 'total' );
 		$s_transform      = __( 'Text Transform', 'total' );
 		$s_size           = __( 'Font Size', 'total' );
 		$s_color          = __( 'Font Color', 'total' );
@@ -542,6 +558,7 @@ class Typography {
 						'capitalize' => $s_capitalize,
 						'lowercase'  => $s_lowercase,
 						'uppercase'  => $s_uppercase,
+						'none'       => __( 'None', 'total' ),
 					),
 				) );
 
@@ -576,7 +593,7 @@ class Typography {
 					'sanitize_callback' => 'sanitize_hex_color',
 					'transport'         => $transport,
 				) );
-				
+
 				$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $element . '_typography_color', array(
 					'label'           => $s_color,
 					'section'         => 'wpex_typography_' . $element,
@@ -704,6 +721,16 @@ class Typography {
 					'text-transform',
 					'margin',
 				);
+			}
+
+			// Set attributes keys equal to vals
+			$attributes = array_combine( $attributes, $attributes );
+
+			// Exclude attributes
+			if ( ! empty( $array['exclude'] ) ) {
+				foreach ( $array['exclude'] as $k => $v ) {
+					unset( $attributes[ $v ] );
+				}
 			}
 
 			// Loop through attributes

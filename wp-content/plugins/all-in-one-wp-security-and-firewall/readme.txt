@@ -3,8 +3,8 @@ Contributors: Tips and Tricks HQ, wpsolutions, Peter Petreski, Ruhul Amin, mbrso
 Donate link: https://www.tipsandtricks-hq.com
 Tags: security, secure, Anti Virus, antivirus, ban, ban hacker, virus, firewall, firewall security, login, lockdown, htaccess, hack, malware, vulnerability, protect, protection, phishing, database, backup, plugin, sql injection, ssl, restrict, login captcha, bot, hotlink, 404 detection, admin, rename, all in one, scan, scanner, iframe,
 Requires at least: 4.7
-Tested up to: 4.9
-Stable tag: 4.3.7.2
+Tested up to: 5.2
+Stable tag: trunk
 License: GPLv3
 
 A comprehensive, user-friendly, all in one WordPress security and firewall plugin for your site.
@@ -88,7 +88,7 @@ So these firewall rules will stop malicious script(s) before it gets a chance to
 
 * Access control facility.
 * Instantly activate a selection of firewall settings ranging from basic, intermediate and advanced.
-* Enable the famous "5G Blacklist" Firewall rules courtesy of [Perishable Press](http://perishablepress.com/)
+* Enable the famous "6G Blacklist" Firewall rules courtesy of [Perishable Press](http://perishablepress.com/)
 * Forbid proxy comment posting.
 * Block access to debug log file.
 * Disable trace and track.
@@ -112,7 +112,6 @@ or malicious bots who do not have a special cookie in their browser. You (the si
 
 = Security Scanner =
 * The file change detection scanner can alert you if any files have changed in your WordPress system. You can then investigate and see if that was a legitimate change or some bad code was injected.
-* Database scanner feature can be used to scan your database tables. It will look for any common suspicious-looking strings, javascript and html code in some of the WordPress core tables.
 
 = Comment SPAM Security =
 * Monitor the most active IP addresses which persistently produce the most SPAM comments and instantly block them with the click of a button.
@@ -187,6 +186,39 @@ https://www.tipsandtricks-hq.com/wordpress-security-and-firewall-plugin
 None
 
 == Changelog ==
+= 4.3.9.2 =
+- Fixed various captcha bugs: woocommerce lost password page, custom login form page, etc
+
+= 4.3.9.1 =
+- Fixed rename login page feature bug introduced after WP core change in version 5.2.
+
+= 4.3.9 =
+- Fixed captcha bug.
+- Fixed PHP_EOL issue where some IPv6 and v4 addresses saved in settings were incorrectly deemed invalid.
+- Tightened file permission for wp-config.php to "640"
+- Fixed DB prefix change bug for cases where DB had tables of type "view".
+- Fixed some translation string issues.
+- Minor style fix for wp list table pagination nav buttons.
+
+= 4.3.8.3 =
+- Trying again - Fixed login captcha authentication bug.
+
+= 4.3.8.2 =
+- Fixed login captcha authentication bug.
+
+= 4.3.8.1 =
+- Minor bug fix - added missing check to enqueue recaptcha script only if that feature is enabled.
+
+= 4.3.8 =
+- Added ability to hide secret rename login page link when sending emails to people asking for personal data export.
+- Fixed Google reCaptcha not showing on comment page.
+- Fixed activation handler and creation of DB tables to handle multi-site activations more robustly.
+- Improved reCaptcha code to prevent the occasional occurrence of "Uncaught Error: reCAPTCHA placeholder element must be an element or id" error.
+- Added extra check for PHP_OS value to prevent Apple "DARWIN" being interpreted as windows server.
+- Corrected some minor translation issues on rename login page.
+- Increased priority of authenticate hook for captcha check.
+- Updated the Dutch Language file.
+
 = 4.3.7.2 =
 - More "get_home_path" fatal error preventions.
 

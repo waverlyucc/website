@@ -164,7 +164,7 @@ $this->sections['wpex_layout_desktop_widths'] = array(
 			),
 			'inline_css' => array(
 				'media_query' => '(min-width: 960px)',
-				'target' => 'body.has-sidebar .content-area',
+				'target' => 'body.has-sidebar .content-area, .wpex-content-w',
 				'alter' => array( 'width', 'max-width' ),
 			),
 		),
@@ -214,7 +214,7 @@ $this->sections['wpex_layout_medium_widths'] = array(
 				'desc' => __( 'Example:', 'total' ) .' 69%',
 			),
 			'inline_css' => array(
-				'target' => 'body.has-sidebar .content-area',
+				'target' => 'body.has-sidebar .content-area, .wpex-content-w',
 				'alter' => array( 'width', 'max-width' ),
 				'media_query' => '(min-width: 960px) and (max-width: 1280px)',
 			),
@@ -266,7 +266,7 @@ $this->sections['wpex_layout_tablet_widths'] = array(
 				'desc' => __( 'Example:', 'total' ) .' 100%',
 			),
 			'inline_css' => array(
-				'target' => 'body.has-sidebar .content-area',
+				'target' => 'body.has-sidebar .content-area, .wpex-content-w',
 				'alter' => array( 'width', 'max-width' ),
 				'media_query' => '(min-width: 768px) and (max-width: 959px)',
 			),

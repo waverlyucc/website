@@ -121,9 +121,9 @@ function dashboard_widgets_suite_display_settings() {
 					
 					<hr>
 					<div class="dws-recommended">
-						<h2><?php esc_html_e('WP Resources', 'dashboard-widgets-suite'); ?></h2>
+						<h2 class="dws-noicon"><span class="fa fa-pad fa-coffee"></span> <?php esc_html_e('WP Resources', 'dashboard-widgets-suite'); ?></h2>
 						<p><?php esc_html_e('Check out more WordPress resources from this developer:', 'dashboard-widgets-suite'); ?></p>
-						<p>
+						<div class="dws-resources">
 							<a target="_blank" rel="noopener noreferrer" href="https://wordpress.org/plugins/banhammer/" title="<?php echo $info1; ?>">
 								<img src="<?php echo DWS_URL .'img/250x250-banhammer-pro.jpg'; ?>" width="125" height="125" alt="<?php echo $info1; ?>">
 							</a> 
@@ -132,9 +132,8 @@ function dashboard_widgets_suite_display_settings() {
 							</a> 
 							<a target="_blank" rel="noopener noreferrer" href="https://wp-tao.com/wordpress-themes-book/" title="<?php echo $info3; ?>">
 								<img src="<?php echo DWS_URL .'img/250x250-wp-themes-in-depth.jpg'; ?>" width="125" height="125" alt="<?php echo $info3; ?>">
-							</a> 
-							
-						</p>
+							</a>
+						</div>
 					</div>
 					
 					<?php 

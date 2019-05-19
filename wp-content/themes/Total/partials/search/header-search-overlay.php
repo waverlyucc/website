@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.5.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,6 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="wpex-inner wpex-scale">
 		<div class="wpex-title"><?php esc_html_e( 'Search', 'total' ); ?></div>
 		<?php echo wpex_get_header_menu_search_form(); ?>
-		<span class="fa fa-search" aria-hidden="true"></span>
+		<span class="ticon ticon-search" aria-hidden="true"></span>
 	</div>
 </div>

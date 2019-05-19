@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.5
  */
 
 namespace TotalTheme;
@@ -35,7 +35,7 @@ class License {
 	}
 
 	/**
-	 * Verify license every 
+	 * Verify license every
 	 *
 	 * @since 4.5.4
 	 */
@@ -134,16 +134,25 @@ class License {
 
 		$license = wpex_verify_active_license( $license ) ? $license : null;
 
-		$is_dev = get_option( 'active_theme_license_dev' ); ?>
+		$is_dev = get_option( 'active_theme_license_dev' );
+
+		$license_cleared = ! empty( $_GET[ 'license-cleared' ] ) ? true : false; ?>
 
 		<div id="wpex-admin-page" class="wrap wpex-theme-license-page">
-			
-			<h1><?php esc_html_e( 'Theme License', 'total' ); ?></h1>
-	
-			<?php if ( $license ) { ?>
 
-				<div class="wpex-admin-ajax-notice notice <?php echo $is_dev ? 'notice-warning' : 'updated'; ?>">
-					<?php if ( $is_dev ) { ?>
+			<h1><?php esc_html_e( 'Theme License', 'total' ); ?></h1>
+
+			<?php if ( $license || $license_cleared ) {
+
+				$notice_type = 'updated';
+				if ( $is_dev || $license_cleared ) {
+					$notice_type = 'notice-warning';
+				} ?>
+
+				<div class="wpex-admin-ajax-notice notice <?php echo esc_attr( $notice_type ); ?>">
+					<?php if ( $license_cleared ) { ?>
+						<p><?php echo wp_kses_post( __( 'The current URL did not match the URL of the registered license. Your license has been removed from this site but remains active on the original URL. You can now enter a new license for this site.', 'total' ) ); ?>
+					<?php } elseif ( $is_dev ) { ?>
 						<p><?php esc_html_e( 'Your site is currently active as a development environment.', 'total' ); ?></p>
 					<?php } else { ?>
 						<p><?php esc_html_e( 'Congratulations. Your theme license is active.', 'total' ); ?></p>
@@ -155,21 +164,21 @@ class License {
 				<div class="wpex-admin-ajax-notice notice"></div>
 
 			<?php } ?>
-			
+
 			<div class="wpex-theme-license-box wpex-boxed-shadow">
 
 				<h2><?php esc_html_e( 'Verify your License', 'total' ); ?></h2>
-				
+
 				<p class="wpex-top-note"><?php echo wp_kses_post( __( 'Enter your purchase code below and click the activate button or hit enter. You can learn how to find your purchase code <a target="_blank" href="https://www.wpexplorer-themes.com/envato-purchase-code/">here</a>.', 'total' ) ); ?></p>
 
 				<form method="post" id="wpex-theme-license-form">
-					
+
 					<?php if ( $license ) { ?>
-			
+
 						<input type="text" id="wpex_license" name="license" placeholder="<?php echo esc_attr( $license ); ?>" value="<?php echo esc_attr( $license ); ?>" readonly="readonly" autocomplete="off" onclick="select()" />
 
 					<?php } else { ?>
-							
+
 						<input type="text" id="wpex_license" name="license" placeholder="<?php esc_html_e( 'Enter your purchase code here.', 'total' ); ?>" autocomplete="off" />
 
 					<?php } ?>
@@ -177,7 +186,7 @@ class License {
 					<?php if ( ! $license ) { ?>
 						<p class="wpex-license-checkfield"><input type="checkbox" id="wpex_dev_license" name="devlicense" /> <label for="wpex_dev_license" class="description"><?php echo wp_kses_post( __( 'Check this box if this is your development environment (not the final or live website)', 'total' ) ); ?></label></p>
 					<?php } ?>
-					
+
 					<?php wp_nonce_field( 'wpex_theme_license_form_nonce', 'wpex_theme_license_form_nonce' ); ?>
 
 					<p class="submit">
@@ -197,19 +206,21 @@ class License {
 								'data-deactivate' => $deactivate_txt,
 							)
 						); ?>
-						
+
 						<img src="<?php echo get_admin_url() ?>/images/spinner.gif" class="wpex-spinner" width="20" height="20" alt="<?php esc_html( 'Spinner', 'total' ); ?>" />
 
 					</p>
 
 				</form>
-				
+
 				<p class="description"><?php echo wp_kses_post( __( 'A purchase code (license) is only valid for a <strong>Single Domain</strong>. Are you already using this theme on another domain? Purchase <a target="_blank" href="https://themeforest.net/item/total-responsive-multipurpose-wordpress-theme/6339019?ref=WPExplorer&license=regular&open_purchase_for_item_id=6339019">new license here</a> to get your new purchase code. If you are running a multi-site network you only need to activate your license on the main site.', 'total' ) ); ?></p>
 
 			</div><!-- .wpex-theme-license-box -->
 
-			<div class="wpex-license-troubleshoot"><a href="<?php echo esc_url( admin_url( 'admin.php?page=wpex-panel-theme-license&troubleshoot=1' ) ); ?>"><?php esc_html_e( 'Troubleshoot', 'total' ); ?></a></div>
-			
+			<div class="wpex-license-troubleshoot">
+				<a href="https://wpexplorer-themes.com/support/" target="_blank"><?php esc_html_e( 'Manage Licenses', 'total' ); ?></a> | <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpex-panel-theme-license&troubleshoot=1' ) ); ?>"><?php esc_html_e( 'Troubleshoot', 'total' ); ?></a>
+			</div>
+
 		</div><!-- .wrap -->
 
 	<?php }
@@ -250,7 +261,7 @@ class License {
 					if ( 'invalid' == $result->status ) {
 						$response['message'] = esc_html__( 'This license code is not valid.', 'total' );
 					} elseif ( 'duplicate' == $result->status ) {
-						$response['message'] = wp_kses_post( __( 'This license is already in use. If you deleted your website before de-activating your license please log into your <a href="https://wpexplorer-themes.com/support/">customer dashboard</a> to manage your licenses.', 'total' ) );
+						$response['message'] = esc_html__( 'This license is already in use. Click the "manage licenses" link below to log in with your Envato ID and manage your licenses.', 'total' );
 					} elseif ( isset( $result->error ) ) {
 						$response['message'] = $result['error'];
 					}
@@ -296,6 +307,13 @@ class License {
 					$response['message'] = $result->message;
 				} else {
 					$response['message'] = $result;
+				}
+				if ( isset( $result->clearLicense ) ) {
+					delete_option( 'active_theme_license' );
+					delete_option( 'active_theme_license_dev' );
+					$response['success']      = true;
+					$response['clearLicense'] = true;
+					$response['message']      =  '';
 				}
 			} else {
 				$response['message'] = esc_html( 'Can not connect to the verification server at this time, please try again in a few minutes.', 'total' );

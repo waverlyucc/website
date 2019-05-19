@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.7.1
+ * @version 4.8.2
  */
 
 // Exit if accessed directly
@@ -134,7 +134,7 @@ if ( $social_share_items ) {
 			array(
 				'id'  => 'social_share_sites',
 				'transport' => 'partialRefresh',
-				'default' => array( 'twitter', 'facebook', 'google_plus', 'linkedin', 'email' ),
+				'default' => array( 'twitter', 'facebook', 'linkedin', 'email' ),
 				'control' => array(
 					'label'  => __( 'Sites', 'total' ),
 					'desc' => __( 'Click and drag and drop elements to re-order them.', 'total' ),
@@ -281,12 +281,25 @@ $this->sections['wpex_breadcrumbs'] = array(
 			),
 		),
 		array(
+			'id' => 'breadcrumbs_disable_taxonomies',
+			'transport' => 'partialRefresh',
+			'default' => false,
+			'control' => array(
+				'label' => __( 'Remove categories and other taxonomies from breadcrumbs?', 'total' ),
+				'type' => 'checkbox',
+			),
+		),
+		array(
 			'id' => 'breadcrumbs_first_cat_only',
 			'transport' => 'partialRefresh',
 			'default' => false,
 			'control' => array(
 				'label' => __( 'First Category Only', 'total' ),
 				'type' => 'checkbox',
+			),
+			'control_display' => array(
+				'check' => 'breadcrumbs_disable_taxonomies',
+				'value' => 'false',
 			),
 		),
 		array(
@@ -368,7 +381,7 @@ $this->sections['wpex_page_header'] = array(
 					'' => __( 'Default','total' ),
 					'centered' => __( 'Centered', 'total' ),
 					'centered-minimal' => __( 'Centered Minimal', 'total' ),
-					'hidden' => __( 'Hidden', 'total' ),
+					'hidden' => __( 'Hidden', 'total' ), // @todo rename to "Disabled" and update docs
 				),
 			),
 		),
@@ -653,29 +666,23 @@ $this->sections['wpex_scroll_top'] = array(
 			'control' => array(
 				'label' => __( 'Arrow', 'total' ),
 				'type' => 'select',
-				'choices' => wpex_get_awesome_icons( 'up_arrows' ),
+				'choices' => array(
+					'chevron-up' => 'chevron-up',
+					'caret-up' => 'caret-up',
+					'angle-up' => 'angle-up',
+					'angle-double-up' => 'angle-double-up',
+					'long-arrow-up' => 'long-arrow-up',
+					'arrow-circle-o-up' => 'arrow-circle-o-up',
+					'arrow-up' => 'arrow-up',
+					'caret-square-o-up' => 'caret-square-o-up',
+					'level-up' => 'level-up',
+					'sort-up' => 'sort-up',
+					'toggle-up' => 'toggle-up',
+				),
 			),
 			'control_display' => array(
 				'check' => 'scroll_top',
 				'value' => 'true',
-			),
-		),
-		array(
-			'id' => 'scroll_top_border_width',
-			'transport' => 'postMessage',
-			'control' => array(
-				'type' => 'text',
-				'label' => __( 'Border Width', 'total' ),
-				'description' => $pixel_desc,
-			),
-			'control_display' => array(
-				'check' => 'scroll_top',
-				'value' => 'true',
-			),
-			'inline_css' => array(
-				'target' => '#site-scroll-top',
-				'sanitize' => 'px',
-				'alter' => 'border-width',
 			),
 		),
 		array(
@@ -830,38 +837,6 @@ $this->sections['wpex_scroll_top'] = array(
 				'alter' => 'background-color',
 			),
 		),
-		array(
-			'id' => 'scroll_top_border',
-			'transport' => 'postMessage',
-			'control' => array(
-				'type' => 'color',
-				'label' => __( 'Border', 'total' ),
-			),
-			'control_display' => array(
-				'check' => 'scroll_top',
-				'value' => 'true',
-			),
-			'inline_css' => array(
-				'target' => '#site-scroll-top',
-				'alter' => 'border-color',
-			),
-		),
-		array(
-			'id' => 'scroll_top_border_hover',
-			'transport' => 'postMessage',
-			'control' => array(
-				'type' => 'color',
-				'label' => __( 'Border: Hover', 'total' ),
-			),
-			'control_display' => array(
-				'check' => 'scroll_top',
-				'value' => 'true',
-			),
-			'inline_css' => array(
-				'target' => '#site-scroll-top:hover',
-				'alter' => 'border-color',
-			),
-		),
 	),
 );
 
@@ -909,7 +884,7 @@ $this->sections['wpex_pagination'] = array(
 				'description' => $padding_desc,
 			),
 			'inline_css' => array(
-				'target' => 'ul .page-numbers a, a.page-numbers, span.page-numbers, .page-links span, .page-links a > span, .woocommerce nav.woocommerce-pagination ul li a, .woocommerce nav.woocommerce-pagination ul li span',
+				'target' => 'ul.page-numbers a,span.page-numbers,.page-links span,.page-links a > span',
 				'alter' => 'padding',
 			),
 		),
@@ -934,7 +909,7 @@ $this->sections['wpex_pagination'] = array(
 				'label' => __( 'Border Width', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => 'ul .page-numbers a, a.page-numbers, span.page-numbers, .page-links span, .page-links a > span',
+				'target' => 'ul.page-numbers, .page-links, ul.page-numbers li, .page-links li',
 				'alter' => 'border-width',
 			),
 		),
@@ -946,33 +921,8 @@ $this->sections['wpex_pagination'] = array(
 				'label' => __( 'Border Color', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => 'ul .page-numbers a, a.page-numbers, span.page-numbers, .page-links span, .page-links a > span',
+				'target' => 'ul.page-numbers, .page-links, ul.page-numbers li, .page-links li',
 				'alter' => 'border-color',
-			),
-		),
-		array(
-			'id' => 'pagination_border_hover_color',
-			'transport' => 'postMessage',
-			'control' => array(
-				'type' => 'color',
-				'label' => __( 'Border Color: Hover', 'total' ),
-			),
-			'inline_css' => array(
-				'target' => '.page-numbers a:hover, .page-numbers.current, .page-numbers.current:hover, .page-links span, .page-links a > span:hover',
-				'alter' => 'border-color',
-			),
-		),
-		array(
-			'id' => 'pagination_border_active_color',
-			'transport' => 'postMessage',
-			'control' => array(
-				'type' => 'color',
-				'label' => __( 'Border Color: Active', 'total' ),
-			),
-			'inline_css' => array(
-				'target' => '.page-numbers.current, .page-numbers.current:hover',
-				'alter' => 'border-color',
-				'important' => true,
 			),
 		),
 		array(
@@ -1020,7 +970,7 @@ $this->sections['wpex_pagination'] = array(
 				'label' => __( 'Background', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => 'ul .page-numbers a, a.page-numbers, span.page-numbers, .page-links span, .page-links a > span',
+				'target' => 'ul.page-numbers a,span.page-numbers,.page-links span,.page-links a>span,.bbp-pagination-links span.page-numbers, .bbp-pagination-links .page-numbers',
 				'alter' => 'background',
 			),
 		),
@@ -1032,7 +982,7 @@ $this->sections['wpex_pagination'] = array(
 				'label' => __( 'Background: Hover', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.page-numbers a:hover, .page-numbers.current, .page-numbers.current:hover, .page-links span, .page-links a > span:hover, .woocommerce nav.woocommerce-pagination ul li a:focus, .woocommerce nav.woocommerce-pagination ul li a:hover',
+				'target' => '.page-numbers a:hover,.page-numbers.current,.page-numbers.current:hover,.page-links span,.page-links a > span:hover, .woocommerce nav.woocommerce-pagination ul li a:focus,.woocommerce nav.woocommerce-pagination ul li a:hover',
 				'alter' => 'background',
 			),
 		),
@@ -1047,6 +997,13 @@ $this->sections['wpex_pagination'] = array(
 				'target' => '.page-numbers.current, .page-numbers.current:hover',
 				'alter' => 'background',
 				'important' => true,
+			),
+		),
+		array(
+			'id' => 'loadmore_text',
+			'control' => array(
+				'type' => 'text',
+				'label' => __( 'Load More Text', 'total' ),
 			),
 		),
 	),
@@ -1071,6 +1028,43 @@ $this->sections['wpex_next_prev'] = array(
 			'control' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Reverse Order', 'total' ),
+			),
+		),
+		array(
+			'id' => 'next_prev_link_bg_color',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Background', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => '.post-pagination-wrap',
+				'alter' => 'background-color',
+			),
+		),
+		array(
+			'id' => 'next_prev_link_border_color',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Border Color', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => '.post-pagination-wrap',
+				'alter' => 'border-color',
+			),
+		),
+		array(
+			'id' => 'next_prev_link_padding',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'text',
+				'label' => __( 'Padding', 'total' ),
+				'description' => $padding_desc,
+			),
+			'inline_css' => array(
+				'target' => '.post-pagination-wrap',
+				'alter' => 'padding',
 			),
 		),
 		array(
@@ -1307,6 +1301,75 @@ $this->sections['wpex_general_forms'] = array(
 	),
 );
 
+// Tables
+$this->sections['wpex_general_tables'] = array(
+	'title' => __( 'Tables', 'total' ),
+	'panel' => 'wpex_general',
+	'settings' => array(
+		array(
+			'id' => 'thead_background',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Table Header Background', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => 'thead',
+				'alter' => 'background',
+			),
+		),
+		array(
+			'id' => 'thead_color',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Table Header Color', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => 'table thead, table thead th',
+				'alter' => 'color',
+			),
+		),
+		array(
+			'id' => 'tables_th_color',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Th Color', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => 'table th',
+				'alter' => 'color',
+			),
+		),
+		array(
+			'id' => 'tables_border_color',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Cells Border Color', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => 'table th, table td',
+				'alter' => 'border-color',
+			),
+		),
+		array(
+			'id' => 'tables_cell_padding',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'text',
+				'label' => __( 'Cell Padding', 'total' ),
+				'description' => $padding_desc,
+			),
+			'inline_css' => array(
+				'target' => 'table th, table td',
+				'alter' => 'padding',
+			),
+		),
+	),
+);
+
 
 // Links & Buttons
 $this->sections['wpex_general_links_buttons'] = array(
@@ -1321,7 +1384,7 @@ $this->sections['wpex_general_links_buttons'] = array(
 				'label' => __( 'Links Color', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => 'a, h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover, .entry-title a:hover,.woocommerce .woocommerce-error a.button, .woocommerce .woocommerce-info a.button, .woocommerce .woocommerce-message a.button',
+				'target' => 'a, h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover, .entry-title a:hover',
 				'alter' => 'color',
 			),
 		),
@@ -1346,7 +1409,7 @@ $this->sections['wpex_general_links_buttons'] = array(
 				'description' => $padding_desc,
 			),
 			'inline_css' => array(
-				'target' => '.theme-button,input[type="submit"],button',
+				'target' => '.theme-button,input[type="submit"],button,.button,.added_to_cart',
 				'alter' => 'padding',
 			),
 		),
@@ -1358,32 +1421,8 @@ $this->sections['wpex_general_links_buttons'] = array(
 				'label' => __( 'Theme Button Border Radius', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.theme-button,input[type="submit"],button,#site-navigation .menu-button > a > span.link-inner',
+				'target' => '.theme-button,input[type="submit"],button,#site-navigation .menu-button > a > span.link-inner,.button,.added_to_cart',
 				'alter' => 'border-radius',
-			),
-		),
-		array(
-			'id' => 'theme_button_color',
-			'transport' => 'postMessage',
-			'control' => array(
-				'type' => 'color',
-				'label' => __( 'Theme Button Color', 'total' ),
-			),
-			'inline_css' => array(
-				'target' => '.theme-button,input[type="submit"],button,#site-navigation .menu-button > a > span.link-inner',
-				'alter' => 'color',
-			),
-		),
-		array(
-			'id' => 'theme_button_hover_color',
-			'transport' => 'postMessage',
-			'control' => array(
-				'type' => 'color',
-				'label' => __( 'Theme Button Color: Hover', 'total' ),
-			),
-			'inline_css' => array(
-				'target' => '.theme-button:hover,input[type="submit"]:hover,button:hover,#site-navigation .menu-button > a:hover > span.link-inner',
-				'alter' => 'color',
 			),
 		),
 		array(
@@ -1394,7 +1433,7 @@ $this->sections['wpex_general_links_buttons'] = array(
 				'label' => __( 'Theme Button Background', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.theme-button,input[type="submit"],button,#site-navigation .menu-button > a > span.link-inner',
+				'target' => '.theme-button,input[type="submit"],button,#site-navigation .menu-button > a > span.link-inner,.button,.added_to_cart',
 				'alter' => 'background',
 			),
 		),
@@ -1406,8 +1445,32 @@ $this->sections['wpex_general_links_buttons'] = array(
 				'label' => __( 'Theme Button Background: Hover', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.theme-button:hover,input[type="submit"]:hover,button:hover,#site-navigation .menu-button > a:hover > span.link-inner',
+				'target' => '.theme-button:hover,input[type="submit"]:hover,button:hover,#site-navigation .menu-button > a:hover > span.link-inner,.button:hover,.added_to_cart:hover',
 				'alter' => 'background',
+			),
+		),
+		array(
+			'id' => 'theme_button_color',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Theme Button Color', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => '.theme-button,input[type="submit"],button,#site-navigation .menu-button > a > span.link-inner,.button,.added_to_cart',
+				'alter' => 'color',
+			),
+		),
+		array(
+			'id' => 'theme_button_hover_color',
+			'transport' => 'postMessage',
+			'control' => array(
+				'type' => 'color',
+				'label' => __( 'Theme Button Color: Hover', 'total' ),
+			),
+			'inline_css' => array(
+				'target' => '.theme-button:hover,input[type="submit"]:hover,button:hover,#site-navigation .menu-button > a:hover > span.link-inner,.button:hover,.added_to_cart:hover',
+				'alter' => 'color',
 			),
 		),
 	),

@@ -465,7 +465,6 @@ class ECNCalendarEvent {
 		return $this->_ical_link_url;
 	}
 
-
 	public function set_all_day( $all_day ) {
         $this->_all_day = $all_day ? true : false;
     }
@@ -598,7 +597,7 @@ class ECNCalendarEvent {
     }
 
 	public function set_instant_event( $instant_event ) {
-		$this->_instant_event = $instant_event;
+		$this->_instant_event = boolval($instant_event);
 	}
 
 	public function get_instant_event() {
@@ -614,7 +613,8 @@ class ECNCalendarEvent {
 
 	/**
 	 * Handle replacing a conditional tag
-	 * @param $tag without the {}
+     *
+	 * @param $tag string - the tag without the {}
 	 * @param $condition
 	 * @param $output
 	 *
@@ -634,11 +634,23 @@ class ECNCalendarEvent {
 	}
 
 	function handle_conditional_tags( $output, $options = array() ) {
-		$output = $this->replace_conditional_tag( 'if_end_time', ( $this->get_end_date() and ( ! $this->get_all_day() and $this->get_start_date() != $this->get_end_date() or ( $this->get_all_day() and date( 'Y-m-d', $this->get_start_date() ) != date( 'Y-m-d', $this->get_end_date() ) ) ) ), $output );
-		foreach ( $this->get_available_format_tags() as $format_tag => $description ) {
-			if ( ! in_array( $format_tag, array( 'end_time' ) ) and method_exists( $this, "get_" . $format_tag ) ) {
-				$output = $this->replace_conditional_tag( 'if_' . $format_tag, $this->{"get_" . $format_tag}(), $output );
-				$output = $this->replace_conditional_tag( 'if_not_' . $format_tag, ! $this->{"get_" . $format_tag}(), $output );
+		$output = $this->replace_conditional_tag( 'if_end_time', ( $this->get_end_date() and ! $this->get_instant_event() and ( ! $this->get_all_day() and $this->get_start_date() != $this->get_end_date() or ( $this->get_all_day() and date( 'Y-m-d', $this->get_start_date() ) != date( 'Y-m-d', $this->get_end_date() ) ) ) ), $output );
+		$output = $this->replace_conditional_tag( 'if_end_date', ( $this->get_end_date() && date( 'Y-m-d', $this->get_start_date() ) !== date( 'Y-m-d', $this->get_end_date() ) ), $output );
+
+		// No matter what we want to handle all day since the Single Row with Button template uses it
+        $output = $this->replace_conditional_tag( 'if_all_day', (bool) $this->get_all_day(), $output );
+        $output = $this->replace_conditional_tag( 'if_not_all_day', ! ( (bool) $this->get_all_day() ), $output );
+
+		foreach ( $this->get_available_format_tags( $this->get_plugin() ) as $format_tag => $description ) {
+			if ( ! in_array( $format_tag, array( 'end_time', 'end_date', 'all_day' ) ) ) {
+				if ( array_key_exists( $format_tag, $this->get_additional_data() ) ) {
+					$additional_data = $this->get_additional_data();
+					$output = $this->replace_conditional_tag( 'if_' . $format_tag, $additional_data[$format_tag], $output );
+					$output = $this->replace_conditional_tag( 'if_not_' . $format_tag, ! $additional_data[$format_tag], $output );
+				} elseif ( method_exists( $this, "get_" . $format_tag ) ) {
+					$output = $this->replace_conditional_tag( 'if_' . $format_tag, $this->{"get_" . $format_tag}(), $output );
+					$output = $this->replace_conditional_tag( 'if_not_' . $format_tag, ! $this->{"get_" . $format_tag}(), $output );
+				}
 			}
 		}
 		return $output;

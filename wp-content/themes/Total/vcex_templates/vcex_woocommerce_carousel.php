@@ -71,7 +71,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Wrap Classes
 	$wrap_classes = array( 'vcex-module', 'wpex-carousel', 'wpex-carousel-woocommerce', 'owl-carousel', 'clr' );
-	
+
 	if ( $style && 'default' != $style ) {
 		$wrap_classes[] = $style;
 		$arrows_position = ( 'no-margins' == $style && 'default' == $arrows_position ) ? 'abs' : $arrows_position;
@@ -83,15 +83,15 @@ if ( $wpex_query->have_posts() ) :
 	if ( $arrows_position && 'default' != $arrows_position ) {
 		$wrap_classes[] = 'arrwpos-'. $arrows_position;
 	}
-	
+
 	if ( $visibility ) {
 		$wrap_classes[] = $visibility;
 	}
-	
+
 	if ( $css_animation && 'none' != $css_animation ) {
 		$wrap_classes[] = vcex_get_css_animation( $css_animation );
 	}
-	
+
 	if ( $classes ) {
 		$wrap_classes[] = vcex_get_extra_class( $classes );
 	}
@@ -271,7 +271,7 @@ if ( $wpex_query->have_posts() ) :
 						else : ?>
 
 							<a href="<?php echo $post->permalink; ?>" title="<?php echo $post->esc_title; ?>" class="wpex-carousel-entry-img">
-								
+
 								<?php echo $post->thumbnail; ?>
 
 						<?php endif; ?>
@@ -323,7 +323,7 @@ if ( $wpex_query->have_posts() ) :
 						<?php
 						// Excerpt
 						if ( 'true' == $price && $get_price = wpex_get_woo_product_price() ) : ?>
-							
+
 							<div class="wpex-carousel-entry-price price clr"<?php echo $price_style; ?>>
 								<?php echo $get_price; ?>
 							</div><!-- .wpex-carousel-entry-price -->
@@ -351,7 +351,7 @@ if ( $wpex_query->have_posts() ) :
 								<a <?php echo wpex_parse_attrs( $attrs ); ?>><?php
 
 									echo esc_html( $read_more_text );
-									
+
 									if ( 'true' == $readmore_rarr ) { ?>
 
 										<span class="vcex-readmore-rarr"><?php echo wpex_element( 'rarr' ); ?></span>

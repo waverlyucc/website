@@ -6,7 +6,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.6
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -26,7 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	# Terms
 	# WooCommerce
 	# Authors
-	# Visual Composer
+	# WPBakery
+	# Other
 
 /*-------------------------------------------------------------------------------*/
 /* [ Core ]
@@ -50,7 +51,7 @@ function wpex_is_dev_environment() {
 	$site = site_url();
 
 	$chunks = explode( '.', $site );
-		
+
 	if ( 1 === count( $chunks ) ) {
 		return true;
 	}
@@ -116,9 +117,9 @@ function wpex_post_has_media( $post_id = '', $check_gallery = false ) {
 	$has_thumbnail = has_post_thumbnail( $post_id );
 
 	if ( 'post' == get_post_type( $post_id ) ) {
-		
+
 		$format = get_post_format( $post_id );
-		
+
 		if ( 'video' == $format || 'audio' == $format ) {
 			if ( get_post_meta( $post_id, 'wpex_post_oembed', true )
 				|| get_post_meta( $post_id, 'wpex_post_self_hosted_media', true )
@@ -208,7 +209,7 @@ function wpex_has_next_prev() {
 	$post_type = get_post_type();
 
 	// Not needed for pages or attachments
-	if ( in_array( $post_type, array( 'page', 'attachment', 'templatera' ) ) ) {
+	if ( in_array( $post_type, array( 'page', 'attachment', 'templatera', 'elementor_library' ) ) ) {
 		return false;
 	}
 
@@ -339,6 +340,16 @@ function wpex_is_header_builder_page() {
 	}
 }
 
+/**
+ * Check if gallery lightbox is enabled
+ *
+ * @since 1.0.0
+ */
+function wpex_gallery_is_lightbox_enabled( $post_id = '' ) {
+	$post_id = $post_id ? $post_id : wpex_get_current_post_id();
+	return ( 'on' == get_post_meta( $post_id, '_easy_image_gallery_link_images', true ) ) ?  true : false;
+}
+
 /*-------------------------------------------------------------------------------*/
 /* [ Blog ]
 /*-------------------------------------------------------------------------------*/
@@ -363,6 +374,7 @@ function wpex_is_blog_query() {
 		|| is_date()
 		|| is_author()
 		|| is_page_template( 'templates/blog.php' )
+		|| is_page_template( 'templates/blog-content-above.php' )
 		|| ( is_tax( 'post_format' ) && 'post' == get_post_type() )
 	) {
 		$bool = true;
@@ -396,30 +408,37 @@ function wpex_has_social_share() {
 	$post_id = wpex_get_current_post_id();
 
 	// Check page settings to overrides theme mods and filters
-	if ( $post_id && $meta = get_post_meta( $post_id, 'wpex_disable_social', true ) ) {
+	if ( $post_id ) {
 
-		// Check if disabled by meta options
-		if ( 'on' == $meta ) {
-			return false;
+		// Meta check
+		if ( $meta = get_post_meta( $post_id, 'wpex_disable_social', true ) ) {
+
+			// Check if disabled by meta options
+			if ( 'on' == $meta ) {
+				return false;
+			}
+
+			// Return true if enabled via meta option
+			if ( 'enable' == $meta ) {
+				return true;
+			}
+
 		}
 
-		// Return true if enabled via meta option
-		if ( 'enable' == $meta ) {
-			return true;
-		}
-		
-	}
-
-	// Check if social share is enabled for specific post types
-	if ( is_singular() ) {
-		$blocks = wpex_single_blocks();
-		if ( $blocks && is_array( $blocks ) ) {
-			foreach ( $blocks as $block ) {
-				if ( ( 'social_share' == $block || 'share' == $block ) ) {
-					$bool = true;
+		// Check if social share is enabled for specific post types
+		if ( 'product' == get_post_type() ) {
+			$bool = wpex_get_mod( 'social_share_woo', false ) ? true : false;
+		} else {
+			$blocks = wpex_single_blocks();
+			if ( $blocks && is_array( $blocks ) ) {
+				foreach ( $blocks as $block ) {
+					if ( ( 'social_share' == $block || 'share' == $block ) ) {
+						$bool = true;
+					}
 				}
 			}
 		}
+
 	}
 
 	// Apply filters and return
@@ -602,6 +621,11 @@ function wpex_has_term_description_above_loop( $return = false ) {
 		$return = true;
 	}
 
+	// Woo Check
+	if ( wpex_is_woo_tax() && 'above_loop' == wpex_get_mod( 'woo_category_description_position' ) ) {
+		return true;
+	}
+
 	// Apply filters
 	$return = apply_filters( 'wpex_has_term_description_above_loop', $return );
 
@@ -622,14 +646,14 @@ function wpex_term_page_header_image_enabled( $term_id = '' ) {
 
 	// Get term id
 	$term_id = $term_id ? $term_id : get_queried_object()->term_id;
-	
+
 	// Term id isn't empty so lets locate the thumbnail
 	if ( $term_id ) {
 
 		// Get data
 		$term_data = get_option( 'wpex_term_data' );
 		$term_data = ! empty( $term_data[ $term_id ] ) ? $term_data[ $term_id ] : '';
-		
+
 		// Check setting
 		if ( $term_data && isset( $term_data['page_header_bg'] ) ) {
 			if ( 'true' == $term_data['page_header_bg'] ) {
@@ -750,7 +774,7 @@ function wpex_author_has_social( $user = '' ) {
 }
 
 /*-------------------------------------------------------------------------------*/
-/* [ Visual Composer ]
+/* [ WPBakery ]
 /*-------------------------------------------------------------------------------*/
 
 /**
@@ -811,5 +835,21 @@ function wpex_post_has_vc_content( $post_id = '' ) {
 function wpex_vc_is_inline() {
 	if ( function_exists( 'vc_is_inline' ) ) {
 		return vc_is_inline();
+	}
+}
+
+
+/*-------------------------------------------------------------------------------*/
+/* [ Other ]
+/*-------------------------------------------------------------------------------*/
+
+/**
+ * Check if user is currently editing in front-end editor mode
+ *
+ * @since 4.8.3
+ */
+function wpex_elementor_is_preview_mode() {
+	if ( class_exists( '\Elementor\Plugin' ) && \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
+		return true;
 	}
 }

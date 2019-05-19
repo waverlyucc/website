@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8
  *
  * Total has built-in filters so you can override this output via a child theme
  * without editing this file manually
@@ -34,7 +34,7 @@ if ( $template_content = wpex_get_singular_template_content( get_post_type() ) )
 
 		// Loop through blocks and get template part
 		foreach ( $blocks as $block ) :
-			
+
 			// Media not needed for this position
 			if ( 'media' == $block && wpex_get_custom_post_media_position() ) {
 				continue;
@@ -49,7 +49,7 @@ if ( $template_content = wpex_get_singular_template_content( get_post_type() ) )
 
 			// Get template part output
 			else {
-			
+
 				get_template_part( 'partials/cpt/cpt-single-'. $block, get_post_type() );
 
 			}

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -253,7 +247,7 @@ if ( $wpex_query->have_posts() ) :
 		if ( $content_style ) {
 			$content_style = vcex_inline_style( $content_style );
 		}
-		
+
 	}
 
 	// Sanitize carousel data to prevent errors
@@ -295,7 +289,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Begin output
 	$output .= '<div'. vcex_html( 'id_attr', $unique_id ) .' class="'. esc_attr( $wrap_classes ) .'" data-items="'. $items .'" data-slideby="'. $items_scroll .'" data-nav="'. $arrows .'" data-dots="'. $dots .'" data-autoplay="'. $auto_play .'" data-loop="'. $infinite_loop .'" data-autoplay-timeout="'. $timeout_duration .'" data-center="'. $center .'" data-margin="'. intval( $items_margin ) .'" data-items-tablet="'. $tablet_items .'" data-items-mobile-landscape="'. $mobile_landscape_items .'" data-items-mobile-portrait="'. $mobile_portrait_items .'" data-smart-speed="'. $animation_speed .'" data-auto-height="'. $auto_height .'" data-auto-width="'. $auto_width .'">';
-		
+
 		// Start counter used for lightbox
 		$count=0;
 
@@ -341,7 +335,7 @@ if ( $wpex_query->have_posts() ) :
 			} elseif ( 'alt' == $title_type ) {
 				$attachment_title = esc_attr( $atts['post_data']['alt'] );
 			}
-			
+
 			// Image output
 			if ( ! $atts['post_video'] ) {
 				$image_output = wpex_get_post_thumbnail( array(
@@ -506,7 +500,7 @@ if ( $wpex_query->have_posts() ) :
 				if ( ( 'yes' == $title && $attachment_title ) || (  'yes' == $caption && $atts['post_caption'] ) ) :
 
 					$classes = 'wpex-carousel-entry-details clr';
-					
+
 					if ( $content_css ) {
 						$classes .= ' '. $content_css;
 					}
@@ -534,7 +528,7 @@ if ( $wpex_query->have_posts() ) :
 							$output .= '</div>';
 
 						endif;
-					
+
 					$output .= '</div>';
 
 				endif;
@@ -549,7 +543,7 @@ if ( $wpex_query->have_posts() ) :
 	if ( 'true' == $auto_height ) {
 
 		$output .= '</div>';
-		
+
 	}
 
 	// Reset the post data to prevent conflicts with WP globals

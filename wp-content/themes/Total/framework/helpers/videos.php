@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -49,7 +49,7 @@ function wpex_get_video_embed_url( $url = '' ) {
 
 		// Covert only if not already in correct format
 		if ( strpos( $url, 'player.vimeo' ) === false ) {
-		
+
 			// Get the ID
 			$video_id = str_replace( 'http://vimeo.com/', '', $url );
 			if ( ! is_numeric( $video_id ) ) {
@@ -107,7 +107,7 @@ function wpex_get_video_embed_url( $url = '' ) {
 
 	// Return url
 	return $url . $params_string;
-	
+
 }
 
 /**

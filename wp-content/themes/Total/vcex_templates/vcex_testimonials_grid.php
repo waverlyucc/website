@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.8.1
  */
 
 // Exit if accessed directly
@@ -17,12 +17,6 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Define output
 $output = '';
 
@@ -31,9 +25,20 @@ if ( ! empty( $atts['term_slug'] ) && empty( $atts['include_categories'] ) ) {
 	$atts['include_categories'] = $atts['term_slug'];
 }
 
+// Store orginal atts value for use in non-builder params
+$og_atts = $atts;
+
+// Define entry counter
+$entry_count = ! empty( $og_atts['entry_count'] ) ? $og_atts['entry_count'] : 0;
+
 // Get and extract shortcode attributes
 $atts = vc_map_get_attributes( 'vcex_testimonials_grid', $atts );
 extract( $atts );
+
+// Add paged attribute for load more button (used for WP_Query)
+if ( ! empty( $og_atts['paged'] ) ) {
+	$atts['paged'] = $og_atts['paged'];
+}
 
 // Define user-generated attributes
 $atts['post_type'] = 'testimonials';
@@ -65,14 +70,6 @@ if ( $wpex_query->have_posts() ) :
 	// Is Isotope var
 	if ( 'true' == $filter || 'masonry' == $grid_style ) {
 		$is_isotope = true;
-	}
-
-	// No need for masonry if not enough columns and filter is disabled
-	if ( 'true' != $filter && 'masonry' == $grid_style ) {
-		$post_count = count( $wpex_query->posts );
-		if ( $post_count <= $columns ) {
-			$is_isotope = false;
-		}
 	}
 
 	// Get filter taxonomy
@@ -121,10 +118,12 @@ if ( $wpex_query->have_posts() ) :
 		'border_radius' => $img_border_radius,
 	), false );
 
-	// Image classes
-	$img_classes = '';
-	if ( $img_width || $img_height || 'wpex_custom' != $img_size ) {
-		$img_classes = 'remove-dims';
+	// Image thumbnail classes
+	$thumb_classes = '';
+	if ( $img_width || $img_height || ! in_array( $img_size, array( 'wpex_custom', 'testimonials_entry' ) ) ) {
+		$thumb_classes = ' custom-dims';
+	} else {
+		$thumb_classes = ' default-dims';
 	}
 
 	// Wrap classes
@@ -196,7 +195,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Begin shortcode output
 	$output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $unique_id ) .'>';
-	
+
 		// Display filter links
 		if ( 'true' == $filter && ! empty( $filter_terms ) ) {
 
@@ -217,7 +216,7 @@ if ( $wpex_query->have_posts() ) :
 			}
 
 			$output .= '<ul class="'. $filter_classes .'"'. $filter_style .'>';
-				
+
 				if ( 'true' == $filter_all_link ) {
 
 					$output .= '<li';
@@ -248,7 +247,7 @@ if ( $wpex_query->have_posts() ) :
 
 				endforeach;
 
-				if ( $vcex_after_grid_filter = apply_filters( 'vcex_after_grid_filter', '', $atts ) ) { 
+				if ( $vcex_after_grid_filter = apply_filters( 'vcex_after_grid_filter', '', $atts ) ) {
 					$output .= $vcex_after_grid_filter;
 				}
 
@@ -258,9 +257,6 @@ if ( $wpex_query->have_posts() ) :
 
 		$output .= '<div class="'. $grid_classes .'"'. $grid_data .'>';
 
-			// Define counter var to clear floats
-			$count=0;
-
 			// Start loop
 			while ( $wpex_query->have_posts() ) :
 
@@ -268,7 +264,7 @@ if ( $wpex_query->have_posts() ) :
 				$wpex_query->the_post();
 
 				// Add to the counter var
-				$count++;
+				$entry_count++;
 
 				// Get post data
 				$atts['post_id']           = get_the_ID();
@@ -280,9 +276,9 @@ if ( $wpex_query->have_posts() ) :
 				$atts['post_meta_url']     = get_post_meta( $atts['post_id'], 'wpex_testimonial_url', true );
 
 				// Add classes to the entries
-				$entry_classes = array( 'testimonial-entry' );
+				$entry_classes = array( 'testimonial-entry', 'vcex-grid-item' );
 				$entry_classes[] = $columns_class;
-				$entry_classes[] = 'col-'. $count;
+				$entry_classes[] = 'col-' . $entry_count;
 				if ( 'false' == $columns_responsive ) {
 					$entry_classes[] = 'nr-col';
 				} else {
@@ -296,7 +292,7 @@ if ( $wpex_query->have_posts() ) :
 				}
 
 				// Begin entry output
-				$output .= '<div '. vcex_grid_get_post_class( $entry_classes, $atts['post_id'] ) .'>';
+				$output .= '<div ' . vcex_grid_get_post_class( $entry_classes, $atts['post_id'] ) . '>';
 
 					$output .= '<div class="testimonial-entry-content clr">';
 
@@ -306,12 +302,12 @@ if ( $wpex_query->have_posts() ) :
 						$title_output = '';
 						if ( 'true' == $title ) :
 
-							$title_output .= '<'. esc_attr( $title_tag ) .' class="testimonial-entry-title entry-title"'. $title_style .'>';
+							$title_output .= '<' . esc_attr( $title_tag ) . ' class="testimonial-entry-title entry-title"' . $title_style . '>';
 
 								// Title with link
 								if ( 'true' == $atts['title_link'] ) {
 
-									$title_output .= '<a href="'. $atts['post_permalink'] .'">';
+									$title_output .= '<a href="' . $atts['post_permalink'] . '">';
 
 										$title_output .= esc_html( $atts['post_title'] );
 
@@ -332,7 +328,7 @@ if ( $wpex_query->have_posts() ) :
 
 						endif;
 
-						$output .= '<div class="testimonial-entry-details clr"'. $content_style .'>';
+						$output .= '<div class="testimonial-entry-details clr"' . $content_style . '>';
 
 							// Display excerpt if enabled (default dispays full content )
 							$excerpt_output = '';
@@ -354,9 +350,9 @@ if ( $wpex_query->have_posts() ) :
 
 									// Read more text
 									if ( is_rtl() ) {
-										$read_more_link = '...<a href="' . wpex_get_permalink() .'">' . $read_more_text . '</a>';
+										$read_more_link = '...<a href="' . wpex_get_permalink() . '">' . $read_more_text . '</a>';
 									} else {
-										$read_more_link = '...<a href="' . wpex_get_permalink() .'">' . esc_html( $read_more_text ) . $read_more_rarr_html .'</a>';
+										$read_more_link = '...<a href="' . wpex_get_permalink() . '">' . esc_html( $read_more_text ) . $read_more_rarr_html .'</a>';
 									}
 
 								else :
@@ -377,7 +373,7 @@ if ( $wpex_query->have_posts() ) :
 							else :
 
 								$excerpt_output .= wpex_the_content( get_the_content(), 'vcex_testimonials_grid' );
-							
+
 							// End excerpt check
 							endif;
 
@@ -396,7 +392,7 @@ if ( $wpex_query->have_posts() ) :
 
 							if ( has_post_thumbnail( $atts['post_id'] ) ) {
 
-								$media_output .= '<div class="testimonial-entry-thumb">';
+								$media_output .= '<div class="testimonial-entry-thumb' . $thumb_classes . '">';
 
 									// Define thumbnail args
 									$thumbnail_args = array(
@@ -404,7 +400,6 @@ if ( $wpex_query->have_posts() ) :
 										'size'          => $img_size,
 										'width'         => $img_width,
 										'height'        => $img_height,
-										'class'         => $img_classes,
 										'style'         => $img_style,
 										'crop'          => $img_crop,
 										'apply_filters' => 'vcex_testimonials_grid_thumbnail_args',
@@ -457,7 +452,7 @@ if ( $wpex_query->have_posts() ) :
 									if ( $atts['post_meta_url'] ) {
 
 										$company_output .= '<a href="'. esc_url( $atts['post_meta_url'] ) .'" class="testimonial-entry-company" target="_blank">';
-										
+
 											$company_output .= wp_kses_post( $atts['post_meta_company'] );
 
 										$company_output .= '</a>';
@@ -502,19 +497,28 @@ if ( $wpex_query->have_posts() ) :
 				$output .= '</div>';
 
 				// Reset post loop counter
-				if ( $count == $columns ) {
-					$count=0;
+				if ( $entry_count == $columns ) {
+					$entry_count=0;
 				}
 
 			endwhile; // End loop
 
 		$output .= '</div>';
-		
+
 		// Display pagination if enabled
-		if ( 'true' == $pagination
-			|| ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) )
+		if ( ( 'true' == $atts['pagination'] || ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) ) )
+			&& 'true' != $atts['pagination_loadmore']
 		) {
+
 			$output .= wpex_pagination( $wpex_query, false );
+
+		}
+
+		// Load more button
+		if ( 'true' == $atts['pagination_loadmore'] && ! empty( $wpex_query->max_num_pages ) ) {
+			vcex_loadmore_scripts();
+			$og_atts['entry_count'] = $entry_count; // Update counter
+			$output .= vcex_get_loadmore_button( 'vcex_testimonials_grid', $og_atts, $wpex_query );
 		}
 
 	$output .= '</div>';

@@ -51,6 +51,7 @@ function wpex_pre_get_posts( $query ) {
 						unset( $searchable_types[$type] );
 					}
 				}
+				$searchable_type[] = 'user'; // fix for relevanssi plugin
 				$query->set( 'post_type', $searchable_types );
 			}
 

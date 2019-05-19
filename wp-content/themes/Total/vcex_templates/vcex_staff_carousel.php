@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -65,7 +59,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Main Classes
 	$wrap_classes = array( 'vcex-module', 'wpex-carousel', 'wpex-carousel-staff', 'clr', 'owl-carousel' );
-		
+
 	// Main carousel style & arrow position
 	if ( $style && 'default' != $style ) {
 		$wrap_classes[] = $style;
@@ -229,17 +223,18 @@ if ( $wpex_query->have_posts() ) :
 
 	// VC filter
 	$wrap_classes = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $wrap_classes, 'vcex_staff_carousel', $atts );
-	
-	// Begin output
+
+	// Begin carousel output
 	$output .='<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $unique_id ) .' data-items="'. $items .'" data-slideby="'. $items_scroll .'" data-nav="'. $arrows .'" data-dots="'. $dots .'" data-autoplay="'. $auto_play .'" data-loop="'. $infinite_loop .'" data-autoplay-timeout="'. $timeout_duration .'" data-center="'. $center .'" data-margin="'. intval( $items_margin ) .'" data-items-tablet="'. $tablet_items .'" data-items-mobile-landscape="'. $mobile_landscape_items .'" data-items-mobile-portrait="'. $mobile_portrait_items .'" data-smart-speed="'. $animation_speed .'">';
 
 		// Loop through posts
 		$lcount = 0;
+		$first_run = true;
 		while ( $wpex_query->have_posts() ) :
 
 			// Get post from query
 			$wpex_query->the_post();
-		
+
 			// Post VARS
 			$atts['post_id']        = get_the_ID();
 			$atts['post_title']     = get_the_title( $atts['post_id'] );
@@ -322,6 +317,7 @@ if ( $wpex_query->have_posts() ) :
 
 				// Title, Postion, Excerpt and Social links
 				if ( 'true' == $title
+					|| 'true' == $show_categories
 					|| 'true' == $position
 					|| 'true' == $excerpt
 					|| 'true' == $social_links
@@ -343,7 +339,7 @@ if ( $wpex_query->have_posts() ) :
 								} else {
 
 									$title_output .= '<a href="' . $atts['post_permalink'] . '"' . $heading_link_style . '>';
-										
+
 										$title_output .= wp_kses_post( $atts['post_title'] );
 
 									$title_output .= '</a>';
@@ -370,9 +366,42 @@ if ( $wpex_query->have_posts() ) :
 
 							}
 
-							$output .= apply_filters( 'vcex_staff_carousel_position', $position_output, $atts );
+						}
+						$output .= apply_filters( 'vcex_staff_carousel_position', $position_output, $atts );
 
-						} // End position
+						// Categories
+						$categories_output = '';
+						if ( 'true' == $show_categories ) {
+
+							if ( $first_run ) {
+								$categories_style = vcex_inline_style( array(
+									'padding'   => $categories_margin,
+									'font_size' => $categories_font_size,
+									'color'     => $categories_color,
+								) );
+								$categories_classes = 'staff-entry-categories wpex-clr';
+								if ( $categories_color ) {
+									$categories_classes .= ' wpex-child-inherit-color';
+								}
+							}
+
+							$categories_output .= '<div class="' . $categories_classes . '"' . $categories_style . '>';
+
+								if ( 'true' == $show_first_category_only ) {
+
+									$categories_output .= wpex_get_first_term_link( $atts['post_id'], 'staff_category' );
+
+								} else {
+
+									$categories_output .= wpex_get_list_post_terms( 'staff_category', true, true );
+
+								}
+
+							$categories_output .= '</div>';
+
+						}
+
+						$output .= apply_filters( 'vcex_staff_carousel_categories', $categories_output, $atts );
 
 						// Check if the excerpt is enabled
 						$excerpt_output = '';
@@ -452,6 +481,8 @@ if ( $wpex_query->have_posts() ) :
 
 			$output .= '</div>';
 
+		// End loop
+		$first_run = false;
 		endwhile;
 
 	$output .= '</div>';

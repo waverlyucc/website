@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -39,13 +39,13 @@ $post_id = get_the_ID(); ?>
 		// Display Date
 		if ( 'date' == $val ) : ?>
 
-			<li class="meta-date"><span class="fa fa-clock-o" aria-hidden="true"></span><span class="updated"><?php echo get_the_date(); ?></span></li>
+			<li class="meta-date"><span class="ticon ticon-clock-o" aria-hidden="true"></span><span class="updated"><?php echo get_the_date(); ?></span></li>
 
 		<?php
 		// Display Author
 		elseif ( 'author' == $val ) : ?>
 
-			<li class="meta-author"><span class="fa fa-user" aria-hidden="true"></span><span class="vcard author"><span class="fn"><?php the_author_posts_link(); ?></span></span></li>
+			<li class="meta-author"><span class="ticon ticon-user-o" aria-hidden="true"></span><span class="vcard author"><span class="fn"><?php the_author_posts_link(); ?></span></span></li>
 
 		<?php
 		// Display Categories
@@ -58,7 +58,7 @@ $post_id = get_the_ID(); ?>
 			// Standard posts
 			if ( 'post' == $post_type ) { ?>
 
-				<li class="meta-category"><span class="fa fa-folder-o" aria-hidden="true"></span><?php wpex_list_post_terms( 'category', true ); ?></li>
+				<li class="meta-category"><span class="ticon ticon-folder-o" aria-hidden="true"></span><?php wpex_list_post_terms( 'category', true ); ?></li>
 
 			<?php }
 			// Non standard posts (for search results with blog entry style)
@@ -66,7 +66,7 @@ $post_id = get_the_ID(); ?>
 
 				<?php if ( $taxonomy && $categories = wpex_list_post_terms( $taxonomy, true, false ) ) { ?>
 
-					<li class="meta-category"><span class="fa fa-folder-o" aria-hidden="true"></span><?php echo $categories; ?></li>
+					<li class="meta-category"><span class="ticon ticon-folder-o" aria-hidden="true"></span><?php echo $categories; ?></li>
 
 				<?php } ?>
 
@@ -82,17 +82,17 @@ $post_id = get_the_ID(); ?>
 
 				<?php if ( $first_cat = wpex_get_first_term_link() ) { ?>
 
-					<li class="meta-category"><span class="fa fa-folder-o" aria-hidden="true"></span><?php echo $first_cat; ?></li>
+					<li class="meta-category"><span class="ticon ticon-folder-open-o" aria-hidden="true"></span><?php echo $first_cat; ?></li>
 
 				<?php } ?>
 
 			<?php }
 			// Non standard posts (for search results with blog entry style)
 			elseif ( $taxonomy = apply_filters( 'wpex_meta_first_category_taxonomy', wpex_get_post_type_cat_tax() ) ) { ?>
-			
+
 				<?php if ( $taxonomy && $first_cat = wpex_get_first_term_link( $post_id, $taxonomy ) ) { ?>
 
-					<li class="meta-category"><span class="fa fa-folder-o" aria-hidden="true"></span><?php echo $first_cat; ?></li>
+					<li class="meta-category"><span class="ticon ticon-folder-open-o" aria-hidden="true"></span><?php echo $first_cat; ?></li>
 
 				<?php } ?>
 
@@ -104,7 +104,7 @@ $post_id = get_the_ID(); ?>
 
 			<?php if ( comments_open() && ! post_password_required() ) { ?>
 
-				<li class="meta-comments comment-scroll"><span class="fa fa-comment-o" aria-hidden="true"></span><?php comments_popup_link( esc_html__( '0 Comments', 'total' ), esc_html__( '1 Comment',  'total' ), esc_html__( '% Comments', 'total' ), 'comments-link' ); ?></li>
+				<li class="meta-comments comment-scroll"><span class="ticon ticon-comment-o" aria-hidden="true"></span><?php comments_popup_link( esc_html__( '0 Comments', 'total' ), esc_html__( '1 Comment',  'total' ), esc_html__( '% Comments', 'total' ), 'comments-link' ); ?></li>
 
 			<?php } ?>
 

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8
  *
  * @todo update to use new wpex_get_post_media_gallery_slider() function
  */
@@ -44,7 +44,7 @@ $args = array(
 
 	<div class="wpex-slider slider-pro" <?php wpex_slider_data( $args ); ?>>
 
-		<div class="wpex-slider-slides sp-slides <?php if ( $lightbox_enabled ) echo 'lightbox-group'; ?>">
+		<div class="wpex-slider-slides sp-slides <?php if ( $lightbox_enabled ) echo 'wpex-lightbox-group'; ?>">
 
 			<?php
 			// Loop through attachments

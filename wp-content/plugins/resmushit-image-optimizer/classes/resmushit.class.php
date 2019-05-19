@@ -275,7 +275,8 @@ Class reSmushit {
 		$files_too_big = array();
 		$already_optimized_images_array = array();
 		$disabled_images_array = array();
-
+		$files_not_found = array();
+		
 		$queryAllPictures = $wpdb->prepare( 
 			"select
 				$wpdb->posts.ID as ID,
@@ -353,7 +354,11 @@ Class reSmushit {
       */
 	public static function getCountNonOptimizedPictures(){
 		$data = json_decode(self::getNonOptimizedPictures());
-		return array('nonoptimized' => sizeof($data->nonoptimized), 'filestoobig' => sizeof($data->filestoobig), 'filesnotfound' => sizeof($data->filesnotfound));
+		$output = array();
+		$output['nonoptimized'] = is_array($data->nonoptimized) ? sizeof($data->nonoptimized) : 0;
+		$output['filesnotfound'] = is_array($data->filesnotfound) ? sizeof($data->filesnotfound) : 0;
+		$output['filestoobig'] = is_array($data->filestoobig) ? sizeof($data->filestoobig) : 0;
+		return $output;
 	}
 
 

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $wpex_count;
 $wpex_count++;
 
-// Get blog entry layout
+// Get layout
 wpex_get_template_part( 'blog_entry' );
 
 // Reset counter to clear floats

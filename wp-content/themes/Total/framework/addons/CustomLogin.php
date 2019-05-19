@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.5
  *
  */
 
@@ -165,11 +165,12 @@ class WPEX_Custom_Login {
 							<input class="wpex-media-upload-button button-secondary" type="button" value="<?php esc_html_e( 'Upload', 'total' ); ?>" />
 							<a href="#" class="wpex-media-remove button-secondary" style="display:none;"><span class="dashicons dashicons-no-alt" style="line-height: inherit;"></span></a>
 							<?php $preview = wpex_sanitize_data( $option, 'image_src_from_mod' ); ?>
-							<div class="wpex-media-live-preview">
+							<div class="wpex-media-live-preview" style="width:320px">
 								<?php if ( $preview ) { ?>
 									<img src="<?php echo esc_url( $preview ); ?>" alt="<?php esc_html_e( 'Preview Image', 'total' ); ?>" />
 								<?php } ?>
 							</div>
+							<p class="description"><?php esc_html_e( 'The WordPress login logo displays at 320px wide so please upload an image that is this size or smaller to prevent your logo from being cropped off the sides.', 'total' ); ?></p>
 						</td>
 					</tr>
 
@@ -178,6 +179,7 @@ class WPEX_Custom_Login {
 						<td>
 							<?php $option = ! empty( $theme_mod['logo_height'] ) ? intval( $theme_mod['logo_height'] ) : ''; ?>
 							<input type="number" name="login_page_design[logo_height]" value="<?php echo esc_attr( $option ); ?>">
+							<p class="description"><?php esc_html_e( 'Enter a value in pixels.', 'total' ); ?></p>
 						</td>
 					</tr>
 
@@ -186,6 +188,7 @@ class WPEX_Custom_Login {
 						<td>
 							<?php $option = isset( $theme_mod['logo_url'] ) ? $theme_mod['logo_url'] : ''; ?>
 							<input type="text" name="login_page_design[logo_url]" value="<?php echo esc_attr( $option ); ?>">
+							<p class="description"><?php esc_html_e( 'Enter a custom URL for when clicking on the logo (optional).', 'total' ); ?></p>
 						</td>
 					</tr>
 
@@ -194,6 +197,7 @@ class WPEX_Custom_Login {
 						<td>
 							<?php $option = isset( $theme_mod['logo_url_title'] ) ? $theme_mod['logo_url_title'] : ''; ?>
 							<input type="text" name="login_page_design[logo_url_title]" value="<?php echo esc_attr( $option ); ?>">
+							<p class="description"><?php esc_html_e( 'The title attribute for your logo url.', 'total' ); ?></p>
 						</td>
 					</tr>
 

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,12 +17,6 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Define output var
 $output = '';
 
@@ -31,9 +25,20 @@ if ( ! empty( $atts['term_slug'] ) && empty( $atts['include_categories']) ) {
 	$atts['include_categories'] = $atts['term_slug'];
 }
 
+// Store orginal atts value for use in non-builder params
+$og_atts = $atts;
+
+// Define entry counter
+$entry_count = ! empty( $og_atts['entry_count'] ) ? $og_atts['entry_count'] : 0;
+
 // Get and extract shortcode attributes
 $atts = vc_map_get_attributes( 'vcex_blog_grid', $atts );
 extract( $atts );
+
+// Add paged attribute for load more button (used for WP_Query)
+if ( ! empty( $og_atts['paged'] ) ) {
+	$atts['paged'] = $og_atts['paged'];
+}
 
 // Define user-generated attributes
 $atts['post_type'] = 'post';
@@ -75,14 +80,6 @@ if ( $wpex_query->have_posts() ) :
 	// Enable Isotope?
 	if ( 'true' == $filter || 'masonry' == $grid_style ) {
 		$is_isotope = true;
-	}
-
-	// No need for masonry if not enough columns and filter is disabled
-	if ( 'true' != $filter && 'masonry' == $grid_style ) {
-		$post_count = count( $wpex_query->posts );
-		if ( $post_count <= $columns ) {
-			$is_isotope = false;
-		}
 	}
 
 	// Get filter taxonomy
@@ -350,9 +347,6 @@ if ( $wpex_query->have_posts() ) :
 
 		$output .= '<div class="'. esc_attr( $grid_classes ) .'"'. $grid_data .'>';
 
-			// Define counter var to clear floats
-			$count=0;
-
 			// Start loop
 			while ( $wpex_query->have_posts() ) :
 
@@ -380,7 +374,7 @@ if ( $wpex_query->have_posts() ) :
 				}
 
 				// Counter
-				$count++;
+				$entry_count++;
 
 				// Get video
 				if ( 'video' == $atts['post_format'] ) {
@@ -399,12 +393,12 @@ if ( $wpex_query->have_posts() ) :
 				}
 
 				// Entry Classes
-				$entry_classes = array( 'vcex-blog-entry' );
+				$entry_classes = array( 'vcex-blog-entry', 'vcex-grid-item' );
 				if ( $entry_has_details ) {
 					$entry_classes[] = 'entry-has-details';
 				}
 				$entry_classes[] = $columns_class;
-				$entry_classes[] = 'col-'. $count;
+				$entry_classes[] = 'col-' . $entry_count;
 				if ( 'false' == $columns_responsive ) {
 					$entry_classes[] = 'nr-col';
 				} else {
@@ -548,15 +542,15 @@ if ( $wpex_query->have_posts() ) :
 						if ( $entry_has_details ) :
 
 							$output .= '<div class="vcex-blog-entry-details entry-details wpex-clr';
-								
+
 								if ( $content_css ) {
 									$output .= ' ' . $content_css;
 								}
-								
+
 								$output .= '"';
-								
+
 								$output .= $content_style;
-							
+
 							$output .= '>';
 
 								// Open equal heights div if equal heights is enabled
@@ -595,7 +589,7 @@ if ( $wpex_query->have_posts() ) :
 									if ( '-1' == $excerpt_length
 										&& $shortcodes_custom_css = get_post_meta( $atts['post_id'], '_wpb_shortcodes_custom_css', true )
 									) {
-											
+
 											$excerpt_output .= '<style type="text/css" data-type="vc_shortcodes-custom-css">';
 											$excerpt_output .= strip_tags( $shortcodes_custom_css );
 											$excerpt_output .= '</style>';
@@ -661,8 +655,8 @@ if ( $wpex_query->have_posts() ) :
 				$output .= '</div>'; // Close entry
 
 			// Reset entry counter
-			if ( $count == $columns ) {
-				$count=0;
+			if ( $entry_count == $columns ) {
+				$entry_count = 0;
 			}
 
 			endwhile; // End main loop
@@ -670,10 +664,19 @@ if ( $wpex_query->have_posts() ) :
 		$output .= '</div>';
 
 		// Display pagination if enabled
-		if ( 'true' == $pagination
-			|| ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) )
+		if ( ( 'true' == $atts['pagination'] || ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) ) )
+			&& 'true' != $atts['pagination_loadmore']
 		) {
+
 			$output .= wpex_pagination( $wpex_query, false );
+
+		}
+
+		// Load more button
+		if ( 'true' == $atts['pagination_loadmore'] && ! empty( $wpex_query->max_num_pages ) ) {
+			vcex_loadmore_scripts();
+			$og_atts['entry_count'] = $entry_count; // Update counter
+			$output .= vcex_get_loadmore_button( 'vcex_blog_grid', $og_atts, $wpex_query );
 		}
 
 	$output .= '</div>';

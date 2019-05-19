@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.8.4
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -230,7 +224,7 @@ if ( $url && 'true' == $url_wrap ) {
 		) ) . '>';
 
 	}
-	
+
 	/**
 	 * Display Image
 	 */
@@ -244,7 +238,7 @@ if ( $url && 'true' == $url_wrap ) {
 		$output .= wpex_get_post_thumbnail( array(
 			'size'       => 'wpex-custom',
 			'attachment' => $image,
-			'alt'        => $heading,
+			'alt'        => apply_filters( 'vcex_icon_box_image_auto_alt', false ) ? $heading : '',
 			'width'      => ( 'true' == $resize_image ) ? $image_width : '',
 			'height'     => ( 'true' == $resize_image ) ? $image_height : '',
 			'crop'       => 'center-center',
@@ -305,7 +299,7 @@ if ( $url && 'true' == $url_wrap ) {
 		$output .= '</div>';
 
 	}
-	
+
 	/**
 	 * Display Heading
 	 */
@@ -329,6 +323,7 @@ if ( $url && 'true' == $url_wrap ) {
 			'letter_spacing' => $heading_letter_spacing,
 			'margin_bottom'  => $heading_bottom_margin,
 			'text_transform' => $heading_transform,
+			'line_height'    => $heading_line_height,
 		), false );
 
 		if ( $heading_responsive_font_size = vcex_get_module_responsive_data( $heading_size, 'font_size' ) ) {

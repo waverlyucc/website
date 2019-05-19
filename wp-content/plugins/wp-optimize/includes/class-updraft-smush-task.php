@@ -42,6 +42,8 @@ abstract class Updraft_Smush_Task extends Updraft_Task_1_0 {
 	 * @return bool - true if complete, false otherwise
 	 */
 	public function run() {
+
+		$this->set_status('active');
 		
 		do_action('ud_task_started', $this);
 
@@ -182,7 +184,7 @@ abstract class Updraft_Smush_Task extends Updraft_Task_1_0 {
 		$original_size = $this->get_option('original_filesize');
 		$this->set_current_stage('completed');
 
-		clearstatcache(true, $file_path);
+		clearstatcache(true, $file_path); // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.clearstatcache_clear_realpath_cacheFound,PHPCompatibility.FunctionUse.NewFunctionParameters.clearstatcache_filenameFound
 		$saved = round((($original_size - filesize($file_path)) / $original_size * 100), 2);
 		$info = sprintf(__("The file was compressed from %s to %s saving %s percent using WP-Optimize", 'wp-optimize'), $this->format_filesize($original_size), $this->format_filesize(filesize($file_path)), $saved);
 
@@ -198,6 +200,7 @@ abstract class Updraft_Smush_Task extends Updraft_Task_1_0 {
 		update_post_meta($attachment_id, 'smush-stats', $stats);
 
 		$this->log("Successfully optimized the image - {$file_path}." . $info);
+		$this->set_status('complete');
 
 		return parent::complete();
 	}
@@ -234,7 +237,7 @@ abstract class Updraft_Smush_Task extends Updraft_Task_1_0 {
 			'connecting'   => __('Connecting to API server', 'wp-optimize'),
 			'processing_response' => __('Processing response', 'wp-optimize'),
 			'backup_original' => __('Backing up original image', 'wp-optimize'),
-			'saving_image' => __('Saving optimised image', 'wp-optimize'),
+			'saving_image' => __('Saving optimized image', 'wp-optimize'),
 			'completed' => __('Successful', 'wp-optimize'),
 		);
 

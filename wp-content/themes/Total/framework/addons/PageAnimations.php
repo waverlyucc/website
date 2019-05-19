@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.5
  */
 
 namespace TotalTheme;
@@ -64,18 +64,18 @@ class PageAnimations {
 	 * @since 2.1.0
 	 */
 	public function enqueue_scripts() {
-		
+
 		$localize = $this->localize();
-		
+
 		if ( ! $localize ) {
 			return;
 		}
-		
+
 		wp_enqueue_style(
 			'animsition',
 			wpex_asset_url( 'lib/animsition/animsition.css' )
 		);
-		
+
 		wp_enqueue_script(
 			'animsition',
 			wpex_asset_url( 'lib/animsition/animsition.js' ),
@@ -83,7 +83,7 @@ class PageAnimations {
 			'4.0.2',
 			false
 		);
-		
+
 		wp_enqueue_script(
 			'wpex-animsition-init',
 			wpex_asset_url( 'js/dynamic/animsition-init.js' ),
@@ -140,7 +140,7 @@ class PageAnimations {
 		}
 
 		// Link Elements / The links that trigger the animation
-		$array['linkElement'] = 'a[href]:not([target="_blank"]):not([href^="#"]):not([href*="javascript"]):not([href*=".jpg"]):not([href*=".jpeg"]):not([href*=".gif"]):not([href*=".png"]):not([href*=".mov"]):not([href*=".swf"]):not([href*=".mp4"]):not([href*=".flv"]):not([href*=".avi"]):not([href*=".mp3"]):not([href^="mailto:"]):not([href*="?"]):not([href*="#localscroll"]):not([class="wcmenucart"]):not([class="local-scroll"]):not([class="local-scroll-link"]):not([class="exclude-from-page-animation"])';
+		$array['linkElement'] = 'a[href]:not([target="_blank"]):not([href^="#"]):not([href*="javascript"]):not([href*=".jpg"]):not([href*=".jpeg"]):not([href*=".gif"]):not([href*=".png"]):not([href*=".mov"]):not([href*=".swf"]):not([href*=".mp4"]):not([href*=".flv"]):not([href*=".avi"]):not([href*=".mp3"]):not([href^="mailto:"]):not([href*="?"]):not([href*="#localscroll"]):not([class="wcmenucart"]):not([class="local-scroll"]):not([class="local-scroll-link"]):not([class="exclude-from-page-animation"]):not([class="about_paypal"])';
 
 		// Return localize array
 		return apply_filters( 'wpex_animsition_settings', $array );

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.0
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } ?>
 
-<div class="single-page-content entry clr"><?php the_content(); ?></div>
+<div class="single-content single-page-content entry clr"><?php the_content(); ?></div>
 
 <?php
 // Page links (for the <!-nextpage-> tag)

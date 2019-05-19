@@ -86,7 +86,7 @@ class FooterBuilder {
 			esc_html__( 'Footer Builder', 'total' ),
 			esc_html__( 'Footer Builder', 'total' ),
 			'administrator',
-			WPEX_THEME_PANEL_SLUG .'-footer-builder',
+			WPEX_THEME_PANEL_SLUG . '-footer-builder',
 			array( $this, 'create_admin_page' )
 		);
 	}
@@ -291,7 +291,7 @@ class FooterBuilder {
 				if ( $templates->have_posts() ) { ?>
 
 					<optgroup label="<?php esc_html_e( 'Templatera', 'total' ); ?>">
-						
+
 						<?php while ( $templates->have_posts() ) {
 
 							$templates->the_post();
@@ -315,7 +315,7 @@ class FooterBuilder {
 				if ( $templates->have_posts() ) { ?>
 
 					<optgroup label="<?php esc_html_e( 'Elementor Templates', 'total' ); ?>">
-						
+
 						<?php while ( $templates->have_posts() ) {
 
 							$templates->the_post();
@@ -329,7 +329,7 @@ class FooterBuilder {
 				<?php }
 
 			} ?>
-			
+
 			<optgroup label="<?php esc_html_e( 'Pages', 'total' ); ?>">
 				<?php
 				$pages = get_pages( array(
@@ -353,7 +353,7 @@ class FooterBuilder {
 		<div id="wpex-footer-builder-edit-links">
 
 			<a href="<?php echo admin_url( 'post.php?post='. $page_id .'&action=edit' ); ?>" class="button"><?php esc_html_e( 'Backend Edit', 'total' ); ?></a>
-	
+
 			<?php if ( WPEX_VC_ACTIVE ) { ?>
 				<a href="<?php echo admin_url( 'post.php?vc_action=vc_inline&post_id=' . $page_id . '&post_type=' . get_post_type( $page_id ) ); ?>" class="button" target="_blank"><?php esc_html_e( 'Frontend Edit', 'total' ); ?></a>
 			<?php } ?>
@@ -472,15 +472,15 @@ class FooterBuilder {
 	 * @since 2.0.0
 	 */
 	public function create_admin_page() { ?>
-		
+
 		<div id="wpex-admin-page" class="wrap">
-			
+
 			<h1><?php esc_html_e( 'Footer Builder', 'total' ); ?> <a href="#" id="wpex-help-toggle" aria-hidden="true" style="text-decoration:none;"><span class="dashicons dashicons-editor-help" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'learn more', 'total' ); ?></span></a></h1>
-			
+
 			<div id="wpex-notice" class="wpex-help-notice notice notice-info">
 				<p>
 					<?php echo esc_html__( 'By default the footer consists of a simple widgetized area. For more complex layouts you can use the option below to select a page which will hold the content and layout for your site footer. Selecting a custom footer will remove all footer functions (footer widgets and footer customizer options) so you can create an entire footer using the Visual Composer and not load that extra functions.', 'total' ); ?>
-				
+
 				</p>
 			</div>
 
@@ -536,7 +536,7 @@ class FooterBuilder {
 			</script>
 
 		</div>
-		
+
 	<?php }
 
 	/**

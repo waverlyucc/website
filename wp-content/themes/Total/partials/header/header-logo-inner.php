@@ -6,7 +6,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.6.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -38,16 +38,16 @@ if ( $logo_img || $overlay_logo ) {
 		'width'          => intval( wpex_header_logo_img_width() ),
 		'height'         => intval( wpex_header_logo_img_height() ),
 	) );
-			
+
 	// Custom site-wide image logo
 	if ( $logo_img && ! $overlay_logo ) {
 
 		$output .= '<a href="' . esc_url( $logo_url ) . '" rel="home" class="main-logo">';
-		
+
 			$output .= '<img ' . wpex_parse_attrs( $img_attrs ) . ' />';
 
 		$output .= '</a>';
-	
+
 	}
 
 	// Custom header-overlay logo => Must be added on it's own HTML. IMPORTANT!
@@ -56,7 +56,7 @@ if ( $logo_img || $overlay_logo ) {
 		$img_attrs['src'] = esc_url( $overlay_logo );
 
 		$output .= '<a href="' . esc_url( $logo_url ) . '" rel="home" class="overlay-header-logo">';
-		
+
 			$output .= '<img ' . wpex_parse_attrs( $img_attrs ) . ' />';
 
 		$output .= '</a>';
@@ -67,11 +67,11 @@ if ( $logo_img || $overlay_logo ) {
 
 // Display text logo
 else {
-	
+
 	$output .= '<a href="' . esc_url( $logo_url ) . '" rel="home" class="site-logo-text">';
-		
+
 		$output .= $logo_icon . esc_html( $logo_title );
-	
+
 	$output .= '</a>';
 
 }

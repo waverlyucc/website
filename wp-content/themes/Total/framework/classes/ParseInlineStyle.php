@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -547,7 +547,7 @@ class ParseInlineStyle {
 				}
 
 				if ( ! empty( $v ) ) {
-					
+
 					$method = 'parse_' . $property . '_' . $k;
 					if ( method_exists( $this, $method ) ) {
 						$this->$method( $v );

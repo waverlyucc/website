@@ -2,26 +2,16 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
-
-/** Disable VC in gutenberg pages */
-function vc_gutenberg_check_be( $result, $type ) {
-	if ( function_exists( 'gutenberg_pre_init' ) && function_exists( 'gutenberg_init' ) ) {
-		if ( isset( $_GET['classic-editor'] ) ) {
-			return $result;
-		}
-
-		return ! gutenberg_can_edit_post( null );
-	}
-
-	return $result;
+function vcv_disable_gutenberg_for_classic_editor( $post ) {
+	return false;
 }
 
 /**
  * @param \Vc_Settings $settings
  */
 function vc_gutenberg_add_settings( $settings ) {
-	if ( function_exists( 'gutenberg_pre_init' ) && function_exists( 'gutenberg_init' ) ) {
-
+	global $wp_version;
+	if ( function_exists( 'the_gutenberg_project' ) || version_compare( $wp_version, '4.9.8', '>' ) ) {
 		$settings->addField( 'general', __( 'Disable Gutenberg Editor', 'js_composer' ), 'gutenberg_disable', 'vc_gutenberg_sanitize_disable_callback', 'vc_gutenberg_disable_render_callback' );
 	}
 }
@@ -55,23 +45,32 @@ function vc_gutenberg_check_disabled( $result, $postType ) {
 	if ( 'wpb_gutenberg_param' === $postType ) {
 		return true;
 	}
-	if ( get_option( 'wpb_js_gutenberg_disable' ) ) {
+	if ( ! isset( $_GET['vcv-gutenberg-editor'] ) && ( get_option( 'wpb_js_gutenberg_disable' ) || vc_is_wpb_content() || isset( $_GET['classic-editor'] ) ) ) {
 		return false;
 	}
 
 	return $result;
 }
 
+function vc_is_wpb_content() {
+	$post = get_post();
+	if ( ! empty( $post ) && isset( $post->post_content ) && preg_match( '/\[vc_row/', $post->post_content ) ) {
+		return true;
+	}
+
+	return false;
+}
+
 function vc_gutenberg_map() {
-	if ( function_exists( 'gutenberg_pre_init' ) && function_exists( 'gutenberg_init' ) ) {
+	global $wp_version;
+	if ( function_exists( 'the_gutenberg_project' ) || version_compare( $wp_version, '4.9.8', '>' ) ) {
 		vc_lean_map( 'vc_gutenberg', null, dirname( __FILE__ ) . '/shortcode-vc-gutenberg.php' );
 	}
 }
 
-add_filter( 'vc_is_valid_post_type_be', 'vc_gutenberg_check_be', 10, 2 );
-add_filter( 'gutenberg_can_edit_post_type', 'vc_gutenberg_check_disabled', 10, 2 );
+add_filter( 'use_block_editor_for_post_type', 'vc_gutenberg_check_disabled', 10, 2 );
 add_action( 'vc_settings_tab-general', 'vc_gutenberg_add_settings' );
-add_action( 'plugins_loaded', 'vc_gutenberg_map' );
+add_action( 'init', 'vc_gutenberg_map' );
 
 /** @see include/params/gutenberg/class-gutenberg-param.php */
 require_once vc_path_dir( 'PARAMS_DIR', 'gutenberg/class-gutenberg-param.php' );

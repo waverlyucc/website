@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage 3rd Party
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme\Vendor;
@@ -84,33 +84,35 @@ class YoastSEO {
 	 */
 	public function wpseo_breadcrumb_links( $links ) {
 
-		global $post;
 		$new_breadcrumb = array();
 
-		// Loop through items
-		$types = array( 'portfolio', 'staff', 'testimonials', 'post' );
-		foreach ( $types as $type ) {
-			if ( is_singular( $type ) ) {
-				if ( 'post' == $type ) {
-					$type = 'blog';
-				}
-				$page_id = wpex_parse_obj_id( wpex_get_mod( $type . '_page' ), 'page' );
-				if ( $page_id ) {
-					$page_title     = get_the_title( $page_id );
-					$page_permalink = get_permalink( $page_id );
-					if ( $page_permalink && $page_title ) {
-						$new_breadcrumb[] = array(
-							'url'  => $page_permalink,
-							'text' => $page_title,
-						);
-					}
+		// Loop through theme post types to add parent item
+		if ( is_singular( array( 'portfolio', 'staff', 'testimonials', 'post' ) ) ) {
+			$type = get_post_type();
+			if ( 'post' == $type ) {
+				$type = 'blog';
+			}
+			$page_id = wpex_parse_obj_id( wpex_get_mod( $type . '_page' ), 'page' );
+			if ( $page_id ) {
+				$page_title     = get_the_title( $page_id );
+				$page_permalink = get_permalink( $page_id );
+				if ( $page_permalink && $page_title ) {
+					$new_breadcrumb[] = array(
+						'url'  => $page_permalink,
+						'text' => $page_title,
+					);
 				}
 			}
-		} // End foreach loop
+		}
 
 		// Combine new crumb
 		if ( $new_breadcrumb ) {
-			array_splice( $links, 1, -2, $new_breadcrumb );
+			$options = get_option( 'wpseo_internallinks', array() );
+			if ( empty( $options[ 'breadcrumbs-home' ] ) ) {
+				array_splice( $links, 0, -3, $new_breadcrumb );
+			} else {
+				array_splice( $links, 1, -2, $new_breadcrumb );
+			}
 		}
 
 		// Return links

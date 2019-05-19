@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.3
  */
 
 // Exit if accessed directly
@@ -62,13 +62,13 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 
 			// Home text
 			$home_text = wpex_get_translated_theme_mod( 'breadcrumbs_home_title' );
-			$home_text = $home_text ? $home_text : '<span class="fa fa-home"></span><span class="display-none">'. esc_html__( 'Home', 'total' ) .'</span>';
+			$home_text = $home_text ? $home_text : esc_html__( 'Home', 'total' );
 
 			// Default arguments
 			$args = apply_filters( 'wpex_breadcrumbs_args', array(
 				'home_text'        => $home_text,
 				'home_link'        => home_url( '/' ),
-				'separator'        => wpex_element( 'angle_right' ),
+				'separator'        => '&raquo;',
 				'front_page'       => false,
 				'show_posts_page'  => true,
 				'show_parents'     => true,
@@ -108,7 +108,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 			/*  - Singular: Page, Post, Attachment...etc
 			/*-----------------------------------------------------------------------------------*/
 			elseif ( $wp_query->is_singular ) {
-				
+
 				// Get singular vars
 				$post                       = $wp_query->get_queried_object();
 				$post_id                    = absint( $wp_query->get_queried_object_id() );
@@ -144,7 +144,10 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 						}
 
 						// Add cart to checkout
-						if ( is_checkout() && $cart_id = wpex_parse_obj_id( wc_get_page_id( 'cart' ), 'page' ) ) {
+						if ( apply_filters( 'wpex_breadcrumbs_checkout_cart', false )
+							&& is_checkout()
+							&& $cart_id = wpex_parse_obj_id( wc_get_page_id( 'cart' ), 'page' )
+						) {
 							$trail['cart'] = self::get_crumb_html( get_the_title( $cart_id ), get_permalink( $cart_id ), 'trail-cart' );
 						}
 
@@ -196,7 +199,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 					}
 
 				}
-				
+
 				// Portfolio Posts
 				elseif ( 'portfolio' == $post_type ) {
 
@@ -219,7 +222,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 					}
 
 				}
-				
+
 				// Staff Post Type
 				elseif ( 'staff' == $post_type ) {
 
@@ -238,11 +241,11 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 
 					// Staff Categories
 					if ( $terms = self::get_post_terms( 'staff_category' ) ) {
-						$trail['categories'] = '<span class="trail-post-categories">'. $terms .'</span>';
+						$trail['categories'] = '<span class="trail-post-categories">' . $terms . '</span>';
 					}
 
 				}
-				
+
 				// Testimonials Post Type
 				elseif ( 'testimonials' == $post_type ) {
 
@@ -304,7 +307,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 						}
 					}
 
-					// No archive defined so lets try and locate a parent cpt page
+					// No archive or main page defined so lets try and locate a parent cpt page
 					elseif ( $cpt_find_parents ) {
 						$trail = array_merge( $trail, self::cpt_find_parents( $post_type_obj ) );
 					}
@@ -324,7 +327,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 					if ( $trim_title = wpex_get_mod( 'breadcrumbs_title_trim' ) ) {
 						$post_title = wp_trim_words( $post_title, $trim_title );
 					}
-					$trail['trail_end'] = $post_title;
+					$trail['trail_end'] = wp_strip_all_tags( $post_title, true );
 				}
 
 			}
@@ -341,10 +344,13 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 
 					// Shop Archive
 					if ( function_exists( 'is_shop' ) && is_shop() ) {
-						global $woocommerce;
-						if ( sizeof( $woocommerce->cart->cart_contents ) > 0 ) {
-							if ( $page_id = wpex_parse_obj_id( wc_get_page_id( 'cart' ), 'page' ) ) {
-								$trail['cart'] = self::get_crumb_html( get_the_title( $page_id ), get_permalink( $page_id ), 'trail-cart' );
+
+						if ( apply_filters( 'wpex_breadcrumbs_shop_cart', false ) ) {
+							global $woocommerce;
+							if ( sizeof( $woocommerce->cart->cart_contents ) > 0 ) {
+								if ( $page_id = wpex_parse_obj_id( wc_get_page_id( 'cart' ), 'page' ) ) {
+									$trail['cart'] = self::get_crumb_html( get_the_title( $page_id ), get_permalink( $page_id ), 'trail-cart' );
+								}
 							}
 						}
 
@@ -357,9 +363,9 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 						} else {
 							$trail['trail_end'] = post_type_archive_title( '', false );
 						}
-						
+
 					}
-				
+
 					// Topics Post Type Archive
 					elseif ( is_post_type_archive( 'topic' ) ) {
 
@@ -381,7 +387,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 						$trail['trail_end'] = $post_type_obj->labels->name;
 
 					}
-					
+
 				}
 
 				/*-----------------------------------------------------------------------------------*/
@@ -391,7 +397,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 
 					$post_type     = get_post_type();
 					$post_type_obj = isset( $post_type ) ? get_post_type_object( $post_type ) : '';
-					
+
 					// Link to main portfolio page
 					if ( wpex_is_portfolio_tax() ) {
 						if ( ! empty( $post_type_obj->has_archive ) ) {
@@ -406,7 +412,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 							}
 						}
 					}
-					
+
 					// Link to main staff page
 					elseif ( wpex_is_staff_tax() ) {
 						if ( ! empty( $post_type_obj->has_archive ) ) {
@@ -421,7 +427,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 							}
 						}
 					}
-					
+
 					// Testimonials Tax
 					elseif ( wpex_is_testimonials_tax() ) {
 						if ( ! empty( $post_type_obj->has_archive ) ) {
@@ -676,9 +682,9 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 				return; // Link required
 			}
 			$item_markup = self::get_item_sd_markup();
-			$class = $class ? ' class="'. esc_attr( $class ) .'"': '';
-			$rel   = $rel ? ' rel="'. esc_attr( $rel ) .'"': '';
-			return '<span '. $item_markup . $class . $rel .'><a '. self::get_link_sd_markup() . ' href="'. esc_url( $link ) .'"><span itemprop="name">'. esc_html( $label ) .'</span></a></span>';
+			$class = $class ? ' class="' . esc_attr( $class ) . '"': '';
+			$rel   = $rel ? ' rel="' . esc_attr( $rel ) . '"': '';
+			return '<span '. $item_markup . $class . $rel .'><a '. self::get_link_sd_markup() . ' href="' . esc_url( $link ) . '"><span itemprop="name">' . wp_strip_all_tags( $label ) . '</span></a></span>';
 		}
 
 		/**
@@ -705,6 +711,11 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 		 * @since 1.0.0
 		 */
 		public static function get_post_terms( $taxonomy = '' ) {
+
+			// Return null if disabled
+			if ( wpex_get_mod( 'breadcrumbs_disable_taxonomies', false ) ) {
+				return null;
+			}
 
 			// Make sure taxonomy exists
 			if ( ! $taxonomy || ! taxonomy_exists( $taxonomy ) ) {
@@ -760,7 +771,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 			}
 
 			// Sanitize terms
-			$terms = ! empty( $list_terms ) ? implode( ', ', $list_terms ) : '';
+			$terms = ! empty( $list_terms ) ? implode( ' &middot; ', $list_terms ) : '';
 
 			// Turn into comma seperated string
 			return $terms;
@@ -781,7 +792,7 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 			global $wp_query, $wp_rewrite;
 			$trail = array();
 			$path  = '';
-					
+
 			// Add $front to the path
 			if ( $post_type_obj->rewrite['with_front'] && $wp_rewrite->front ) {
 				$path .= trailingslashit( $wp_rewrite->front );

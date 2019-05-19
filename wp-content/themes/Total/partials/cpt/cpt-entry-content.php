@@ -27,7 +27,7 @@ $check_more_tag = apply_filters( 'wpex_check_more_tag', true ); ?>
 	else :
 
 		// Get excerpt length
-		$excerpt_length = apply_filters( 'wpex_'. get_post_type() .'_entry_excerpt_length', '40' );
+		$excerpt_length = apply_filters( 'wpex_' . get_post_type() . '_entry_excerpt_length', '40' );
 
 		// Output excerpt
 		wpex_excerpt( array(

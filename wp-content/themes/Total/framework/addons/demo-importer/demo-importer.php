@@ -20,7 +20,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		 * The URL to the demos' data.
 		 *
 		 * @since 1.1.0
-		 * 
+		 *
 		 * @var string
 		 */
 		private $demos_remote_url;
@@ -29,7 +29,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		 * Contains the data for the demos.
 		 *
 		 * @since 1.1.0
-		 * 
+		 *
 		 * @var array
 		 */
 		private $demos;
@@ -38,7 +38,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		 * Contains the categories of demos.
 		 *
 		 * @since 1.1.0
-		 * 
+		 *
 		 * @var array
 		 */
 		private $categories;
@@ -47,7 +47,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		 * Contains the plugins required by the demos.
 		 *
 		 * @since 1.1.0
-		 * 
+		 *
 		 * @var array
 		 */
 		private $plugins;
@@ -57,7 +57,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		 * activate and install plugins automatically.
 		 *
 		 * @since 1.1.0
-		 * 
+		 *
 		 * @var Object
 		 */
 		private $plugin_installer;
@@ -68,7 +68,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		 * available data.
 		 *
 		 * @since 1.1.0
-		 * 
+		 *
 		 * @var Object
 		 */
 		private $content_importer;
@@ -96,7 +96,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 			// Constants
 			define( 'WPEX_DEMO_IMPORTER_DIR', WPEX_THEME_DIR . '/framework/addons/demo-importer' );
 			define( 'WPEX_DEMO_IMPORTER_URI', WPEX_THEME_URI . '/framework/addons/demo-importer' );
-			define( 'WPEX_DEMO_IMPORTER_PLUGINS_DIR', WPEX_FRAMEWORK_DIR_URI . 'plugins/' );
+			define( 'WPEX_DEMO_IMPORTER_PLUGINS_DIR', 'http://totalwptheme.s3.amazonaws.com/plugins/' );
 
 			// Include core classes
 			require_once WPEX_DEMO_IMPORTER_DIR . '/classes/class-wpex-demo-importer-utils.php';
@@ -151,7 +151,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 
 			add_action( 'wp_ajax_wpex_post_install_plugin', array( $this, 'ajax_post_install_plugin' ) );
 			add_action( 'wp_ajax_wpex_post_activate_plugin', array( $this, 'ajax_post_activate_plugin' ) );
-			
+
 		}
 
 		/**
@@ -170,7 +170,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 				__( 'Demo Importer', 'total' ),
 				__( 'Demo Importer', 'total' ),
 				'administrator',
-				WPEX_THEME_PANEL_SLUG .'-demo-importer',
+				WPEX_THEME_PANEL_SLUG . '-demo-importer',
 				array( $this, 'demos_page' )
 			);
 
@@ -289,16 +289,16 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		protected function init_demos_data() {
 
 			// the remote URL where the data is stored
-			$this->demos_remote_url = apply_filters( 'wpex_get_demos_remote_url', 'https://totaltheme.wpengine.com/demos-json/' );
- 
+			$this->demos_remote_url = apply_filters( 'wpex_get_demos_remote_url', 'https://totalwptheme.s3.amazonaws.com/sample-data/demos.json' );
+
 			// demo data
 			$demos_data = $this->get_demos_data();
- 
+
 			// list of all the currently available demos
 			$this->demos = $demos_data[ 'demos' ];
 
 			//print_r( $this->demos );
- 
+
 			// list of all the currently available categories
 			$this->categories = $demos_data[ 'categories' ];
 
@@ -310,7 +310,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 				$this->plugins[ $key ]['slug'] = $key;
 
 				if ( $value['location'] === 'bundled' ) {
-					$this->plugins[ $key ]['source'] = WPEX_DEMO_IMPORTER_PLUGINS_DIR . $key . '.zip';
+					$this->plugins[$key]['source'] = WPEX_DEMO_IMPORTER_PLUGINS_DIR . $key . '.zip';
 				}
 			}
 		}
@@ -321,12 +321,12 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 		 * @since 1.0.0
 		 */
 		protected function get_demos_data() {
-			
+
 			// Try to retrieve the demos data from the transient option.
 			// If it doesn't exist or it's expired, load it from the remote location
 			// and then store it in the transient for later use.
 			if ( ( $demos = get_transient( 'wpex_demos_data' ) ) === false ) {
-	
+
 				// Get list of demos
 				$response = WPEX_Demo_Importer_Utils::remote_get( $this->demos_remote_url );
 
@@ -337,7 +337,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 						'plugins' => array()
 					);
 				} else {
-					
+
 					// Extract json data
 					$data = json_decode( $response, true );
 
@@ -362,7 +362,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 				'categories' => $demos['categories'],
 				'plugins'    => $demos['plugins']
 			);
-		}		
+		}
 
 		/**
 		 * Gets the popup content associated with the selected demo
@@ -400,7 +400,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 				die( 'This action was stopped for security purposes.' );
 			}
 
-			echo json_encode( 
+			echo json_encode(
 				array(
 					'xml_data' => array(
 						'input_name' => 'wpex_import_xml',
@@ -408,21 +408,21 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 						'method' => 'ajax_post_import_xml_data',
 						'preloader' => __( 'Importing XML Data', 'total' )
 					),
-	 
+
 					'mods' => array(
 						'input_name' => 'wpex_import_mods',
 						'action' => 'wpex_post_import_mods',
 						'method' => 'ajax_post_import_mods',
 						'preloader' => __( 'Importing Customizer Settings', 'total' )
 					),
-	 
+
 					'widgets' => array(
 						'input_name' => 'wpex_import_widgets',
 						'action' => 'wpex_post_import_widgets',
 						'method' => 'ajax_post_import_widgets',
 						'preloader' => __( 'Importing Widgets', 'total' )
 					),
-	 
+
 					'sliders' => array(
 						'input_name' => 'wpex_import_sliders',
 						'action' => 'wpex_post_import_sliders',
@@ -449,13 +449,13 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 			}
 
 			$this->init_demos_data();
-			
+
 			$this->plugin_installer = new WPEX_Plugin_Installer();
 			$this->plugin_installer->set_plugins_data( $this->plugins );
 
 			// Check if the plugin is not already activated
 			if ( $this->plugin_installer->is_plugin_activated( $plugin ) === false ) {
-					
+
 				$result = $this->plugin_installer->activate_plugin( $plugin );
 
 				if ( $result === true ) {
@@ -503,13 +503,13 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 
 				// Check if the plugin is not already activated
 				if ( $this->plugin_installer->is_plugin_activated( $plugin ) === false ) {
-					
+
 					// Get the file path of the plugin in order to pass it to the activation method
 					$plugin_file_path = $this->plugin_installer->get_plugin_file_path( $plugin );
 
 					// Try to activate the plugin
 					$activation_result = $this->plugin_installer->activate_plugin( $plugin_file_path );
-					
+
 					if ( $activation_result === true ) {
 						echo 'successful installation';
 					} else {
@@ -562,7 +562,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 			}
 
 			$result = $this->content_importer->process_xml( $demo, $import_images );
-			
+
 			if ( is_wp_error( $result ) ) {
 				echo json_encode( $result->errors );
 			} else {
@@ -612,7 +612,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 			}
 
 			$this->init_demos_data();
-			
+
 			$this->content_importer = new WPEX_Content_Importer();
 			$this->content_importer->set_demos_data( $this->demos );
 
@@ -683,7 +683,7 @@ if ( ! class_exists( 'WPEX_Demo_Importer' ) ) {
 				$this->content_importer->set_shop_page( $demo );
 
 				do_action( 'wpex_demo_importer_ajax_post_import_complete' );
-				
+
 			}
 
 			die();

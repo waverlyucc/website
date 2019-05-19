@@ -61,7 +61,7 @@ $blocks = wpex_blog_entry_layout_blocks(); ?>
 						get_template_part( 'partials/blog/blog-entry-title' );
 
 					}
-					
+
 					// Display the entry meta
 					elseif ( 'meta' == $block ) {
 
@@ -110,7 +110,7 @@ $blocks = wpex_blog_entry_layout_blocks(); ?>
 
 		// Other entry styles
 		else :
-			
+
 			// Loop through composer blocks and output layout
 			foreach ( $blocks as $block ) :
 
@@ -134,7 +134,7 @@ $blocks = wpex_blog_entry_layout_blocks(); ?>
 					get_template_part( 'partials/blog/blog-entry-title' );
 
 				}
-				
+
 				// Display the entry meta
 				elseif ( 'meta' == $block ) {
 

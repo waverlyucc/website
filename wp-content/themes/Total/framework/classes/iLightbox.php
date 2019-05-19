@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -28,7 +28,7 @@ class iLightbox {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ), 20 );
 
 		// Load scripts
-		if ( wpex_get_mod( 'lightbox_auto' )
+		if ( wpex_get_mod( 'lightbox_auto', false )
 			|| apply_filters( 'wpex_load_ilightbox_globally', wpex_get_mod( 'lightbox_load_style_globally', false ) )
 		) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'load_stylesheet_always' ), 40 );
@@ -49,7 +49,7 @@ class iLightbox {
 	 */
 	public static function active_skin() {
 		$skin = wpex_get_mod( 'lightbox_skin' );
-		$skin = $skin ? $skin : 'minimal';
+		$skin = $skin ? $skin : 'total'; // default skin is "total"
 		return apply_filters( 'wpex_lightbox_skin', $skin );
 	}
 
@@ -62,6 +62,9 @@ class iLightbox {
 
 		// Define lightbox type
 		$array['lightboxType'] = 'iLightbox';
+
+		// Get skin
+		$skin = wpex_ilightbox_skin();
 
 		// lightbox animations
 		if ( wpex_get_mod( 'ilightbox_animated_effects', true ) ) {
@@ -89,8 +92,8 @@ class iLightbox {
 
 		// Add lightbox to localize array and apply filters for easier tweaking.
 		$array['iLightbox'] = apply_filters( 'wpex_ilightbox_settings', array(
-			'auto'        => wpex_get_mod( 'lightbox_auto', false ),
-			'skin'        => wpex_ilightbox_skin(),
+			'auto'        => wpex_get_mod( 'lightbox_auto', false ) ? '.wpb_text_column a:has(img), body.no-composer .entry a:has(img)' : false,
+			'skin'        => $skin,
 			'path'        => 'horizontal',
 			'infinite'    => false,
 			'maxScale'    => 1,
@@ -120,7 +123,7 @@ class iLightbox {
 			),
 			'overlay' => array(
 				'blur'    => true,
-				'opacity' => '0.9',
+				'opacity' => 'total' == $skin ? '0.85' : '0.9',
 			),
 			'social' => array(
 				'start'   => true,
@@ -175,7 +178,7 @@ class iLightbox {
 		$skin = $skin ? $skin : wpex_ilightbox_skin();
 
 		// Loop through skins
-		$stylesheet = wpex_asset_url( 'lib/ilightbox/'. $skin .'/ilightbox-'. $skin .'-skin.css' );
+		$stylesheet = wpex_asset_url( 'lib/ilightbox/' . $skin . '/ilightbox-' . $skin . '-skin.css' );
 
 		// Apply filters and return
 		return apply_filters( 'wpex_ilightbox_stylesheet', $stylesheet );
@@ -188,13 +191,10 @@ class iLightbox {
 	 * @since 2.1.0
 	 */
 	public static function enqueue_style( $skin = null ) {
-
-		// Get default skin if custom skin not defined
 		$skin = ( $skin && 'default' != $skin ) ? $skin : wpex_ilightbox_skin();
-
-		// Enqueue stylesheet
-		wp_enqueue_style( 'wpex-ilightbox-'. $skin );
-
+		if ( $skin && 'total' !== $skin ) {
+			wp_enqueue_style( 'wpex-ilightbox-' . $skin );
+		}
 	}
 
 	/**
@@ -204,7 +204,7 @@ class iLightbox {
 	 */
 	public static function register_styles() {
 		foreach( self::skins() as $key => $val ) {
-			wp_register_style( 'wpex-ilightbox-'. $key, self::skin_style( $key ), false, WPEX_THEME_VERSION );
+			wp_register_style( 'wpex-ilightbox-' . $key, self::skin_style( $key ), false, WPEX_THEME_VERSION );
 		}
 	}
 
@@ -214,7 +214,10 @@ class iLightbox {
 	 * @since 2.1.0
 	 */
 	public static function load_stylesheet_always() {
-		wp_enqueue_style( 'wpex-ilightbox-'. self::active_skin(), false, WPEX_THEME_VERSION );
+		$skin = self::active_skin();
+		if ( $skin && 'total' !== $skin ) {
+			wp_enqueue_style( 'wpex-ilightbox-' . $skin, false, WPEX_THEME_VERSION );
+		}
 	}
 
 	/**

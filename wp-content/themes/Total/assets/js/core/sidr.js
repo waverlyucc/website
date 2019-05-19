@@ -292,7 +292,7 @@
           left: '',
           right: ''
         }).unbind(transitionEndEvent);
-        
+
 
         sidrStatus.moving = false;
         sidrStatus.opened = false;

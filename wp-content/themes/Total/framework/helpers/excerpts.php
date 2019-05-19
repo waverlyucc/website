@@ -1,7 +1,7 @@
 <?php
 /**
  * Custom excerpt functions
- * 
+ *
  * http://codex.wordpress.org/Function_Reference/wp_trim_words
  *
  * @package Total WordPress Theme
@@ -107,7 +107,7 @@ function wpex_get_excerpt( $args = array() ) {
 		$post_excerpt = apply_filters( 'get_the_excerpt', $post_excerpt );
 
 		if ( $post_excerpt ) {
-		
+
 			// Get output
 			$output = do_shortcode( $post_excerpt );
 
@@ -183,7 +183,7 @@ function wpex_excerpt_length() {
 
 	// Taxonomy setting
 	if ( is_category() ) {
-		
+
 		// Get taxonomy meta
 		$term       = get_query_var( 'cat' );
 		$term_data  = get_option( "category_$term" );
@@ -211,9 +211,13 @@ add_filter( 'excerpt_more', 'wpex_excerpt_more', 10 );
  * Change default excerpt length
  *
  * @since 1.0.0
+ * @todo Do we really need this?
  */
 function wpex_custom_excerpt_length( $length ) {
-	return '40';
+	if ( ! defined( 'ELEMENTOR_VERSION' )  ) {
+		$length = '40';
+	}
+	return $length;
 }
 add_filter( 'excerpt_length', 'wpex_custom_excerpt_length', 999 );
 

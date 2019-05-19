@@ -50,6 +50,7 @@
 		},
 
 		iLightBox = function(el, options, items, instant) {
+
 			var iL = this;
 
 			iL.options = options,
@@ -1793,7 +1794,7 @@
 					windowWidth = viewport.width,
 					windowHeight = viewport.height,
 					elements = [currentHolder, vars.nextPhoto, vars.prevPhoto, vars.nextButton, vars.prevButton, vars.overlay, vars.toolbar, vars.thumbnails, vars.loader],
-					hideElements = [vars.nextPhoto, vars.prevPhoto, vars.nextButton, vars.prevButton, vars.loader, vars.thumbnails];
+					hideElements = [vars.nextPhoto, vars.prevPhoto, vars.nextButton, vars.prevButton, vars.loader, vars.thumbnails, vars.innerPlayButton];
 
 				if (!vars.isInFullScreen) {
 					vars.isInFullScreen = vars.lockKey = vars.lockWheel = vars.lockSwipe = true;
@@ -1802,7 +1803,7 @@
 					});
 
 					$.each(hideElements, function(i, element) {
-						element.hide();
+						element.addClass('wpex-hidden').hide();
 					});
 
 					vars.fullScreenButton.attr('title', opts.text.exitFullscreen);

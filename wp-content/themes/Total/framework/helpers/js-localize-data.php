@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7.1
+ * @version 4.8.4
  *
  */
 
@@ -47,7 +47,7 @@ function wpex_js_localize_data() {
 		'scrollTopOffset'           => 100,
 		'carouselSpeed'		        => 150,
 		'lightboxType'              => '',
-		'customSelects'             => '.woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories form, .widget_archive select, .single-product .variations_form .variations select, .widget .dropdown_product_cat, .vcex-form-shortcode select',
+		'customSelects'             => '.woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories form, .widget_archive select, .single-product .variations_form .variations select, .vcex-form-shortcode select',
 		'responsiveDataBreakpoints' => array(
 			'tl' => '1024px',
 			'tp' => '959px',
@@ -56,9 +56,9 @@ function wpex_js_localize_data() {
 		),
 		'ajaxurl'                   => set_url_scheme( admin_url( 'admin-ajax.php' ) ),
 		'loadMore'                  => array(
-			'text'        => wpex_get_mod( 'loadmore_text', esc_html__( 'Load More', 'total' ) ),
-			'loadingText' => wpex_get_mod( 'loadmore_loading_text', esc_html__( 'Loading...', 'total' ) ),
-			'failedText'  => wpex_get_mod( 'loadmore_failed_text', esc_html__( 'Failed to load posts.', 'total' ) ),
+			'text'        => wpex_get_mod( 'loadmore_text', esc_html__( 'Load More', 'total' ), true ),
+			'loadingText' => wpex_get_mod( 'loadmore_loading_text', esc_html__( 'Loading...', 'total' ), true ),
+			'failedText'  => wpex_get_mod( 'loadmore_failed_text', esc_html__( 'Failed to load posts.', 'total' ), true ),
 		),
 	);
 
@@ -151,7 +151,11 @@ function wpex_js_localize_data() {
 		$array['sidrSide']         = $sidr_side;
 		$array['sidrBodyNoScroll'] = false;
 		$array['sidrSpeed']        = 300;
-		//$array['sidrDropdownTarget'] = 'arrow'; // @deprecated in 4.5.5
+	}
+
+	// Mobile menu toggles style
+	if ( ( 'toggle' == $mm_style || 'sidr' == $mm_style ) && wpex_get_mod( 'mobile_menu_dropdowns_arrow_toggle', false ) ) {
+		$array['mobileMenuDropdownsArrowToggle'] = true;
 	}
 
 	// Sticky topBar
@@ -168,6 +172,14 @@ function wpex_js_localize_data() {
 	// Contact form 7 preloader
 	if ( defined( 'WPCF7_VERSION' ) ) {
 		$array['altercf7Prealoader'] = true;
+	}
+
+	// WooCommerce
+	if ( WPEX_WOOCOMMERCE_ACTIVE ) {
+		if ( wpex_get_mod( 'woo_show_entry_add_to_cart', true ) && wpex_get_mod( 'woo_added_to_cart_notice', true ) ) {
+			$array['wcAddedToCartNotice'] = apply_filters( 'wpex_woocommerce_added_to_cart_notice', esc_html__( 'was added to your shopping cart.', 'total' ) );
+		}
+		$array['wcLightboxTitles'] = wpex_get_mod( 'woo_product_gallery_lightbox_titles', false );
 	}
 
 	// @todo deprecate this filter and a new one that makes more sense?

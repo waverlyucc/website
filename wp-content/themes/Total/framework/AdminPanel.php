@@ -4,7 +4,9 @@
  *
  * @package Total WordPress theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.3
+ *
+ * @todo Remove 'custom_id' parameter and instead add an ID parameter
  */
 
 namespace TotalTheme;
@@ -145,13 +147,6 @@ class AdminPanel {
 				'icon'     => 'dashicons dashicons-list-view',
 				'category' => __( 'Core', 'total' ),
 			),
-			'thumbnail_format_icons'  => array(
-				'label'     => __( 'Thumbnail Post Format Icons', 'total' ),
-				'icon'      => 'dashicons dashicons-edit',
-				'category'  => __( 'Core', 'total' ),
-				'disabled'  => true,
-				'custom_id' => true,
-			),
 			'term_thumbnails' => array(
 				'label'    => __( 'Category Thumbnails', 'total' ),
 				'icon'     => 'dashicons dashicons-format-image',
@@ -160,23 +155,23 @@ class AdminPanel {
 			'editor_formats' => array(
 				'label'    => __( 'Editor Formats', 'total' ),
 				'icon'     => 'dashicons dashicons-editor-paste-word',
-				'category' => __( 'Core', 'total' ),
+				'category' => __( 'Editor', 'total' ),
+			),
+			'mce_buttons_fontselect' => array(
+				'label'     => __( 'Editor Font Family Select', 'total' ),
+				'icon'      => 'dashicons dashicons-editor-textcolor',
+				'category'  => __( 'Editor', 'total' ),
+				'custom_id' => true,
 			),
 			'editor_shortcodes' => array(
 				'label'    => __( 'Editor Shortcodes', 'total' ),
 				'icon'     => 'dashicons dashicons-editor-paste-word',
-				'category' => __( 'Core', 'total' ),
+				'category' => __( 'Editor', 'total' ),
 			),
 			'remove_emoji_scripts' => array(
 				'label'    => __( 'Remove Emoji Scripts', 'total' ),
 				'icon'     => 'dashicons dashicons-smiley',
 				'category' => __( 'Optimizations', 'total' ),
-			),
-			'disable_comment_cookies' => array(
-				'label'     => __( 'Disable Comment Cookies', 'total' ),
-				'icon'      => 'dashicons dashicons-admin-comments',
-				'category'  => __( 'Optimizations', 'total' ),
-				'custom_id' => true,
 			),
 			'image_sizes' => array(
 				'label'    => __( 'Image Sizes', 'total' ),
@@ -196,12 +191,6 @@ class AdminPanel {
 			'edit_post_link' => array(
 				'label'    => __( 'Post Edit Links', 'total' ),
 				'icon'     => 'dashicons dashicons-admin-tools',
-				'category' => __( 'Core', 'total' ),
-			),
-			'header_image' => array(
-				'label'    => __( 'Header Image', 'total' ),
-				'disabled' => true,
-				'icon'     => 'dashicons dashicons-format-image',
 				'category' => __( 'Core', 'total' ),
 			),
 			'import_export' => array(
@@ -239,6 +228,19 @@ class AdminPanel {
 				'disabled'  => true,
 				'custom_id' => true,
 			),*/
+			'thumbnail_format_icons'  => array(
+				'label'     => __( 'Thumbnail Post Format Icons', 'total' ),
+				'icon'      => 'dashicons dashicons-edit',
+				'category'  => __( 'Core', 'total' ),
+				'disabled'  => true,
+				'custom_id' => true,
+			),
+			'header_image' => array(
+				'label'    => __( 'Header Image', 'total' ),
+				'disabled' => true,
+				'icon'     => 'dashicons dashicons-format-image',
+				'category' => __( 'Core', 'total' ),
+			),
 			'disable_gs' => array(
 				'disabled'  => true,
 				'label'     => __( 'Remove Google Fonts', 'total' ),
@@ -393,12 +395,12 @@ class AdminPanel {
 	public function panel_tabs() { ?>
 
 		<h2 class="nav-tab-wrapper">
-					
-			<a href="#" class="nav-tab nav-tab-active"><span class="fa fa-cogs"></span><?php esc_html_e( 'Features', 'total' ); ?></a>
+
+			<a href="#" class="nav-tab nav-tab-active"><span class="ticon ticon-cogs"></span><?php esc_html_e( 'Features', 'total' ); ?></a>
 			<?php if ( ! wpex_envato_hosted() && apply_filters( 'wpex_show_license_panel', true ) ) {
 				$license = wpex_get_theme_license();
 				$icon = $license ? 'certificate' : 'exclamation-circle'; ?>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=wpex-panel-theme-license' ) ); ?>" class="nav-tab wpex-theme-license"><span class="fa fa-<?php echo $icon; ?>"></span><?php esc_html_e( 'Theme License', 'total' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=wpex-panel-theme-license' ) ); ?>" class="nav-tab wpex-theme-license"><span class="ticon ticon-<?php echo $icon; ?>"></span><?php esc_html_e( 'Theme License', 'total' ); ?></a>
 			<?php } ?>
 			<?php if ( wpex_get_mod( 'demo_importer_enable', true ) ) { ?>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=wpex-panel-demo-importer' ) ); ?>" class="nav-tab"><span class="fa fa-download"></span><?php esc_html_e( 'Demo Import', 'total' ); ?></a>
@@ -411,7 +413,7 @@ class AdminPanel {
 				),
 				'customize.php'
 			); ?>
-			<a href="<?php echo esc_url( $customize_url ); ?>" class="nav-tab"><span class="fa fa-paint-brush"></span><?php esc_html_e( 'Customize', 'total' ); ?></a>
+			<a href="<?php echo esc_url( $customize_url ); ?>" class="nav-tab"><span class="ticon ticon-paint-brush"></span><?php esc_html_e( 'Customize', 'total' ); ?></a>
 		</h2>
 
 	<?php }
@@ -446,7 +448,7 @@ class AdminPanel {
 						<table>
 							<tr>
 								<th>
-									<span class="<?php echo esc_attr( apply_filters( 'wpex_theme_panel_badge_icon', 'fa fa-wpexplorer' ) ); ?>"></span>
+									<img src="<?php echo esc_url( wpex_asset_url( 'images/total-logo.svg' ) ); ?>" />
 									<div class="wpex-spacer"></div>
 									<?php echo esc_html__( 'Version', 'total' ) .' <span class="wpex-version">'. WPEX_THEME_VERSION . '</span>'; ?>
 								</th>
@@ -487,11 +489,11 @@ class AdminPanel {
 							<!-- View -->
 							<h4><?php esc_html_e( 'View', 'total' ); ?></h4>
 							<div class="button-group wpex-filter-active">
-								
+
 								<button type="button" class="button active"><?php esc_html_e( 'All', 'total' ); ?></button>
-								
+
 								<button type="button" class="button wpex-active-items-btn" data-filter-by="active"><?php esc_html_e( 'Active', 'total' ); ?> <span class="wpex-count"></span></button>
-								
+
 								<button type="button" class="button wpex-inactive-items-btn" data-filter-by="inactive"><?php esc_html_e( 'Inactive', 'total' ); ?> <span class="wpex-count"></span></button>
 
 							</div>
@@ -532,7 +534,7 @@ class AdminPanel {
 
 								<h4><?php esc_html_e( 'System Status', 'total' ); ?></h4>
 								<div class="wpex-boxed-shadow wpex-system-status">
-									
+
 									<?php
 									$mem_limit = ini_get( 'memory_limit' );
 									$mem_limit_bytes = wp_convert_hr_to_bytes( $mem_limit );
@@ -543,7 +545,7 @@ class AdminPanel {
 										<span class="wpex-val <?php echo $val_class; ?>"><?php echo $mem_limit; ?></span>
 										<span class="wpex-rec"><?php esc_html_e( 'Recommended: 256M', 'total' ); ?></span>
 									</p>
-									
+
 									<?php
 									$max_execute = ini_get( 'max_execution_time' );
 									$enough = $max_execute < 300 ? false : true;
@@ -559,11 +561,22 @@ class AdminPanel {
 									$post_max_size_byte = wp_convert_hr_to_bytes( $post_max_size );
 									$enough = $post_max_size_byte < 33554432 ? false : true;
 									$val_class = $enough ? 'wpex-good' : 'wpex-bad'; ?>
-									<p class="last">
+									<p>
 										<?php esc_html_e( 'Max Post Size', 'total' ); ?>
 										<span class="wpex-val <?php echo $val_class; ?>"><?php echo $post_max_size; ?></span>
 										<br />
 										<span class="wpex-rec"><?php esc_html_e( 'Recommended: 32M', 'total' ); ?></span>
+									</p>
+
+									<?php
+									$input_vars = ini_get( 'max_input_vars' );
+									$enough = $input_vars < 1000 ? false : true;
+									$val_class = $enough ? 'wpex-good' : 'wpex-bad'; ?>
+									<p class="last">
+										<?php esc_html_e( 'Max Input Vars', 'total' ); ?>
+										<span class="wpex-val <?php echo $val_class; ?>"><?php echo $input_vars; ?></span>
+										<br />
+										<span class="wpex-rec"><?php esc_html_e( 'Recommended: 1000', 'total' ); ?></span>
 									</p>
 
 								</div>
@@ -681,10 +694,10 @@ class AdminPanel {
 		/*** CSS ***/
 
 		wp_enqueue_style(
-			'font-awesome',
-			wpex_asset_url( 'lib/font-awesome/css/font-awesome.min.css' ),
+			'ticons',
+			wpex_asset_url( 'lib/ticons/css/ticons.min.css' ),
 			array(),
-			'4.6.3'
+			'4.8'
 		);
 
 		wp_enqueue_style(
@@ -718,7 +731,7 @@ class AdminPanel {
 
 		wp_enqueue_script(
 			'wpex-theme-panel',
-			wpex_asset_url( 'js/dynamic/wpex-theme-panel.js' ),
+			wpex_asset_url( 'js/dynamic/admin/wpex-theme-panel.min.js' ),
 			array( 'jquery' ),
 			WPEX_THEME_VERSION,
 			true
@@ -813,7 +826,7 @@ class AdminPanel {
 		}
 
 		// Thumbnail format icons
-		if ( wpex_get_mod( 'thumbnail_format_icons' ) ) {
+		if ( wpex_get_mod( 'thumbnail_format_icons', false ) ) {
 			require_once $dir . 'ThumbnailFormatIcons.php';
 		}
 

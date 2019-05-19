@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.6
+ * @version 4.8
  */
 
 namespace TotalTheme\Vendor;
@@ -25,8 +25,10 @@ class OCDI {
 	 */
 	public function __construct() {
 		add_filter( 'pt-ocdi/disable_pt_branding', '__return_true' );
+		add_filter( 'pt-ocdi/regenerate_thumbnails_in_content_import', '__return_false' );
 		add_filter( 'pt-ocdi/import_files', array( $this, 'register_import_files' ) );
 		add_action( 'pt-ocdi/after_import', array( $this, 'after_import' ), PHP_INT_MAX );
+		add_filter( 'pt-ocdi/confirmation_dialog_options', array( $this, 'dialog_options' ), 10, 1 );
 	}
 
 	/**
@@ -42,7 +44,7 @@ class OCDI {
 
 		if ( ! $demos ) {
 
-			$json_url = 'http://totaltheme.wpengine.com/import-files/';
+			$json_url = 'https://totalwptheme.s3.amazonaws.com/sample-data/ocdi.json';
 
 			$response = wp_remote_get( $json_url );
 
@@ -58,7 +60,12 @@ class OCDI {
 
 			$demos = json_decode( $body, true );
 
-			$demos['adapt']['import_notice'] = 'You need to activate WooCommerce before running the demo import.';
+			// Add woocommerce notice
+			foreach ( $demos as $demo_k => $demo_v ) {
+				if ( isset( $demo_v['plugins'] ) && is_array( $demo_v['plugins'] ) && in_array( 'WooCommerce', $demo_v['plugins'] ) ) {
+					$demos[$demo_k]['import_notice'] = 'Please make sure you install and activate WooCommerce before running the demo import if you wish to import the shop content.';
+				}
+			}
 
 			set_transient( 'wpex_import_files', $demos, 48 * HOUR_IN_SECONDS );
 
@@ -84,23 +91,23 @@ class OCDI {
 	 */
 	public function after_import( $index ) {
 
-		update_option( 'blogname', $index[ 'import_file_name' ] );
+		if ( ! empty( $index[ 'nav_menu_locations' ] ) ) {
+			$this->set_menus( $index );
+		}
 
-		$this->set_menus( $index );
-
-		if ( isset( $index[ 'homepage_slug' ] ) ) {
+		if ( ! empty( $index[ 'homepage_slug' ] ) ) {
 			$this->set_homepage( $index[ 'homepage_slug' ] );
 		}
 
-		if ( isset( $index[ 'page_for_posts' ] ) ) {
+		if ( ! empty( $index[ 'page_for_posts' ] ) ) {
 			$this->set_page_for_posts( $index[ 'page_for_posts' ] );
 		}
 
-		if ( isset( $index[ 'shop_slug' ] ) ) {
+		if ( ! empty( $index[ 'shop_slug' ] ) ) {
 			$this->set_shop( $index[ 'shop_slug' ] );
 		}
 
-		if ( isset( $index[ 'revsliders' ] ) ) {
+		if ( ! empty( $index[ 'revsliders' ] ) ) {
 			$this->import_revsliders( $index[ 'revsliders' ] );
 		}
 
@@ -112,10 +119,6 @@ class OCDI {
 	 * @since 4.6.6
 	 */
 	public function set_menus( $index ) {
-
-		if ( empty( $index[ 'nav_menu_locations' ] ) ) {
-			return;
-		}
 
 		$locations = get_theme_mod( 'nav_menu_locations' );
 
@@ -187,16 +190,18 @@ class OCDI {
 	 */
 	public function import_revsliders( $sliders ) {
 
-		$ocdi = OCDI\OneClickDemoImport::get_instance();
+		$ocdi = \OCDI\OneClickDemoImport::get_instance();
 
 		// Checks
 		if ( ! function_exists( 'download_url' ) ) {
 			$ocdi->append_to_frontend_error_messages( __( 'Sliders could not be imported because the download_url function does not exist.', 'total' ) );
+			return;
 		}
 
 		// Make sure rev is active
 		if ( ! class_exists( 'RevSlider' ) ) {
 			$ocdi->append_to_frontend_error_messages( __( 'Sliders could not be imported because the Revolution slider plugin is disabled.', 'total' ) );
+			return;
 		}
 
 		$errors = array();
@@ -244,6 +249,21 @@ class OCDI {
 			$slider->importSliderFromPost( true, true, $attachment_url );
 		}
 
+	}
+
+	/**
+	 * Alter confirmation popup settings
+	 *
+	 * @since 4.8
+	 */
+	public function dialog_options( $options ) {
+		return array_merge( $options, array(
+			'width'       => 500,
+			'dialogClass' => 'wp-dialog',
+			'resizable'   => false,
+			'height'      => 'auto',
+			'modal'       => true,
+		) );
 	}
 
 }

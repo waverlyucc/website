@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -41,19 +41,19 @@ if ( 'custom_text' == wpex_get_mod( 'blog_single_header', 'custom_text' ) ) {
 		// Display Date
 		if ( 'date' == $val ) : ?>
 
-			<li class="meta-date"><span class="fa fa-clock-o" aria-hidden="true"></span><time class="updated" datetime="<?php the_date('Y-m-d');?>"<?php wpex_schema_markup( 'publish_date' ); ?>><?php echo get_the_date(); ?></time></li>
+			<li class="meta-date"><span class="ticon ticon-clock-o" aria-hidden="true"></span><time class="updated" datetime="<?php the_date('Y-m-d');?>"<?php wpex_schema_markup( 'publish_date' ); ?>><?php echo get_the_date(); ?></time></li>
 
 		<?php
 		// Display Author
 		elseif ( 'author' == $val ) : ?>
 
-			<li class="meta-author"><span class="fa fa-user" aria-hidden="true"></span><span class="vcard author"<?php wpex_schema_markup( 'author_name' ); ?>><span class="fn"><?php the_author_posts_link(); ?></span></span></li>
+			<li class="meta-author"><span class="ticon ticon-user-o" aria-hidden="true"></span><span class="vcard author"<?php wpex_schema_markup( 'author_name' ); ?>><span class="fn"><?php the_author_posts_link(); ?></span></span></li>
 
 		<?php
 		// Display Categories
 		elseif ( 'categories' == $val ) : ?>
 
-			<li class="meta-category"><span class="fa fa-folder-o" aria-hidden="true"></span><?php wpex_list_post_terms( 'category', true ); ?></li>
+			<li class="meta-category"><span class="ticon ticon-folder-o" aria-hidden="true"></span><?php wpex_list_post_terms( 'category', true ); ?></li>
 
 		<?php
 		// Display First Category
@@ -61,7 +61,7 @@ if ( 'custom_text' == wpex_get_mod( 'blog_single_header', 'custom_text' ) ) {
 
 			if ( $first_cat = wpex_get_first_term_link() ) { ?>
 
-				<li class="meta-category"><span class="fa fa-folder-o" aria-hidden="true"></span><?php echo $first_cat; // Already sanitized ?></li>
+				<li class="meta-category"><span class="ticon ticon-folder-o" aria-hidden="true"></span><?php echo $first_cat; // Already sanitized ?></li>
 
 			<?php } ?>
 
@@ -70,8 +70,8 @@ if ( 'custom_text' == wpex_get_mod( 'blog_single_header', 'custom_text' ) ) {
 		elseif ( 'comments' == $val ) : ?>
 
 			<?php if ( comments_open() && ! post_password_required() ) { ?>
-			
-				<li class="meta-comments comment-scroll"><span class="fa fa-comment-o" aria-hidden="true"></span><?php comments_popup_link( esc_html__( '0 Comments', 'total' ), esc_html__( '1 Comment',  'total' ), esc_html__( '% Comments', 'total' ), 'comments-link' ); ?></li>
+
+				<li class="meta-comments comment-scroll"><span class="ticon ticon-comment-o" aria-hidden="true"></span><?php comments_popup_link( esc_html__( '0 Comments', 'total' ), esc_html__( '1 Comment',  'total' ), esc_html__( '% Comments', 'total' ), 'comments-link' ); ?></li>
 
 			<?php } ?>
 

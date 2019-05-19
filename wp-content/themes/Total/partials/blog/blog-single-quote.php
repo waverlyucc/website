@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 3.3.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="post-quote-entry-inner clr">
 
-		<span class="fa fa-quote-right"></span>
+		<span class="ticon ticon-quote-right"></span>
 		
 		<div class="quote-entry-content clr">
 			<?php the_content(); ?>

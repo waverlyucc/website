@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8.5
  *
  * @todo update to use new wpex_get_post_media_gallery_slider() function
  */
@@ -31,9 +31,10 @@ $slider_data = wpex_get_post_slider_settings( array(
 // Check if lightbox is enabled
 if ( wpex_gallery_is_lightbox_enabled() || wpex_get_mod( 'blog_post_image_lightbox' ) ) {
 	$lightbox_enabled = true;
+	$lightbox_title   = apply_filters( 'wpex_blog_gallery_lightbox_title', false );
 	wpex_enqueue_ilightbox_skin(); // Load lightbox skin stylesheet
 } else {
-	$lightbox_enabled = false;
+	$lightbox_enabled = $lightbox_title = false;
 } ?>
 
 <div id="post-media" class="clr">
@@ -51,7 +52,17 @@ if ( wpex_gallery_is_lightbox_enabled() || wpex_get_mod( 'blog_post_image_lightb
 
 		<div class="wpex-slider slider-pro" <?php wpex_slider_data( $slider_data ); ?>>
 
-			<div class="wpex-slider-slides sp-slides <?php if ( $lightbox_enabled ) echo 'lightbox-group'; ?>">
+			<?php $slides_attrs = array(
+				'class' => 'wpex-slider-slides sp-slides',
+			);
+			if ( $lightbox_enabled ) {
+				$slides_attrs['class'] .= ' wpex-lightbox-group';
+			}
+			if ( ! $lightbox_title ) {
+				$slides_attrs['data-show_title'] = 'false';
+			} ?>
+
+			<div <?php echo wpex_parse_attrs( $slides_attrs ); ?>>
 
 				<?php
 				// Loop through attachments
@@ -84,7 +95,7 @@ if ( wpex_gallery_is_lightbox_enabled() || wpex_get_mod( 'blog_post_image_lightb
 						// Display attachment video
 						if ( $attachment_video ) : ?>
 
-							<div class="wpex-slider-video responsive-video-wrap"><?php echo $attachment_video; ?></div>
+							<div class="wpex-slider-video responsive-video-wrap"><?php echo wpex_add_sp_video_to_oembed( $attachment_video ); ?></div>
 
 						<?php
 						// Display attachment image
@@ -96,26 +107,40 @@ if ( wpex_gallery_is_lightbox_enabled() || wpex_get_mod( 'blog_post_image_lightb
 								// Display with lightbox
 								if ( $lightbox_enabled ) :
 
-									if ( apply_filters( 'wpex_blog_gallery_lightbox_title', false ) ) {
-										$title_data_attr = ' data-title="'. esc_attr( $attachment_alt ) .'"';
-									} else {
-										$title_data_attr = ' data-show_title="false"';
-									} ?>
+									$lightbox_link_attrs = array(
+										'href'      => esc_url( wpex_get_lightbox_image( $attachment ) ),
+										'title'     => esc_attr( $attachment_alt ),
+										'data-type' => 'image',
+										'class'     => 'wpex-lightbox-group-item',
+									);
 
-									<a href="<?php echo wpex_get_lightbox_image( $attachment ); ?>" title="<?php echo $attachment_alt; ?>" data-type="image" class="wpex-lightbox-group-item"<?php echo $title_data_attr; ?>><?php echo $attachment_html; ?></a>
+									if ( $lightbox_title ) {
+										$lightbox_link_attrs['data-title'] = esc_attr( $attachment_alt );
+									}
 
-								<?php
+									if ( $animation = wpex_entry_image_animation_classes() ) {
+										$lightbox_link_attrs['class'] = ' ' . trim( $animation );
+									}
+
+									$thumbnail = wpex_get_blog_entry_thumbnail( array(
+										'attachment' => $attachment,
+										'alt'        => $attachment_alt,
+									) );
+
+									// Display image with lightbox link
+									echo wpex_parse_html( 'a', $lightbox_link_attrs, $thumbnail );
+
 								// Display single image
 								else : ?>
 
 									<?php echo $attachment_html; ?>
 
-									<?php if ( ! empty( $attachment_data['caption'] ) ) : ?>
-										<div class="wpex-slider-caption sp-layer sp-black sp-padding clr" data-position="bottomCenter" data-show-transition="up" data-hide-transition="down" data-width="100%" data-show-delay="500">
+								<?php endif; ?>
+
+								<?php if ( ! empty( $attachment_data['caption'] ) ) : ?>
+									<div class="wpex-slider-caption sp-layer sp-black sp-padding clr" data-position="bottomCenter" data-show-transition="up" data-hide-transition="down" data-width="100%" data-show-delay="500">
 											<?php echo wp_kses_post( $attachment_data['caption'] ); ?>
 										</div><!-- .wpex-slider-caption -->
-									<?php endif; ?>
-
 								<?php endif; ?>
 
 							</div><!-- .wpex-slider-media -->

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.5.1
+ * @version 4.8.3
  */
 
 // Exit if accessed directly
@@ -39,7 +39,11 @@ if ( isset( $atts['visibility'] ) ) {
 	$wrap_attrs['class'] .= ' ' .  $atts['visibility'];
 }
 
-$social_share_data = wpex_get_social_share_data( wpex_get_current_post_id(), $sites );
+$sites_array = array();
+foreach ( $sites as $k => $v ) {
+	$sites_array[] = $k;
+}
+$social_share_data = wpex_get_social_share_data( wpex_get_dynamic_post_id(), $sites_array );
 
 foreach ( $social_share_data as $datak => $datav ) {
 	$wrap_attrs['data-' . $datak ] = $datav;
@@ -73,17 +77,17 @@ $output .= '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 						$output .= '<a href="' . esc_url( $item['href'] ) . '" role="button" tabindex="1">';
 
 					} else {
-					
+
 						$output .= '<a role="button" tabindex="1">';
 
 					}
 
 						$output .= '<span class="' . esc_attr( $item['icon_class'] ) . '" aria-hidden="true"></span>';
-						
+
 						$output .= '<span class="wpex-label">' . esc_html( $item['label'] ) . '</span>';
-					
+
 					$output .= '</a>';
-				
+
 				$output .= '</li>';
 
 			}

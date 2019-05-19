@@ -1,6 +1,6 @@
 <wpml-config>
-    
-    <!-- Total Custom VC Modules/Shortcodes -->
+
+    <!-- Total Custom VC Modules/Shortcodes | Version 4.8.5 -->
     <shortcodes>
         <shortcode>
             <tag>vcex_shortcode</tag>
@@ -8,11 +8,16 @@
         <shortcode>
             <tag>vcex_heading</tag>
             <attributes>
-                <attribute>text</attribute>
+                <attribute encoding="allow_html_tags">text</attribute>
+                <attribute type="link" encoding="av_link">link</attribute>
             </attributes>
         </shortcode>
         <shortcode>
             <tag>vcex_button</tag>
+            <attributes>
+                <attribute>url</attribute>
+                <attribute>title</attribute>
+            </attributes>
         </shortcode>
         <shortcode>
             <tag>vcex_leader</tag>
@@ -38,14 +43,14 @@
         <shortcode>
             <tag>vcex_teaser</tag>
             <attributes>
-                <attribute>heading</attribute>
+                <attribute encoding="allow_html_tags">heading</attribute>
                 <attribute>image</attribute>
             </attributes>
         </shortcode>
         <shortcode>
             <tag>vcex_feature_box</tag>
             <attributes>
-                <attribute>heading</attribute>
+                <attribute encoding="allow_html_tags">heading</attribute>
                 <attribute>image</attribute>
             </attributes>
         </shortcode>
@@ -124,6 +129,7 @@
             <tag>vcex_image_carousel</tag>
             <attributes>
                 <attribute>overlay_button_text</attribute>
+                <attribute>alt_attr</attribute>
                 <attribute>custom_links</attribute>
             </attributes>
         </shortcode>
@@ -229,6 +235,15 @@
             <tag>vcex_testimonials_slider</tag>
             <attributes>
                 <attribute>read_more_text</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>vcex_image_banner</tag>
+            <attributes>
+                <attribute>heading</attribute>
+                <attribute>caption</attribute>
+                <attribute>button_text</attribute>
+                <attribute encoding="vc_link" type="link">link</attribute>
             </attributes>
         </shortcode>
         <shortcode>

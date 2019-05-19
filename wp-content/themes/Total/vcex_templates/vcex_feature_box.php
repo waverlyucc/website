@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.4.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,13 +17,7 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_build_link' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
-// Output 
+// Output
 $output = '';
 
 // Get and extract shortcode attributes

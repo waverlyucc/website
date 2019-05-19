@@ -16,7 +16,7 @@ return array(
 			'holder' => 'div',
 			'heading' => __( 'Text', 'js_composer' ),
 			'param_name' => 'content',
-			'value' => __( '<p>I am text block. Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>', 'js_composer' ),
+			'value' => '<!-- wp:paragraph --><p>Hello! This is the Gutenberg block you can edit directly from the WPBakery Page Builder.</p><!-- /wp:paragraph -->',
 		),
 		vc_map_add_css_animation(),
 		array(

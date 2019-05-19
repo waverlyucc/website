@@ -8,7 +8,5 @@
  */ ?>
 
 <div id="current-shop-items-dropdown">
-	<div id="current-shop-items-inner" class="clr">
-		<?php the_widget( 'WC_Widget_Cart' ); ?>
-	</div>
+	<div id="current-shop-items-inner"><?php the_widget( 'WC_Widget_Cart' ); ?></div>
 </div>

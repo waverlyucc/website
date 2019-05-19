@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -56,7 +50,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Main Classes
 	$wrap_classes = array( 'vcex-module', 'wpex-carousel', 'wpex-carousel-post-type', 'wpex-clr', 'owl-carousel' );
-	
+
 	// Carousel style
 	if ( $style && 'default' != $style ) {
 		$wrap_classes[] = $style;
@@ -65,11 +59,11 @@ if ( $wpex_query->have_posts() ) :
 
 	// Arrow style
 	$arrows_style = $arrows_style ? $arrows_style : 'default';
-	$wrap_classes[] = 'arrwstyle-'. $arrows_style;
+	$wrap_classes[] = 'arrwstyle-' . $arrows_style;
 
 	// Arrow position
 	if ( $arrows_position && 'default' != $arrows_position ) {
-		$wrap_classes[] = 'arrwpos-'. $arrows_position;
+		$wrap_classes[] = 'arrwpos-' . $arrows_position;
 	}
 
 	// Visibility
@@ -109,7 +103,7 @@ if ( $wpex_query->have_posts() ) :
 		'text_align' => $content_alignment,
 		'font_size'  => $content_font_size,
 	) );
-	$content_css = $content_css ? ' '. vc_shortcode_custom_css_class( $content_css ) : '';
+	$content_css = $content_css ? ' ' . vc_shortcode_custom_css_class( $content_css ) : '';
 
 	// Title design
 	if ( 'true' == $title ) {
@@ -209,7 +203,7 @@ if ( $wpex_query->have_posts() ) :
 
 			// Get post from query
 			$wpex_query->the_post();
-		
+
 			// Post VARS
 			$atts['post_id']        = get_the_ID();
 			$atts['post_type']      = get_post_type( $atts['post_id'] );
@@ -232,7 +226,7 @@ if ( $wpex_query->have_posts() ) :
 					if ( 'true' == $media ) {
 
 						if ( has_post_thumbnail() ) {
-						
+
 							// Generate image html
 							$img_html = wpex_get_post_thumbnail( array(
 								'size'          => $img_size,
@@ -321,7 +315,7 @@ if ( $wpex_query->have_posts() ) :
 										$title_output .= esc_html( $atts['post_title'] );
 
 									$title_output .= '</a>';
-									
+
 								$title_output .= '</div>';
 
 								$output .= apply_filters( 'vcex_post_type_carousel_title', $title_output, $atts );
@@ -338,7 +332,7 @@ if ( $wpex_query->have_posts() ) :
 									if ( 'tribe_events' == $atts['post_type'] && function_exists( 'tribe_get_start_date' ) ) {
 
 										$date_output .= esc_html( tribe_get_start_date( $atts['post_id'], false, get_option( 'date_format' ) ) );
-									
+
 									}
 
 									// Standard publish date

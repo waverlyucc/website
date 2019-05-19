@@ -8,7 +8,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.0
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -65,40 +65,20 @@ if ( 'full-screen' == wpex_content_area_layout() ) {
 			) ); ?>
 		</ol><!-- .comment-list -->
 
-		<?php
-		// Display comment navigation - WP 4.4.0
-		if ( function_exists( 'the_comments_navigation' ) ) : ?>
-
-			<?php the_comments_navigation( array(
-				'prev_text' => '<span class="fa fa-angle-left"></span>',
-				'next_text' => '<span class="fa fa-angle-right"></span>',
-			) ); ?>
-
-		<?php elseif ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
-
-			<div class="comment-navigation wpex-clr">
-				<?php paginate_comments_links( array(
-					'prev_text' => '<span class="fa fa-angle-left"></span>',
-					'next_text' => '<span class="fa fa-angle-right"></span>',
-				) ); ?>
-			</div>
-
-		<?php endif; ?>
+		<?php the_comments_navigation(); ?>
 
 		<?php
 		// Display comments closed message
 		if ( ! comments_open() && get_comments_number() ) : ?>
 
 			<p class="no-comments"><?php esc_html_e( 'Comments are closed.' , 'total' ); ?></p>
-			
+
 		<?php endif; ?>
 
 	<?php endif; ?>
 
 	<?php
 	// The comment form
-	comment_form( array(
-		'cancel_reply_link'	=> '<span class="fa fa-times"></span>'. esc_html__( 'Cancel comment reply', 'total' ),
-	) ); ?>
+	comment_form(); ?>
 
 </section><!-- #comments -->

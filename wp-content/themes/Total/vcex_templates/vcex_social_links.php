@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.5
+ * @version 4.8.3
  */
 
 // Exit if accessed directly
@@ -40,7 +40,7 @@ $output = '';
 // Get current author social links
 if ( 'true' == $author_links ) {
 
-	$post_tmp    = get_post( wpex_get_current_post_id() );
+	$post_tmp    = get_post( wpex_get_dynamic_post_id() );
 	$post_author = $post_tmp->post_author;
 
 	if ( ! $post_author ) {
@@ -166,6 +166,11 @@ $output .= '<div ' . wpex_parse_attrs(  $wrap_attrs ) . '>';
 	// Loop through social profiles
 	foreach ( $loop as $key => $val ) {
 
+		// Google plus was shut down
+		if ( 'googleplus' == $key || 'google-plus' == $key ) {
+			continue;
+		}
+
 		// Sanitize classname
 		$profile_class = $key;
 		$profile_class = 'googleplus' == $key ? 'google-plus' : $key;
@@ -190,7 +195,7 @@ $output .= '<div ' . wpex_parse_attrs(  $wrap_attrs ) . '>';
 			if ( $a_hover_data ) {
 				$a_attrs['data-wpex-hover'] = $a_hover_data;
 			}
-			
+
 			$output .= '<a '. wpex_parse_attrs( $a_attrs ) .'><span class="' . esc_attr( $social_profiles[$key]['icon_class'] ) . '" aria-hidden="true"></span><span class="screen-reader-text">' . esc_html( $key ) . '</span></a>';
 		}
 

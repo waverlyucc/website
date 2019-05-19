@@ -33,7 +33,7 @@ if ( $attachments || $thumbnail ) : ?>
 			<a href="<?php wpex_lightbox_image(); ?>" title="<?php wpex_esc_title(); ?>" class="wpex-lightbox" data-show_title="false"><?php echo $thumbnail; ?></a>
 
 		<?php endif; ?>
-		
+
 	</div><!-- .staff-entry-media -->
 
 <?php endif; ?>

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -60,13 +54,10 @@ if ( $provider == 'mailchimp' ) :
 		$input_align = $input_align ? ' float' . $input_align : '';
 
 		$output .= '<div id="mc_embed_signup" class="vcex-newsletter-form-wrap' . $input_align . '"' . $input_width . '>';
-			
-			$output .= '<form action="' . $mailchimp_form_action . '" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>';
-				
-				/*
-				 * Input
-				 */
 
+			$output .= '<form action="' . $mailchimp_form_action . '" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>';
+
+				/** Input ***/
 				$input_style = vcex_inline_style( array(
 					'border'         => $input_border,
 					'border_radius'  => $input_border_radius,
@@ -74,6 +65,7 @@ if ( $provider == 'mailchimp' ) :
 					'letter_spacing' => $input_letter_spacing,
 					'height'         => $input_height,
 					'background'     => $input_bg,
+					'border_color'   => $input_border_color,
 					'color'          => $input_color,
 					'font_size'      => $input_font_size,
 					'font_weight'    => $input_weight,
@@ -81,11 +73,9 @@ if ( $provider == 'mailchimp' ) :
 
 				$input_style = $input_style ? ' ' . $input_style : '';
 
-				$output .= "<input type=\"email\" value=\"". $placeholder_text ."\" onfocus=\"if(this.value==this.defaultValue)this.value='';\" onblur=\"if(this.value=='')this.value=this.defaultValue;\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\"". $input_style .">";
+				$output .= '<input type="email" placeholder="' . esc_attr( $placeholder_text ) . '" name="EMAIL" class="required email" id="mce-EMAIL"' . $input_style . '>';
 
-				/*
-				 * Submit Button
-				 */
+				/** Submit Button ***/
 				if ( $submit_text ) {
 
 					$attrs = array(
@@ -96,8 +86,6 @@ if ( $provider == 'mailchimp' ) :
 						'class' => 'vcex-newsletter-form-button',
 						'style' => vcex_inline_style( array(
 							'height'         => $submit_height,
-							'margin_top'     => $submit_height ? '-' . intval( $submit_height ) / 2 : '',
-							'right'          => $submit_position_right,
 							'border'         => $submit_border,
 							'letter_spacing' => $submit_letter_spacing,
 							'padding'        => $submit_padding,
@@ -130,7 +118,7 @@ if ( $provider == 'mailchimp' ) :
 		$output .= '</div>';
 
 	$output .= '</div>';
-	
+
 endif;
 
 echo $output;

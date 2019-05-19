@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -26,12 +26,12 @@ $args = array(
 	),
 );
 
-$gallery = wpex_get_post_media_gallery_slider( $post_id, $args );
+$gallery_escaped = wpex_get_post_media_gallery_slider( $post_id, $args );
 
-if ( ! $gallery ) {
+if ( ! $gallery_escaped ) {
 	return;
 } ?>
 
 <div id="post-media" class="wpex-clr">
-	<div class="gallery-format-post-slider wpex-clr"><?php echo $gallery; ?></div>
+	<div class="gallery-format-post-slider wpex-clr"><?php echo $gallery_escaped; ?></div>
 </div>

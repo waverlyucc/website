@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.4.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -22,24 +22,22 @@ if ( ! class_exists( 'WPEX_Breadcrumbs' ) ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Get and extract shortcode attributes
 $atts = vc_map_get_attributes( 'vcex_breadcrumbs', $atts );
 
-// Custom breadcrumbs
-if ( $custom_breadcrumbs = apply_filters( 'wpex_custom_breadcrumbs', null ) ) {
-	echo wp_kses_post( $custom_breadcrumbs );
-	return;
+// Yoast Crumbs
+if ( function_exists( 'yoast_breadcrumb' ) && current_theme_supports( 'yoast-seo-breadcrumbs' ) ) {
+	$crumbs = yoast_breadcrumb( '', '', false );
 }
 
-// Generate breadcrumbs (stores trail in $ouput var)
-$crumbs = new WPEX_Breadcrumbs();
-$crumbs = $crumbs->generate_crumbs();
+// Custom breadcrumbs
+elseif ( $custom_breadcrumbs = apply_filters( 'wpex_custom_breadcrumbs', null ) ) {
+	$crumbs = wp_kses_post( $custom_breadcrumbs );
+} else {
+	// Generate breadcrumbs (stores trail in $ouput var)
+	$crumbs = new WPEX_Breadcrumbs();
+	$crumbs = $crumbs->generate_crumbs();
+}
 
 // Get inline styles
 $inline_style = vcex_inline_style( array(

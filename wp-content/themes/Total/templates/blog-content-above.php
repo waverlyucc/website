@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.4.1
+ * @version 4.8
  */
 
 get_header(); ?>
@@ -65,12 +65,24 @@ get_header(); ?>
 					$columns = wpex_blog_entry_columns(); ?>
 
 					<div id="blog-entries" class="clr <?php wpex_blog_wrap_classes(); ?>">
-						<?php $wpex_count = 0; ?>
-						<?php while ( have_posts() ) : the_post(); ?>
-							<?php $wpex_count++; ?>
-							<?php get_template_part( 'partials/blog/blog-entry-layout' ); ?>
-							<?php if ( $columns == $wpex_count ) $wpex_count=0; ?>
-						<?php endwhile; ?>
+						<?php
+						// Define counter for clearing floats
+						$wpex_count = 0;
+
+						// Loop through posts
+						while ( have_posts() ) : the_post();
+
+							// Before entry hook
+							wpex_hook_archive_loop_before_entry();
+
+							// Get content template part (entry content)
+							get_template_part( 'partials/loop/loop', 'blog' );
+
+							// After entry hook
+							wpex_hook_archive_loop_after_entry();
+
+						// End loop
+						endwhile; ?>
 					</div><!-- #blog-entries -->
 
 					<?php

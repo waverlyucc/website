@@ -5,7 +5,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.3
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -49,11 +49,11 @@ $next_text = wpex_get_mod( 'next_prev_next_text' );
 $next_text = $next_text ? esc_html( $next_text ) : '%title';
 
 // Previous post link title
-$prev_post_link_title = '<span class="fa fa-angle-double-left" aria-hidden="true"></span><span class="screen-reader-text">' . esc_html__( 'previous post', 'total' ) . ': </span>' . $prev_text;
+$prev_post_link_title = '<span class="ticon ticon-angle-double-left" aria-hidden="true"></span><span class="screen-reader-text">' . esc_html__( 'previous post', 'total' ) . ': </span>' . $prev_text;
 $prev_post_link_title = apply_filters( 'wpex_prev_post_link_title', $prev_post_link_title, $post_type );
 
 // Next post link title
-$next_post_link_title = '<span class="screen-reader-text">' . esc_html__( 'next post', 'total' ) . ': </span>' . $next_text . '<span class="fa fa-angle-double-right" aria-hidden="true"></span>';
+$next_post_link_title = '<span class="screen-reader-text">' . esc_html__( 'next post', 'total' ) . ': </span>' . $next_text . '<span class="ticon ticon-angle-double-right" aria-hidden="true"></span>';
 $next_post_link_title = apply_filters( 'wpex_next_post_link_title', $next_post_link_title, $post_type );
 
 // Reverse titles

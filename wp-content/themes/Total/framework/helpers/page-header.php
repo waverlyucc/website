@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.5.5
+ * @version 4.8
  *
  */
 
@@ -34,14 +34,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 function wpex_has_page_header() {
 
 	// Display by default
-	$bool = true;
+	$return = true;
 
 	// Get page header style
 	$style = wpex_page_header_style();
 
 	// Hide by default if style is set to hidden
 	if ( 'hidden' == $style ) {
-		$bool = false;
+		$return = false;
 	}
 
 	// Check meta options => MUST COME LAST
@@ -49,7 +49,7 @@ function wpex_has_page_header() {
 
 		// Check Customizer setting only if not disabled globally
 		if ( 'hidden' != wpex_get_mod( 'page_header_style' ) ) {
-			$bool = wpex_get_mod( get_post_type() . '_singular_page_title', true );
+			$return = wpex_get_mod( get_post_type() . '_singular_page_title', true );
 		}
 
 		// Get page meta setting
@@ -57,12 +57,12 @@ function wpex_has_page_header() {
 
 		// Return true if enabled via page settings
 		if ( 'enable' == $meta ) {
-			$bool = true;
+			$return = true;
 		}
 
 		// Return false if page header is disabled and there isn't a page header background defined
 		elseif ( 'on' == $meta ) {
-			$bool = false;
+			$return = false;
 		}
 
 	}
@@ -70,11 +70,16 @@ function wpex_has_page_header() {
 	// Re enable for background image style
 	// This must run last of course
 	if ( 'background-image' == $style ) {
-		$bool = true;
+		$return = true;
+	}
+
+	// Woo Check
+	if ( wpex_is_woo_shop() && ! wpex_get_mod( 'woo_shop_title', true ) ) {
+		$return = false;
 	}
 
 	// Apply filters and return
-	return apply_filters( 'wpex_display_page_header', $bool );
+	return apply_filters( 'wpex_display_page_header', $return );
 
 }
 
@@ -339,7 +344,7 @@ function wpex_page_header_subheading_content() {
 	}
 
 	// Categories
-	elseif ( is_category() ) {
+	elseif ( is_category() || is_tag() ) {
 		$position = wpex_get_mod( 'category_description_position' );
 		$position = $position ? $position : 'under_title';
 		if ( 'under_title' == $position ) {
@@ -417,7 +422,7 @@ function wpex_page_header_css( $output ) {
 
 			// Background style
 			$title_bg_style = apply_filters( 'wpex_page_header_background_image_style', get_post_meta( $post_id, 'wpex_post_title_background_image_style', true ) );
-				
+
 			if ( $title_bg_style ) {
 				$page_header_css .= wpex_sanitize_data( $title_bg_style, 'background_style_css' );
 			} else {
@@ -426,7 +431,7 @@ function wpex_page_header_css( $output ) {
 
 			// Background position
 			$title_bg_position = apply_filters( 'wpex_page_header_background_position', get_post_meta( $post_id, 'wpex_post_title_background_position', true ) );
-				
+
 			if ( $title_bg_position ) {
 				$page_header_css .= 'background-position:' . esc_attr( $title_bg_position ) .';';
 			} else {

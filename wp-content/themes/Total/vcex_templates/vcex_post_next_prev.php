@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -54,8 +54,8 @@ $inline_css = vcex_inline_style( array(
 $output = '<div class="'. $classes . '"' . $inline_css . '>';
 
 	if ( $atts['icon_style'] ) {
-		$icon_left = '<span class="theme-button-icon-left fa fa-' . $atts['icon_style'] . '-left"></span>';
-		$icon_right = '<span class="theme-button-icon-right fa fa-' . $atts['icon_style'] . '-right"></span>';
+		$icon_left = '<span class="theme-button-icon-left ticon ticon-' . $atts['icon_style'] . '-left"></span>';
+		$icon_right = '<span class="theme-button-icon-right ticon ticon-' . $atts['icon_style'] . '-right"></span>';
 	}
 
 	$button_class = wpex_get_button_classes( $atts['button_style'], $atts['button_color'] );

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.5.4
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -24,5 +24,5 @@ $action      = apply_filters( 'wpex_search_action', esc_url( home_url( '/' ) ), 
 		<input type="hidden" name="lang" value="<?php echo( ICL_LANGUAGE_CODE ); ?>"/>
 	<?php endif; ?>
 	<?php do_action( 'wpex_searchform_fields' ); ?>
-	<button type="submit" class="searchform-submit"><span class="fa fa-search" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Submit', 'total' ); ?></span></button>
+	<button type="submit" class="searchform-submit"><span class="ticon ticon-search" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Submit', 'total' ); ?></span></button>
 </form>

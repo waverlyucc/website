@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -85,7 +85,7 @@ function wpex_get_post_media( $post_id = '', $args = array() ) {
 	}
 
 	return apply_filters( 'wpex_get_post_media', $output, $post_id, $args );
-	
+
 }
 
 /**
@@ -136,22 +136,31 @@ function wpex_get_post_media_gallery_slider( $post_id = '', $args = array() ) {
 
 	$output .= '</div>';
 
-	// Display slider
+	// Slider wrap attrs
 	$wrap_attrs = array(
 		'class' => 'wpex-slider slider-pro',
 		'data'  => wpex_get_slider_data( $slider_data ),
 	);
 
-	$output .= '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
+	// Open slider wrap element
+	$output .= '<div ' . trim( wpex_parse_attrs( $wrap_attrs ) ) . '>';
 
-		$slider_class = 'wpex-slider-slides sp-slides';
-		
+
+		// Slider attrs
+		$slides_attrs = array(
+			'class' => 'wpex-slider-slides sp-slides',
+		);
+
 		if ( $lightbox ) {
 			wpex_enqueue_ilightbox_skin();
-			$slider_class .= ' lightbox-group';
+			$slides_attrs[ 'class' ] .= ' wpex-lightbox-group';
+			if ( ! $lightbox_title ) {
+				$slides_attrs['data-show_title'] = 'false';
+			}
 		}
 
-		$output .= '<div class="' . $slider_class . '">';
+		// Open inner slider element
+		$output .= '<div ' . trim( wpex_parse_attrs( $slides_attrs ) ) . '>';
 
 			// Loop through attachments
 			foreach ( $attachments as $attachment ) :
@@ -204,17 +213,18 @@ function wpex_get_post_media_gallery_slider( $post_id = '', $args = array() ) {
 							// Display with lightbox
 							if ( $lightbox ) {
 
+								$lightbox_link_attrs = array(
+									'href'      => wpex_get_lightbox_image( $attachment ), // already escaped,
+									'title'     => esc_attr( $attachment_alt ),
+									'class'     => 'wpex-lightbox-group-item',
+									'data-type' => 'image',
+								);
+
 								if ( $lightbox_title ) {
-									$title_data_attr = ' data-title="'. esc_attr( $attachment_alt ) .'"';
-								} else {
-									$title_data_attr = ' data-show_title="false"';
+									$lightbox_link_attrs[ 'data-title' ] = esc_attr( $attachment_alt );
 								}
 
-								$output .= '<a href="' . wpex_get_lightbox_image( $attachment ) . '" title="' . esc_attr( $attachment_alt ) . '" data-type="image" class="wpex-lightbox-group-item"' . $title_data_attr . '>';
-
-									$output .= $attachment_html;
-
-								$output .= '</a>';
+								$output .= wpex_parse_html( 'a', $lightbox_link_attrs, $attachment_html );
 
 							}
 
@@ -260,5 +270,5 @@ function wpex_get_post_media_gallery_slider( $post_id = '', $args = array() ) {
 	$output .= '</div>';
 
 	return $output;
-	
+
 }

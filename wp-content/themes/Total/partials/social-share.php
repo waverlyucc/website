@@ -25,7 +25,7 @@ if ( $custom_social = apply_filters( 'wpex_custom_social_share', wpex_get_mod( '
 	if ( 'full-screen' == wpex_content_area_layout() ) {
 		$classes .= ' container';
 	} ?>
-	
+
 	<div class="<?php echo esc_attr( $classes ); ?>">
 		<div class="wpex-social-share position-horizontal clr"><?php echo do_shortcode( wp_kses_post( $custom_social ) ); ?></div>
 	</div>
@@ -113,17 +113,17 @@ $output = '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 						$output .= '<a href="' . esc_attr( $item['href'] ) . '" role="button">';
 
 					} else {
-					
+
 						$output .= '<a href="#" role="button">';
 
 					}
 
 						$output .= '<span class="' . esc_attr( $item['icon_class'] ) . '" aria-hidden="true"></span>';
-						
+
 						$output .= '<span class="wpex-label">' . esc_html( $item['label'] ) . '</span>';
-					
+
 					$output .= '</a>';
-				
+
 				$output .= '</li>';
 
 			}

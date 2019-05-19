@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -47,7 +47,7 @@ class PostGallery {
 		);
 		return $sizes;
 	}
-	
+
 	/**
 	 * Tweaks the default WP Gallery Output
 	 *
@@ -166,8 +166,8 @@ class PostGallery {
 		wpex_enqueue_ilightbox_skin();
 
 		// Begin output
-		$output .= '<div id="gallery-'. esc_attr( $instance ) .'" class="wpex-gallery wpex-row gap-' . esc_attr( $gap ) .' lightbox-group wpex-clr">';
-			
+		$output .= '<div id="gallery-' . esc_attr( $instance ) . '" class="wpex-gallery wpex-row gap-' . esc_attr( $gap ) . ' wpex-lightbox-group wpex-clr">';
+
 			// Begin Loop
 			$count  = 0;
 			foreach ( $attachments as $attachment_id => $attachment ) {
@@ -218,12 +218,12 @@ class PostGallery {
 				$entry_classes[] = 'col-' . $count;
 				$entry_classes = apply_filters( 'wpex_wp_gallery_entry_classes', $entry_classes );
 				$entry_classes = implode( ' ', $entry_classes );
-		
+
 				// Start Gallery Item
 				$output .= '<figure class="'. esc_attr( $entry_classes ) .'">';
-				
+
 					// Display image
-					$output .= '<a href="'. esc_url( $lightbox_url ) .'" class="wpex-lightbox-group-item"'. $lightbox_data .'>';
+					$output .= '<a href="'. esc_url( $lightbox_url ) .'" class="wpex-lightbox-group-item"' . $lightbox_data . '>';
 
 						$output .= wpex_get_post_thumbnail( array(
 							'attachment' => $attachment_id,
@@ -258,7 +258,7 @@ class PostGallery {
 
 						}
 					}
-					
+
 				// Close gallery item div
 				$output .= '</figure>';
 
@@ -268,7 +268,7 @@ class PostGallery {
 					$count = '0';
 
 				}
-				
+
 			}
 
 		// Close gallery div

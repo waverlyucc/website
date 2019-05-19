@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Updates
- * @version 4.5.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -15,56 +15,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Hook to init to prevent any possible conflicts in main theme class
 function wpex_after_update() {
 
-	// Define dir
-	$dir = WPEX_FRAMEWORK_DIR .'updates/';
+	// Get user theme version
+	$user_v = get_option( 'total_version' );
 
-	// Get theme version
-	$theme_version   = WPEX_THEME_VERSION;
-	//$theme_version = 1.0; print_r('testing_updates'); // for testing purposes to re-run all updates
-	$initial_version = get_option( 'total_initial_version' );
+	// For testing purposes
+	//$user_v = '';
 
-	/*-------------------------------------------------------------------------------*/
-	/* - Add initial version so we know the first time a user activated the theme
-	/*-------------------------------------------------------------------------------*/
-	if ( ! get_option( 'total_initial_version' ) ) {
-		update_option( 'total_initial_version', $theme_version );
+	// If already on current version we don't need to do anything at all
+	if ( $user_v == WPEX_THEME_VERSION ) {
+		return;
 	}
 
-	/*-------------------------------------------------------------------------------*/
-	/* -  Get user theme version
-	/*-------------------------------------------------------------------------------*/
-	$old_version = get_option( 'total_version' );
-	$old_version = $old_version ? $old_version : '2.1.3'; // Version is required and was added in v2.1.3
+	// Add initial version so we know the first time a user activated the theme
+	if ( ! get_option( 'total_initial_version' ) ) {
+		update_option( 'total_initial_version', WPEX_THEME_VERSION, false );
+	}
+
+	// Old version is required and was added in v2.1.3
+	// Prevents functions from running for new customers
+	$user_v = $user_v ? $user_v : '2.1.3';
 
 	/*-------------------------------------------------------------------------------*/
 	/* - Functions that will always run after update
 	/*-------------------------------------------------------------------------------*/
-	if ( $old_version != $theme_version  ) {
-		
-		// Backup theme mods
-		wpex_backup_mods();
 
-		// Re-enable recommended plugins notice for updates
-		set_theme_mod( 'recommend_plugins_enable', true );
-		delete_metadata( 'user', null, 'tgmpa_dismissed_notice_wpex_theme', null, true );
+	// Backup theme mods
+	wpex_backup_mods();
 
-		// Reset plugin updates transient
-		set_site_transient( 'update_plugins', null );
+	// Re-enable recommended plugins notice for updates
+	set_theme_mod( 'recommend_plugins_enable', true );
+	delete_metadata( 'user', null, 'tgmpa_dismissed_notice_wpex_theme', null, true );
 
-	}
+	// Reset plugin updates transient
+	set_site_transient( 'update_plugins', null );
 
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 3.0.0
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '3.0.0', $old_version, '>' ) ) {
-		require_once $dir .'update-3_0_0.php';
+	if ( version_compare( '3.0.0', $user_v, '>' ) ) {
+		require_once WPEX_FRAMEWORK_DIR . 'updates/update-3_0_0.php';
 	}
 
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 3.3.0
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '3.3.0', $old_version, '>' ) ) {
-		
+	if ( version_compare( '3.3.0', $user_v, '>' ) ) {
+
 		// Turn retina logo height into just logo height and delete old theme mod
 		if ( $mod = wpex_get_mod( 'retina_logo_height' ) ) {
 			set_theme_mod( 'logo_height', $mod );
@@ -114,7 +110,7 @@ function wpex_after_update() {
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 3.3.2
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '3.3.2', $old_version, '>' ) ) {
+	if ( version_compare( '3.3.2', $user_v, '>' ) ) {
 
 		// Set correct related image sizes => Portfolio
 		if ( $mod = wpex_get_mod( 'portfolio_entry_image_width' ) ) {
@@ -143,7 +139,7 @@ function wpex_after_update() {
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 3.3.3
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '3.3.3', $old_version, '>' ) ) {
+	if ( version_compare( '3.3.3', $user_v, '>' ) ) {
 
 		// Remove useless settings
 		delete_option( 'wpex_portfolio_branding' );
@@ -155,7 +151,7 @@ function wpex_after_update() {
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 3.4.0
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '3.4.0', $old_version, '>' ) ) {
+	if ( version_compare( '3.4.0', $user_v, '>' ) ) {
 		if ( ! get_theme_mod( 'fixed_header', true ) ) {
 			set_theme_mod( 'fixed_header_style', 'disabled' );
 			remove_theme_mod( 'fixed_header' );
@@ -166,7 +162,7 @@ function wpex_after_update() {
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 3.5.0
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '3.5.0', $old_version, '>' ) ) {
+	if ( version_compare( '3.5.0', $user_v, '>' ) ) {
 
 		// Update page composer based on settings
 		$composer = array( 'content' );
@@ -193,7 +189,7 @@ function wpex_after_update() {
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 4.0
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '4.0', $old_version, '>' ) ) {
+	if ( version_compare( '4.0', $user_v, '>' ) ) {
 
 		// Port custom CSS to new WP custom CSS function if WP is up to date
 		if ( function_exists( 'wp_get_custom_css' ) && $deprecated_css = wpex_get_mod( 'custom_css', null ) ) {
@@ -204,7 +200,7 @@ function wpex_after_update() {
 			if ( ! is_wp_error( $return ) ) {
 
 				// Save backup then remove deprecated
-				add_option( 'wpex_custom_css_backup', $deprecated_css ); // Save backup just incase
+				update_option( 'wpex_custom_css_backup', $deprecated_css, false ); // Save backup just incase
 
 				// Remove option
 				remove_theme_mod( 'custom_css' );
@@ -215,7 +211,7 @@ function wpex_after_update() {
 
 		// Update patterns bg url
 		if ( $pattern = wpex_get_mod( 'background_pattern' ) ) {
-			$pattern = str_replace( array( '.png', WPEX_THEME_URI .'/images/patterns/' ), '', $pattern );
+			$pattern = str_replace( array( '.png', WPEX_THEME_URI . '/images/patterns/' ), '', $pattern );
 			set_theme_mod( 'background_pattern', $pattern );
 		}
 
@@ -238,7 +234,7 @@ function wpex_after_update() {
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 4.3
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '4.3', $old_version, '>' ) ) {
+	if ( version_compare( '4.3', $user_v, '>' ) ) {
 
 		// Update footer widget colors
 		$mods = array(
@@ -304,7 +300,7 @@ function wpex_after_update() {
 	/*-------------------------------------------------------------------------------*/
 	/* -  UPDATE: 4.4
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '4.4.1', $old_version, '>' ) ) {
+	if ( version_compare( '4.4.1', $user_v, '>' ) ) {
 
 		// Remove old customizer setting for shop slider
 		if ( $mod = wpex_get_mod( 'woo_shop_slider' ) ) {
@@ -318,9 +314,9 @@ function wpex_after_update() {
 	}
 
 	/*-------------------------------------------------------------------------------*/
-	/* -  UPDATE: 4.4
+	/* -  UPDATE: 4.5.2
 	/*-------------------------------------------------------------------------------*/
-	if ( version_compare( '4.5.2', $old_version, '>' ) ) {
+	if ( version_compare( '4.5.2', $user_v, '>' ) ) {
 
 		if ( $mod = wpex_get_mod( 'wpex_ybtt_trim_title' ) ) {
 			set_theme_mod( 'breadcrumbs_title_trim', $mod );
@@ -330,9 +326,27 @@ function wpex_after_update() {
 	}
 
 	/*-------------------------------------------------------------------------------*/
+	/* -  UPDATE: 4.8.4
+	/*-------------------------------------------------------------------------------*/
+	if ( version_compare( '4.8.4', $user_v, '>' ) ) {
+
+		// Remove autoloading for old settings
+		if ( $old_option = get_option( 'wpex_custom_css_backup' ) ) {
+			update_option( 'wpex_custom_css_backup', $old_option, false );
+		}
+		if ( $old_option = get_option( 'total_import_theme_mods_backup' ) ) {
+			update_option( 'total_import_theme_mods_backup', $old_option, false );
+		}
+		if ( $old_option = get_option( 'wpex_total_customizer_backup' ) ) {
+			update_option( 'wpex_total_customizer_backup', $old_option, false );
+		}
+
+	}
+
+	/*-------------------------------------------------------------------------------*/
 	/* -  *** Update Theme Version ***
 	/*-------------------------------------------------------------------------------*/
-	update_option( 'total_version', $theme_version );
+	update_option( 'total_version', WPEX_THEME_VERSION, false );
 
 }
 add_action( 'init', 'wpex_after_update' );

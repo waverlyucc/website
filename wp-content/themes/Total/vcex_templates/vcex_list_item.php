@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,19 +17,13 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Get and extract shortcode attributes
 $atts = vcex_vc_map_get_attributes( 'vcex_list_item', $atts );
 extract( $atts );
 
 // Sanitize content/text
 if ( 'custom_field' == $text_source ) {
-	$content = $text_custom_field ? get_post_meta( wpex_get_current_post_id(), $text_custom_field, true ) : '';
+	$content = $text_custom_field ? get_post_meta( wpex_get_dynamic_post_id(), $text_custom_field, true ) : '';
 } elseif( 'callback_function' == $text_source ) {
 	$content = ( $text_callback_function && function_exists( $text_callback_function ) ) ? call_user_func( $text_callback_function ) : '';
 }
@@ -41,14 +35,6 @@ if ( empty( $content ) ) {
 
 // Output var
 $output = '';
-
-// Get icon classes
-$icon = vcex_get_icon_class( $atts, 'icon' );
-
-// Enqueue needed icon font
-if ( $icon && 'fontawesome' != $icon_type ) {
-	vcex_enqueue_icon_font( $icon_type );
-}
 
 // Load custom font
 if ( $font_family ) {
@@ -64,9 +50,6 @@ if ( $link ) {
 		$url         = $link_url;
 		$link_title  = isset( $atts['link_title'] ) ? $atts['link_title'] : '';
 		$link_target = isset( $atts['link_target'] ) ? $atts['link_target'] : '';
-		$url_title   = vcex_get_link_data( 'title', $link_url_temp, $link_title );
-		$url_target  = vcex_get_link_data( 'target', $link_url_temp, $link_target );
-		$url_target  = vcex_html( 'target_attr', $url_target );
 	}
 }
 
@@ -147,8 +130,9 @@ $output .= '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 
 		$link_attrs = array(
 			'href'   => esc_url( do_shortcode( $url ) ),
-			'title'  => do_shortcode( $url_title ),
-			'target' => $url_target,
+			'title'  => do_shortcode( vcex_get_link_data( 'title', $link_url_temp, $link_title ) ),
+			'target' => vcex_get_link_data( 'target', $link_url_temp, $link_target ),
+			'rel'    => vcex_get_link_data( 'rel', $link_url_temp ),
 			'style'  => vcex_inline_style( array(
 				'color' => $font_color,
 			), false ),
@@ -158,7 +142,7 @@ $output .= '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 
 	}
 
-	if ( $icon ) {
+	if ( $icon || $icon_alternative_classes ) {
 
 		if ( ! $icon_height && $icon_size ) {
 			$icon_height = $icon_size;
@@ -182,7 +166,24 @@ $output .= '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 
 		$icon_style = vcex_inline_style( $style_args );
 
-		$output .= '<div class="vcex-icon-wrap"' . $icon_style . '><span class="' . $icon . '"></span></div>';
+		$output .= '<div class="vcex-icon-wrap"' . $icon_style . '>';
+
+		if ( $icon_alternative_classes ) {
+
+			$output .= '<span class="'. esc_attr( do_shortcode( $icon_alternative_classes ) ) .'"></span>';
+
+		} else {
+
+			// Enqueue needed icon font
+			if ( $icon && 'fontawesome' != $icon_type ) {
+				vcex_enqueue_icon_font( $icon_type );
+			}
+
+			$output .= '<span class="' . vcex_get_icon_class( $atts, 'icon' ) . '"></span>';
+
+		}
+
+		$output .= '</div>';
 
 	}
 
@@ -191,7 +192,7 @@ $output .= '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 	if ( $url ) {
 
 		$output .= '</a>';
-		
+
 	}
 
 $output .= '</div>';

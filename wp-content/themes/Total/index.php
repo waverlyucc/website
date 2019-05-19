@@ -11,7 +11,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.6.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -39,7 +39,7 @@ get_header(); ?>
 
 					// Get index loop type
 					$loop_type = wpex_get_index_loop_type();
-						
+
 					// Get loop top
 					get_template_part( 'partials/loop/loop-top', $loop_type );
 
@@ -100,5 +100,5 @@ get_header(); ?>
 		<?php wpex_hook_primary_after(); ?>
 
 	</div><!-- .container -->
-	
+
 <?php get_footer(); ?>

@@ -105,7 +105,7 @@ if ( ! function_exists( 'wpex_overlay_style' ) ) {
 	function wpex_overlay_style( $style = '' ) {
 
 		$style = $style ? $style : get_post_type();
-		
+
 		if ( 'portfolio' == $style ) {
 			$style = wpex_get_mod( 'portfolio_entry_overlay_style' );
 		} elseif ( 'staff' == $style ) {
@@ -169,7 +169,7 @@ if ( ! function_exists( 'wpex_overlay_classes' ) ) {
 
 		// Return classes
 		return 'overlay-parent overlay-parent-' . $style . $mobile_support . $hover;
-		
+
 	}
-	
+
 }

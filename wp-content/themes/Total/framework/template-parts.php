@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.3
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -36,6 +36,7 @@ function wpex_template_parts() {
 		'header_logo_inner'            => 'partials/header/header-logo-inner',
 		'header_menu'                  => 'partials/header/header-menu',
 		'header_aside'                 => 'partials/header/header-aside',
+		'header_buttons'               => 'partials/header/header-buttons',
 		'header_search_dropdown'       => 'partials/search/header-search-dropdown',
 		'header_search_replace'        => 'partials/search/header-search-replace',
 		'header_search_overlay'        => 'partials/search/header-search-overlay',
@@ -165,7 +166,41 @@ function wpex_singular_template( $template_content = '' ) {
 	if ( ! $template_content ) {
 		return;
 	}
-	$post_content     = '<div class="vcex-post-content clr">' . apply_filters( 'the_content', get_the_content() ) . '</div>';
-	$template_content = str_replace( '[vcex_post_content]', $post_content, $template_content );
+	//$post_content     = '<div class="vcex-post-content clr">' . apply_filters( 'the_content', get_the_content() ) . '</div>'; // @deprecated 4.8
+	//$template_content = str_replace( '[vcex_post_content]', $post_content, $template_content ); // @deprecated 4.8
 	echo '<div class="custom-singular-template entry wpex-clr">' . do_shortcode( $template_content ) . '</div>';
+}
+
+/**
+ * Sets dynamic ID
+ *
+ * @since 4.8
+ */
+function wpex_define_dynamic_post_id( $id ) {
+	global $t_dt_id;
+	$t_dt_id = $id;
+}
+
+/**
+ * Returns correct post ID for a dynamic template or builder module setting
+ *
+ * @since 4.8
+ */
+function wpex_get_dynamic_post_id() {
+	global $t_dt_id;
+	return $t_dt_id ? $t_dt_id : wpex_get_current_post_id();
+}
+
+/**
+ * Output entry template
+ *
+ * @since 4.8
+ */
+function wpex_get_entry_template( $post_id = '', $post_type = '' ) {
+	$post_id     = $post_id ? $post_id : get_the_ID();
+	$template_id = apply_filters( 'wpex_get_entry_template', wpex_get_mod( $post_type . '_entry_template' ), $post_id, $post_type );
+	wpex_define_dynamic_post_id( $post_id );
+	if ( $template_id && $temp_post = get_post( $template_id ) ) {
+		return do_shortcode( $temp_post->post_content );
+	}
 }

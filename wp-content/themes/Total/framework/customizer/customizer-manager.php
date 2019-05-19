@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'WPEX_Customizer_Manager' ) ) {
-	
+
 	class WPEX_Customizer_Manager extends WPEX_Customizer {
 
 		public $page_name;

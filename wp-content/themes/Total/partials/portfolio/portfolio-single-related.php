@@ -111,9 +111,9 @@ if ( $wpex_related_query->have_posts() ) :
 			endforeach; ?>
 
 		</div><!-- .row -->
-		
+
 	</section><!-- .related-portfolio-posts -->
-	
+
 <?php
 // End have_posts check
 endif; ?>

@@ -2,15 +2,15 @@
 
 jQuery(document).ready(function($) {
 	
-	$('.wp-admin .wrap-tab1 form h2').prepend('<span class="fa fa-pad fa-cog"></span> ');
-	$('.wp-admin .wrap-tab2 form h2').prepend('<span class="fa fa-pad fa-file-text"></span> ');
-	$('.wp-admin .wrap-tab3 form h2').prepend('<span class="fa fa-pad fa-rss"></span> ');
-	$('.wp-admin .wrap-tab4 form h2').prepend('<span class="fa fa-pad fa-share-alt"></span> ');
-	$('.wp-admin .wrap-tab5 form h2').prepend('<span class="fa fa-pad fa-list-ul"></span> ');
-	$('.wp-admin .wrap-tab6 form h2').prepend('<span class="fa fa-pad fa-list-alt"></span> ');
-	$('.wp-admin .wrap-tab7 form h2').prepend('<span class="fa fa-pad fa-info-circle"></span> ');
-	$('.wp-admin .wrap-tab8 form h2').prepend('<span class="fa fa-pad fa-search"></span> ');
-	$('.wp-admin .wrap-tab9 form h2').prepend('<span class="fa fa-pad fa-search"></span> ');
+	$('.wp-admin .wrap-tab1 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-cog"></span> ');
+	$('.wp-admin .wrap-tab2 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-file-text"></span> ');
+	$('.wp-admin .wrap-tab3 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-rss"></span> ');
+	$('.wp-admin .wrap-tab4 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-share-alt"></span> ');
+	$('.wp-admin .wrap-tab5 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-list-ul"></span> ');
+	$('.wp-admin .wrap-tab6 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-list-alt"></span> ');
+	$('.wp-admin .wrap-tab7 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-info-circle"></span> ');
+	$('.wp-admin .wrap-tab8 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-search"></span> ');
+	$('.wp-admin .wrap-tab9 form h2:not(.dws-noicon)').prepend('<span class="fa fa-pad fa-search"></span> ');
 	
 	$('.dws-reset-options').on('click', function(e) {
 		e.preventDefault();

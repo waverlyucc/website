@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -26,11 +26,22 @@ if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shor
 // Define output var
 $output = '';
 
+// Store orginal atts value for use in non-builder params
+$og_atts = $atts;
+
+// Define entry counter
+$entry_count = ! empty( $og_atts['entry_count'] ) ? $og_atts['entry_count'] : 0;
+
 // Get and extract shortcode attributes
 $atts = vc_map_get_attributes( 'vcex_post_type_grid', $atts );
 
 // Extract attributes
 extract( $atts );
+
+// Add paged attribute for load more button (used for WP_Query)
+if ( ! empty( $og_atts['paged'] ) ) {
+	$atts['paged'] = $og_atts['paged'];
+}
 
 // Build the WordPress query
 $wpex_query = vcex_build_wp_query( $atts );
@@ -82,6 +93,15 @@ if ( $wpex_query->have_posts() ) :
 
 	// Load lightbox scripts
 	if ( 'lightbox' == $thumb_link || 'lightbox_gallery' == $thumb_link ) {
+		if ( 'true' == $atts['thumb_lightbox_gallery'] ) {
+			$grid_classes[] = 'wpex-lightbox-group';
+			$lightbox_single_class = 'wpex-lightbox-group-item';
+		} else {
+			$lightbox_single_class = 'wpex-lightbox';
+		}
+		if ( 'true' != $atts['thumb_lightbox_title'] ) {
+			$grid_data[] = 'data-show_title="false"';
+		}
 		wpex_enqueue_ilightbox_skin();
 	}
 
@@ -99,7 +119,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Grid classes
 	if ( $columns_gap ) {
-		$grid_classes[] = 'gap-'. $columns_gap;
+		$grid_classes[] = 'gap-' . $columns_gap;
 	}
 	if ( 'left_thumbs' == $single_column_style ) {
 		$grid_classes[] = 'left-thumbs';
@@ -265,13 +285,13 @@ if ( $wpex_query->have_posts() ) :
 										}
 
 									$output .= '">';
-										
+
 										$output .= '<a href="#" data-filter=".'. $filter_prefix .'-'. $term->term_id .'" class="'. $filter_button_classes .'">';
-											
+
 											$output .= $term->name;
-										
+
 										$output .= '</a>';
-									
+
 									$output .= '</li>';
 
 								endforeach;
@@ -284,16 +304,20 @@ if ( $wpex_query->have_posts() ) :
 					} else {
 
 						// Get array of post types in loop so we don't display empty results
-						$active_types = array();
-						$post_ids = wp_list_pluck( $wpex_query->posts, 'ID' );
-						foreach ( $post_ids as $post_id ) {
-							$type = get_post_type( $post_id );
-							$active_types[$type] = $type;
+						if ( 'true' == $atts['pagination_loadmore'] ) {
+							$active_types = $post_types;
+						} else {
+							$active_types = array();
+							$post_ids = wp_list_pluck( $wpex_query->posts, 'ID' );
+							foreach ( $post_ids as $post_id ) {
+								$type = get_post_type( $post_id );
+								$active_types[$type] = $type;
+							}
 						}
 
 						// Loop through active types
 						foreach ( $active_types as $type ) :
-							
+
 							// Get type object
 							$obj = get_post_type_object( $type );
 
@@ -317,7 +341,7 @@ if ( $wpex_query->have_posts() ) :
 
 				$output .= '</ul>';
 
-				if ( $vcex_after_grid_filter = apply_filters( 'vcex_after_grid_filter', '', $atts ) ) { 
+				if ( $vcex_after_grid_filter = apply_filters( 'vcex_after_grid_filter', '', $atts ) ) {
 					$output .= $vcex_after_grid_filter;
 				}
 
@@ -405,7 +429,7 @@ if ( $wpex_query->have_posts() ) :
 			}
 
 			// Static entry classes
-			$static_entry_classes = array( 'vcex-post-type-entry', 'clr' );
+			$static_entry_classes = array( 'vcex-post-type-entry', 'vcex-grid-item', 'clr' );
 			if ( 'false' == $columns_responsive ) {
 				$static_entry_classes[] = 'nr-col';
 			} else {
@@ -442,9 +466,6 @@ if ( $wpex_query->have_posts() ) :
 			}
 			$media_classes = implode( ' ', $media_classes );
 
-			// Define counter var to clear floats
-			$count=0;
-
 			/**** Loop Start ***/
 			while ( $wpex_query->have_posts() ) :
 
@@ -452,7 +473,7 @@ if ( $wpex_query->have_posts() ) :
 				$wpex_query->the_post();
 
 				// Add to counter var
-				$count++;
+				$entry_count++;
 
 				// Set post ID
 				$atts['post_id'] = get_the_ID();
@@ -471,7 +492,7 @@ if ( $wpex_query->have_posts() ) :
 
 				// Entry Classes
 				$entry_classes   = array();
-				$entry_classes[] = 'col-'. $count;
+				$entry_classes[] = 'col-'. $entry_count;
 				$entry_classes   = array_merge( $static_entry_classes, $entry_classes );
 
 				// Entry image output HTML
@@ -500,13 +521,18 @@ if ( $wpex_query->have_posts() ) :
 
 				// Get and save Lightbox data for use with Overlays, media, title, etc
 				$oembed_video_url = wpex_get_post_video_oembed_url( $post_id );
-				$embed_url = $oembed_video_url ? wpex_get_video_embed_url( $oembed_video_url ) : '';
+				$embed_url        = $oembed_video_url ? wpex_get_video_embed_url( $oembed_video_url ) : '';
+				$lightbox_image   = wpex_get_lightbox_image();
 				if ( $embed_url ) {
-					$atts['lightbox_link']                 = $embed_url;
-					$atts['lightbox_data']['data-type']    = 'data-type="iframe"';
-					$atts['lightbox_data']['data-options'] = 'data-options="iframeType:\'video\'"';
+					$atts['lightbox_link']              = $embed_url;
+					$atts['lightbox_data']['data-type'] = 'data-type="iframe"';
+					if ( $lightbox_image ) {
+						$atts['lightbox_data']['data-options'] = 'data-options="iframeType:\'video\',thumbnail:\'' . $lightbox_image . '\'"';
+					} else {
+						$atts['lightbox_data']['data-options']  = 'data-options="iframeType:\'video\'"';
+					}
 				} else {
-					$atts['lightbox_link'] = wpex_get_lightbox_image();
+					$atts['lightbox_link'] = $lightbox_image;
 				}
 
 				// Apply filters to attributes
@@ -518,11 +544,11 @@ if ( $wpex_query->have_posts() ) :
 					// Inner entry classes
 					$classes = 'vcex-post-type-entry-inner entry-inner clr';
 					if ( $entry_css ) {
-						$classes .= ' '. $entry_css;
+						$classes .= ' ' . $entry_css;
 					}
 
 					// Inner entry output
-					$output .= '<div class="'. $classes .'">';
+					$output .= '<div class="' . $classes . '">';
 
 						// Display media
 						if ( isset( $entry_blocks['media'] ) ) {
@@ -571,15 +597,17 @@ if ( $wpex_query->have_posts() ) :
 											// Lightbox
 											if ( $thumb_link == 'lightbox' || 'lightbox_gallery' == $latts['thumb_link'] ) {
 
-												// Lightbox gallery
-												if ( 'lightbox_gallery' == $latts['thumb_link'] && $lightbox_gallery_imgs = wpex_get_gallery_images( $latts['post_id'], 'lightbox' ) ) {
+												// Lightbox post gallery
+												if ( 'lightbox_gallery' == $latts['thumb_link']
+													&& $lightbox_gallery_imgs = wpex_get_gallery_images( $latts['post_id'], 'lightbox' )
+												) {
 													$media_link_attrs['class'] .= ' wpex-lightbox-gallery';
-													$media_link_attrs['data']   = 'data-gallery="'. implode( ',', $lightbox_gallery_imgs ) .'"';
+													$media_link_attrs['data']   = 'data-gallery="' . implode( ',', $lightbox_gallery_imgs ) . '"';
 												}
 
 												// Singular lightbox
 												elseif ( ! empty( $latts['lightbox_link'] ) ) {
-													$media_link_attrs['class'] .= ' wpex-lightbox';
+													$media_link_attrs['class']  = $media_link_attrs['class'] ? ' ' . $lightbox_single_class : $lightbox_single_class;
 													$media_link_attrs['href']   = $latts['lightbox_link'];
 													$media_link_attrs['data']   = $latts['lightbox_data'];
 													$media_link_attrs['target'] = '';
@@ -680,9 +708,9 @@ if ( $wpex_query->have_posts() ) :
 									elseif ( 'title' == $k ) {
 
 										$title_output = '';
-									
+
 										$title_output .= '<'. esc_html( $title_tag ) .' class="vcex-post-type-entry-title entry-title" '. $heading_style .'>';
-										
+
 										if ( 'post' == $title_link ) {
 
 											$title_output .= wpex_parse_html( 'a', array(
@@ -694,7 +722,7 @@ if ( $wpex_query->have_posts() ) :
 										} else {
 
 											$title_output .= $latts['post_title'];
-											
+
 										}
 
 										$title_output .= '</'. esc_html( $title_tag ) .' >';
@@ -709,7 +737,7 @@ if ( $wpex_query->have_posts() ) :
 
 										$date_output = '';
 
-										$date_output .= '<div class="vcex-post-type-entry-date"'. $date_style .'>';
+										$date_output .= '<div class="vcex-post-type-entry-date"' . $date_style . '>';
 
 											// Get Tribe Events date
 											if ( 'tribe_events' == $latts['post_type']
@@ -724,7 +752,7 @@ if ( $wpex_query->have_posts() ) :
 											}
 
 											// Output date
-											$date_output .= $latts['post_date'];
+											$date_output .= apply_filters( 'vcex_post_type_grid_date_inner', $latts['post_date'], $atts );
 
 										$date_output .= '</div>';
 
@@ -807,7 +835,7 @@ if ( $wpex_query->have_posts() ) :
 										$output .= apply_filters( 'vcex_post_type_grid_readmore', $readmore_output, $atts );
 
 									}
-									
+
 								// End entry blocks
 								endforeach;
 
@@ -825,19 +853,28 @@ if ( $wpex_query->have_posts() ) :
 				$output .= '</div>';
 
 			// Reset count clear floats
-			if ( $count == $columns ) {
-				$count = 0;
+			if ( $entry_count == $columns ) {
+				$entry_count = 0;
 			}
 
 			endwhile;
 
 		$output .= '</div>';
-		
+
 		// Display pagination if enabled
-		if ( 'true' == $pagination
-			|| ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) )
+		if ( ( 'true' == $atts['pagination'] || ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) ) )
+			&& 'true' != $atts['pagination_loadmore']
 		) {
+
 			$output .= wpex_pagination( $wpex_query, false );
+
+		}
+
+		// Load more button
+		if ( 'true' == $atts['pagination_loadmore'] && ! empty( $wpex_query->max_num_pages ) ) {
+			vcex_loadmore_scripts();
+			$og_atts['entry_count'] = $entry_count; // Update counter
+			$output .= vcex_get_loadmore_button( 'vcex_post_type_grid', $og_atts, $wpex_query );
 		}
 
 	$output .= '</div>';

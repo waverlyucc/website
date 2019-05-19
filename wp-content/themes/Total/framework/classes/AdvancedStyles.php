@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7.1
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -73,49 +73,42 @@ class AdvancedStyles {
 			if ( $mm_breakpoint = wpex_header_menu_mobile_breakpoint() ) {
 
 				$output .= '/*Mobile Menu Breakpoint*/';
-				
+
 				// Show main nav always and hide mobile
-				$output .= 'body.wpex-mobile-toggle-menu-icon_buttons #site-header-inner.container { padding-right: 0; }
-							body.has-mobile-menu #site-navigation-wrap,
-							body.has-mobile-menu .hide-at-mm-breakpoint { display:block; }
-							body.has-mobile-menu .wpex-mobile-menu-toggle,
-							body.has-mobile-menu .show-at-mm-breakpoint { display: none; }';
-				
+				$output .= 'body.has-mobile-menu .hide-at-mm-breakpoint{display:block;}
+							body.has-mobile-menu .show-at-mm-breakpoint{display: none;}';
+
 				// New breakpoint
 				$output .= '@media only screen and (max-width: '. $mm_breakpoint .'px) {';
 
-					// Hide standard menu
-					$output .= 'body.has-mobile-menu #site-navigation-wrap,
-								body.has-mobile-menu .wpex-hide-at-mm-breakpoint { display: none; }';
-
-					// Show mobile menu
-					$output .= 'body.has-mobile-menu .wpex-mobile-menu-toggle,
-								body.has-mobile-menu .wpex-show-at-mm-breakpoint { display: block; }';
+					// Show/Hide items
+					$output .= 'body.has-mobile-menu .hide-at-mm-breakpoint{display:none;}';
+					$output .= 'body.has-mobile-menu .show-at-mm-breakpoint{display:block;}';
 
 					// Additional tweaks for mobile menu toggle styles
 					if ( 'icon_buttons' == $mm_toggle_style ) {
 
-						$output .= 'body.wpex-mobile-toggle-menu-icon_buttons #site-logo{height: 100%;float:left;max-width:75%;text-align: left; }';
-						
-						$output .= 'body.wpex-mobile-toggle-menu-icon_buttons.rtl #site-logo{float: right;text-align:right;}';
+						$output .= 'body.wpex-mobile-toggle-menu-icon_buttons #site-logo{height:100%;float:left;max-width:75%;text-align:left;}';
+
+						$output .= 'body.wpex-mobile-toggle-menu-icon_buttons.rtl #site-logo{float:right;text-align:right;}';
 
 						$output .= '#site-header.wpex-header-two-flex-v #site-header-inner{display:block;}';
 
-						$output .= '.header-two-aside{float: none;clear: both;padding-top: 20px;text-align: left;}';
+						$output .= '.header-two-aside{float:none;clear:both;padding-top:20px;text-align:left;}';
 
 					} elseif ( 'fixed_top' == $mm_toggle_style ) {
 
-						$output .= 'body.has-mobile-menu.wpex-mobile-toggle-menu-fixed_top{ padding-top: 50px;}';
+						$output .= 'body.has-mobile-menu.wpex-mobile-toggle-menu-fixed_top{padding-top:50px;}';
 
 					} elseif ( 'icon_buttons_under_logo' == $mm_toggle_style ) {
 
 						$output .= 'body.wpex-mobile-toggle-menu-icon_buttons_under_logo #site-logo {float:none;width:100%;text-align:center;height:auto;}';
 
-						$output .= 'body.wpex-mobile-toggle-menu-icon_buttons.rtl #site-logo{float: right;text-align:right;}';
+						$output .= 'body.wpex-mobile-toggle-menu-icon_buttons.rtl #site-logo{float:right;text-align:right;}';
 
 						$output .= '#site-header.wpex-header-two-flex-v #site-header-inner{display:block;}';
-						
-						$output .= '.header-two-aside{float:none;clear:both;padding-top: 20px;text-align:center;}';
+
+						$output .= '.header-two-aside{float:none;clear:both;padding-top:20px;text-align:center;}';
 
 					}
 
@@ -205,7 +198,7 @@ class AdvancedStyles {
 			$css .= '}';
 
 		}
-		
+
 		/*-----------------------------------------------------------------------------------*/
 		/*  - Return CSS
 		/*-----------------------------------------------------------------------------------*/

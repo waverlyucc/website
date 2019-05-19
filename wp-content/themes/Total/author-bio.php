@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.5.5.1
+ * @version 4.8.4
  */
 
 // Exit if accessed directly
@@ -23,7 +23,7 @@ if ( ! $post ) {
 // Define author bio data
 $data = array(
 	'post_author' => $post->post_author,
-	'avatar_size' => apply_filters( 'wpex_author_bio_avatar_size', 74 ),
+	'avatar_size' => apply_filters( 'wpex_author_bio_avatar_size', 70 ),
 	'author_name' => get_the_author(),
 	'posts_url'   => get_author_posts_url( $post->post_author ),
 	'description' => get_the_author_meta( 'description', $post->post_author ),
@@ -54,13 +54,13 @@ if ( $description ) : ?>
 					</a>
 
 				<?php } else { ?>
-					
+
 					<?php echo wpex_sanitize_data( $avatar, 'img' ); ?>
 
 				<?php } ?>
 
 			</div><!-- .author-bio-avatar -->
-			
+
 		<?php } ?>
 
 		<div class="author-bio-content clr">
@@ -74,7 +74,7 @@ if ( $description ) : ?>
 						<a href="<?php echo esc_url( $posts_url ); ?>" title="<?php esc_attr_e( 'Visit Author Page', 'total' ); ?>"><?php echo strip_tags( $author_name ); ?></a>
 
 					<?php } else { ?>
-					
+
 						<?php echo strip_tags( $author_name ); ?>
 
 					<?php } ?>
@@ -98,7 +98,7 @@ if ( $description ) : ?>
 			$social_links = wpex_get_user_social_links( $post_author, 'icons', array(
 				'class' => wpex_get_social_button_class( wpex_get_mod( 'author_box_social_style', 'flat-color-round' ) )
 			) );
-			
+
 			// Display author social links if there are social links defined
 			if ( $social_links ) : ?>
 

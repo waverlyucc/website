@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8.5
  *
  * @todo update to use new wpex_get_post_media_gallery_slider() function
  */
@@ -30,12 +30,12 @@ if ( $lightbox_enabled ) {
 
 // Slider data (used to check for thumbnails)
 $slider_data_args = wpex_get_post_slider_settings( array(
-	'filter_tag' => 'wpex_'. $type .'_entry_gallery',
+	'filter_tag' => 'wpex_' . $type . '_entry_gallery',
 ) );
 
 // Thumbnail args
-$thumb_args = apply_filters( 'wpex_'. $type .'_entry_thumbnail_args', array(
-	'size'          => $type .'_archive',
+$thumb_args = apply_filters( 'wpex_' . $type . '_entry_thumbnail_args', array(
+	'size'          => $type . '_archive',
 	'schema_markup' => true,
 ) ); ?>
 
@@ -53,7 +53,7 @@ $thumb_args = apply_filters( 'wpex_'. $type .'_entry_thumbnail_args', array(
 
 		<div class="wpex-slider slider-pro" <?php wpex_slider_data( $slider_data_args ); ?>>
 
-			<div class="wpex-slider-slides sp-slides <?php if ( $lightbox_enabled ) echo 'lightbox-group'; ?>">
+			<div class="wpex-slider-slides sp-slides <?php if ( $lightbox_enabled ) echo 'wpex-lightbox-group'; ?>">
 
 				<?php
 				// Loop through attachments
@@ -110,13 +110,13 @@ $thumb_args = apply_filters( 'wpex_'. $type .'_entry_thumbnail_args', array(
 
 									<?php echo $attachment_html; ?>
 
-									<?php if ( ! empty( $attachment_data['caption'] ) ) : ?>
+								<?php endif; ?>
 
-										<div class="wpex-slider-caption sp-layer sp-black sp-padding clr" data-position="bottomCenter" data-show-transition="up" data-hide-transition="down" data-width="100%" data-show-delay="500">
-											<?php echo wp_kses_post( $attachment_data['caption'] ); ?>
-										</div><!-- .wpex-slider-caption -->
+								<?php if ( ! empty( $attachment_data['caption'] ) ) : ?>
 
-									<?php endif; ?>
+									<div class="wpex-slider-caption sp-layer sp-black sp-padding clr" data-position="bottomCenter" data-show-transition="up" data-hide-transition="down" data-width="100%" data-show-delay="500">
+										<?php echo wp_kses_post( $attachment_data['caption'] ); ?>
+									</div><!-- .wpex-slider-caption -->
 
 								<?php endif; ?>
 

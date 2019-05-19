@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -28,7 +28,7 @@ function wpex_title( $post_id = '' ) {
 		$meta = get_post_meta( $post_id, 'wpex_post_title', true );
 		return $meta ? $meta : single_post_title( '', false );
 	}
-	
+
 	// Get post ID from global object
 	if ( is_singular() ) {
 
@@ -66,10 +66,10 @@ function wpex_title( $post_id = '' ) {
 				$title = $obj->labels->name;
 			}
 		}
-	
+
 	// Homepage - display blog description if not a static page
 	} elseif ( is_front_page() ) {
-		
+
 		if ( get_bloginfo( 'description' ) ) {
 			$title = get_bloginfo( 'description' );
 		} else {
@@ -88,7 +88,7 @@ function wpex_title( $post_id = '' ) {
 	elseif ( is_search() ) {
 		$title = __( 'Search results for:', 'total' ) .' &quot;'. esc_html( get_search_query( false ) ) .'&quot;';
 	}
-		
+
 	// Archives
 	elseif ( is_archive() ) {
 
@@ -155,7 +155,7 @@ function wpex_title( $post_id = '' ) {
 
 	// Apply filters and return title
 	return apply_filters( 'wpex_title', $title, $post_id );
-	
+
 }
 
 /**

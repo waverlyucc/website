@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -51,8 +51,8 @@ if ( has_nav_menu( $menu_location ) || $custom_menu || $ms_global_menu ) :
 				<?php
 				// Display global multisite menu
 				if ( is_multisite() && $ms_global_menu ) :
-					
-					switch_to_blog( 1 );  
+
+					switch_to_blog( 1 );
 					wp_nav_menu( $menu_args );
 					restore_current_blog();
 

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -19,13 +19,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wpex_register_custom_widgets() {
 
+	// Include Widget Builder Class
+	require_once WPEX_FRAMEWORK_DIR . 'classes/WidgetBuilder.php';
+
 	// Get array of custom widgets
 	$widgets = wpex_custom_widgets_list();
 
 	// Loop through array and register the custom widgets
 	if ( $widgets && is_array( $widgets ) ) {
 		foreach ( $widgets as $widget ) {
-			$file = WPEX_ClASSES_DIR . 'widgets/' . $widget . '.php';
+			$file = WPEX_ClASSES_DIR . 'Widgets/' . $widget . '.php';
 			if ( file_exists ( $file ) ) {
 				require_once $file;
 			}
@@ -60,6 +63,11 @@ function wpex_register_sidebar_widget_areas() {
 	// Search Results Sidebar
 	if ( wpex_get_mod( 'search_custom_sidebar', true ) ) {
 		$sidebars['search_sidebar'] = __( 'Search Results Sidebar', 'total' );
+	}
+
+	// WooCommerce
+	if ( WPEX_WOOCOMMERCE_ACTIVE && wpex_get_mod( 'woo_custom_sidebar', true ) ) {
+		$sidebars['woo_sidebar'] = __( 'WooCommerce Sidebar', 'total' );
 	}
 
 	// Apply filters - makes it easier to register new sidebars

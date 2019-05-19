@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -40,16 +40,16 @@ class ThumbnailFormatIcons {
 	 * @since 4.5.4
 	 */
 	public function icon_class( $instance ) {
-		$icon   = 'fa fa-file-text-o';
+		$icon   = 'ticon ticon-file-text-o';
 		$format = get_post_format();
 		if ( 'video' == $format ) {
-			$icon = 'fa fa-play';
+			$icon = 'ticon ticon-play';
 		} elseif ( 'audio' == $format ) {
-			$icon = 'fa fa-music';
+			$icon = 'ticon ticon-music';
 		} elseif ( 'gallery' == $format ) {
-			$icon = 'fa fa-file-photo-o';
+			$icon = 'ticon ticon-file-photo-o';
 		} elseif ( 'quote' == $format ) {
-			$icon = 'fa fa-quote-left';
+			$icon = 'ticon ticon-quote-left';
 		}
 		return apply_filters( 'wpex_get_thumbnail_format_icon_class', $icon, $instance );
 

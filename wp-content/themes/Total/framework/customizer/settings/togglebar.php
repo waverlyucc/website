@@ -197,7 +197,7 @@ $this->sections['wpex_togglebar'] = array(
 				'label' => __( 'Button Color', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.toggle-bar-btn span.fa',
+				'target' => '.toggle-bar-btn span',
 				'alter' => 'color',
 			),
 			'control_display' => array(
@@ -229,7 +229,7 @@ $this->sections['wpex_togglebar'] = array(
 				'label' => __( 'Button Hover Color', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.toggle-bar-btn:hover span.fa',
+				'target' => '.toggle-bar-btn:hover span',
 				'alter' => 'color',
 			),
 			'control_display' => array(

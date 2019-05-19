@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7.1
+ * @version 4.8.4
  */
 
 // Exit if accessed directly
@@ -92,28 +92,29 @@ function wpex_custom_widgets_list() {
 
 	// Define widgets
 	$widgets = array(
-		'about',
-		'newsletter',
-		'info',
-		'social-fontawesome',
+		'about'               => 'AboutWidget',
+		'newsletter'          => 'NewsletterWidget',
+		'simple-newsletter'   => 'SimpleNewsletterWidget',
+		'info'                => 'BusinessInfoWidget',
+		'social-fontawesome'  => 'SocialProfilesWidget',
 		'social',
-		'simple-menu',
-		'modern-menu',
-		'facebook-page',
-		'google-map',
-		'flickr',
-		'video',
-		'posts-thumbnails',
-		'posts-grid',
-		'posts-icons',
-		'instagram-grid',
-		'users-grid',
-		'comments-avatar',
+		'simple-menu'         => 'SimpleMenuWidget',
+		'modern-menu'         => 'ModernMenuWidget',
+		'facebook-page'       => 'FacebookWidget',
+		'google-map'          => 'GoogleMapWidget',
+		'flickr'              => 'FlickrWidget',
+		'video'               => 'VideoWidget',
+		'posts-thumbnails'    => 'PostsThumbnailsWidget',
+		'posts-grid'          => 'PostsGridWidget',
+		'posts-icons'         => 'PostsWithFormatIcons',
+		'instagram-grid'      => 'InstagramGridWidget',
+		'users-grid'          => 'UsersGridWidget',
+		'comments-avatar'     => 'CommentsWidget',
 	);
 
 	// Add templatera widget
 	if ( function_exists( 'templatera_init' ) ) {
-		$widgets['templatera'] = 'templatera';
+		$widgets['templatera'] = 'TemplateraWidget';
 	}
 
 	// Apply filters and return widgets array
@@ -128,13 +129,13 @@ function wpex_custom_widgets_list() {
  */
 function wpex_get_header_styles() {
 	return apply_filters( 'wpex_header_styles', array(
-		'one'   => __( 'One - Left Logo & Right Navbar','total' ),
-		'two'   => __( 'Two - Bottom Navbar','total' ),
-		'three' => __( 'Three - Bottom Navbar Centered','total' ),
-		'four'  => __( 'Four - Top Navbar Centered','total' ),
-		'five'  => __( 'Five - Centered Inline Logo','total' ),
-		'six'   => __( 'Six - Vertical','total' ),
-		//'seven' => __( 'Seven - Vertical Minimal','total' ), //@todo Finish
+		'one'   => '1. ' . __( 'Left Logo & Right Menu','total' ),
+		'two'   => '2. ' . __( 'Bottom Menu','total' ),
+		'three' => '3. ' . __( 'Bottom Menu Centered','total' ),
+		'four'  => '4. ' . __( 'Top Centered Menu','total' ),
+		'five'  => '5. ' . __( 'Centered Inline Logo','total' ),
+		'six'   => '6. ' . __( 'Vertical','total' ),
+		//'vertical-2' => __( 'Seven - Vertical Minimal','total' ), //@todo Finish
 	) );
 }
 
@@ -154,6 +155,7 @@ function wpex_get_bg_img_styles() {
 		'fixed-bottom' => __( 'Fixed Bottom', 'total' ),
 		'repeat-x'     => __( 'Repeat-x', 'total' ),
 		'repeat-y'     => __( 'Repeat-y', 'total' ),
+		'inherit'      => __( 'Inherit', 'total' ),
 	);
 }
 
@@ -289,27 +291,23 @@ function wpex_get_user_social_profile_settings_array() {
 	return apply_filters( 'wpex_get_user_social_profile_settings_array', array(
 		'twitter'    => array(
 			'label' => 'Twitter',
-			'icon'  => 'fa fa-twitter',
+			'icon'  => 'ticon ticon-twitter',
 		),
 		'facebook'   => array(
 			'label' => 'Facebook',
-			'icon'  => 'fa fa-facebook',
-		),
-		'googleplus' => array(
-			'label' => 'Google +',
-			'icon'  => 'fa fa-google-plus',
+			'icon'  => 'ticon ticon-facebook',
 		),
 		'linkedin'   => array(
 			'label' => 'LinkedIn',
-			'icon'  => 'fa fa-linkedin',
+			'icon'  => 'ticon ticon-linkedin',
 		),
 		'pinterest'  => array(
 			'label' => 'Pinterest',
-			'icon'  => 'fa fa-pinterest',
+			'icon'  => 'ticon ticon-pinterest',
 		),
 		'instagram'  => array(
 			'label' => 'Instagram',
-			'icon'  => 'fa fa-instagram',
+			'icon'  => 'ticon ticon-instagram',
 		),
 	) );
 }
@@ -323,111 +321,107 @@ function wpex_social_profile_options_list() {
 	return apply_filters ( 'wpex_social_profile_options_list', array(
 		'twitter' => array(
 			'label' => 'Twitter',
-			'icon_class' => 'fa fa-twitter',
+			'icon_class' => 'ticon ticon-twitter',
 		),
 		'facebook' => array(
 			'label' => 'Facebook',
-			'icon_class' => 'fa fa-facebook',
-		),
-		'googleplus' => array(
-			'label' => 'Google Plus',
-			'icon_class' => 'fa fa-google-plus',
+			'icon_class' => 'ticon ticon-facebook',
 		),
 		'pinterest'  => array(
 			'label' => 'Pinterest',
-			'icon_class' => 'fa fa-pinterest',
+			'icon_class' => 'ticon ticon-pinterest',
 		),
 		'dribbble' => array(
 			'label' => 'Dribbble',
-			'icon_class' => 'fa fa-dribbble',
+			'icon_class' => 'ticon ticon-dribbble',
 		),
 		'etsy'  => array(
 			'label' => 'Etsy',
-			'icon_class' => 'fa fa-etsy',
+			'icon_class' => 'ticon ticon-etsy',
 		),
 		'vk' => array(
 			'label' => 'VK',
-			'icon_class' => 'fa fa-vk',
+			'icon_class' => 'ticon ticon-vk',
 		),
 		'instagram'  => array(
 			'label' => 'Instagram',
-			'icon_class' => 'fa fa-instagram',
+			'icon_class' => 'ticon ticon-instagram',
 		),
 		'linkedin' => array(
 			'label' => 'LinkedIn',
-			'icon_class' => 'fa fa-linkedin',
+			'icon_class' => 'ticon ticon-linkedin',
 		),
 		'flickr' => array(
 			'label' => 'Flickr',
-			'icon_class' => 'fa fa-flickr',
+			'icon_class' => 'ticon ticon-flickr',
 		),
 		'quora' => array(
 			'label' => 'Quora',
-			'icon_class' => 'fa fa-quora',
+			'icon_class' => 'ticon ticon-quora',
 		),
 		'skype' => array(
 			'label' => 'Skype',
-			'icon_class' => 'fa fa-skype',
+			'icon_class' => 'ticon ticon-skype',
 		),
 		'whatsapp' => array(
 			'label' => 'Whatsapp',
-			'icon_class' => 'fa fa-whatsapp',
+			'icon_class' => 'ticon ticon-whatsapp',
 		),
 		'youtube' => array(
 			'label' => 'Youtube',
-			'icon_class' => 'fa fa-youtube',
+			'icon_class' => 'ticon ticon-youtube',
 		),
 		'vimeo' => array(
 			'label' => 'Vimeo',
-			'icon_class' => 'fa fa-vimeo-square',
+			'icon_class' => 'ticon ticon-vimeo',
 		),
 		'vine' => array(
 			'label' => 'Vine',
-			'icon_class' => 'fa fa-vine',
+			'icon_class' => 'ticon ticon-vine',
 		),
 		'spotify' => array(
 			'label' => 'Spotify',
-			'icon_class' => 'fa fa-spotify',
+			'icon_class' => 'ticon ticon-spotify',
 		),
 		'xing' => array(
 			'label' => 'Xing',
-			'icon_class' => 'fa fa-xing',
+			'icon_class' => 'ticon ticon-xing',
 		),
 		'yelp' => array(
 			'label' => 'Yelp',
-			'icon_class' => 'fa fa-yelp',
+			'icon_class' => 'ticon ticon-yelp',
 		),
 		'tripadvisor' => array(
 			'label' => 'Tripadvisor',
-			'icon_class' => 'fa fa-tripadvisor',
+			'icon_class' => 'ticon ticon-tripadvisor',
 		),
 		'houzz' => array(
 			'label' => 'Houzz',
-			'icon_class' => 'fa fa-houzz',
+			'icon_class' => 'ticon ticon-houzz',
 		),
 		'twitch' => array(
 			'label' => 'Twitch',
-			'icon_class' => 'fa fa-twitch',
+			'icon_class' => 'ticon ticon-twitch',
 		),
 		'tumblr' => array(
 			'label' => 'Tumblr',
-			'icon_class' => 'fa fa-tumblr',
+			'icon_class' => 'ticon ticon-tumblr',
 		),
 		'github' => array(
 			'label' => 'Github',
-			'icon_class' => 'fa fa-github',
+			'icon_class' => 'ticon ticon-github',
 		),
 		'rss'  => array(
 			'label' => __( 'RSS', 'total' ),
-			'icon_class' => 'fa fa-rss',
+			'icon_class' => 'ticon ticon-rss',
 		),
 		'email' => array(
 			'label' => __( 'Email', 'total' ),
-			'icon_class' => 'fa fa-envelope',
+			'icon_class' => 'ticon ticon-envelope',
 		),
 		'phone' => array(
 			'label' => __( 'Phone', 'total' ),
-			'icon_class' => 'fa fa-phone',
+			'icon_class' => 'ticon ticon-phone',
 		),
 	) );
 }
@@ -462,67 +456,61 @@ function wpex_staff_social_array() {
 		'twitter'        => array(
 			'key'        => 'twitter',
 			'meta'       => 'wpex_staff_twitter',
-			'icon_class' => 'fa fa-twitter',
+			'icon_class' => 'ticon ticon-twitter',
 			'label'      => 'Twitter',
 		),
 		'facebook'        => array(
 			'key'        => 'facebook',
 			'meta'       => 'wpex_staff_facebook',
-			'icon_class' => 'fa fa-facebook',
+			'icon_class' => 'ticon ticon-facebook',
 			'label'      => 'Facebook',
 		),
 		'instagram'      => array(
 			'key'        => 'instagram',
 			'meta'       => 'wpex_staff_instagram',
-			'icon_class' => 'fa fa-instagram',
+			'icon_class' => 'ticon ticon-instagram',
 			'label'      => 'Instagram',
-		),
-		'google-plus'    => array(
-			'key'        => 'google-plus',
-			'meta'       => 'wpex_staff_google-plus',
-			'icon_class' => 'fa fa-google-plus',
-			'label'      => 'Google Plus',
 		),
 		'linkedin'       => array(
 			'key'        => 'linkedin',
 			'meta'       => 'wpex_staff_linkedin',
-			'icon_class' => 'fa fa-linkedin',
+			'icon_class' => 'ticon ticon-linkedin',
 			'label'      => 'Linkedin',
 		),
 		'dribbble'       => array(
 			'key'        => 'dribbble',
 			'meta'       => 'wpex_staff_dribbble',
-			'icon_class' => 'fa fa-dribbble',
+			'icon_class' => 'ticon ticon-dribbble',
 			'label'      => 'Dribbble',
 		),
 		'vk'             => array(
 			'key'        => 'vk',
 			'meta'       => 'wpex_staff_vk',
-			'icon_class' => 'fa fa-vk',
+			'icon_class' => 'ticon ticon-vk',
 			'label'      => 'VK',
 		),
 		'skype'          => array(
 			'key'        => 'skype',
 			'meta'       => 'wpex_staff_skype',
-			'icon_class' => 'fa fa-skype',
+			'icon_class' => 'ticon ticon-skype',
 			'label'      => 'Skype',
 		),
 		'phone_number'   => array(
 			'key'        => 'phone_number',
 			'meta'       => 'wpex_staff_phone_number',
-			'icon_class' => 'fa fa-phone',
+			'icon_class' => 'ticon ticon-phone',
 			'label'      => __( 'Phone Number', 'total' ),
 		),
 		'email'          => array(
 			'key'        => 'email',
 			'meta'       => 'wpex_staff_email',
-			'icon_class' => 'fa fa-envelope',
+			'icon_class' => 'ticon ticon-envelope',
 			'label'      => __( 'Email', 'total' ),
 		),
 		'website'        => array(
 			'key'        => 'website',
 			'meta'       => 'wpex_staff_website',
-			'icon_class' => 'fa fa-external-link-square',
+			'icon_class' => 'ticon ticon-external-link-square',
 			'label'      => __( 'Website', 'total' ),
 		),
 	) );
@@ -659,6 +647,7 @@ function wpex_image_crop_locations() {
 		'left-bottom'   => __( 'Bottom Left', 'total' ),
 		'right-bottom'  => __( 'Bottom Right', 'total' ),
 		'center-bottom' => __( 'Bottom Center', 'total' ),
+		'soft-crop'     => __( 'Soft Crop', 'total' ),
 	);
 }
 
@@ -787,6 +776,8 @@ function wpex_alignments() {
 function wpex_visibility() {
 	return apply_filters( 'wpex_visibility', array(
 		''                         => __( 'Always Visible', 'total' ),
+		'show-at-mm-breakpoint'    => __( 'Visible At Mobile Menu Breakpoint', 'total' ),
+		'hide-at-mm-breakpoint'    => __( 'Hidden At Mobile Menu Breakpoint', 'total' ),
 		'hidden-desktop-large'     => __( 'Hidden on Large Desktops (1280px or greater)', 'total' ),
 		'hidden-desktop'           => __( 'Hidden on Desktop (959px or greater)', 'total' ),
 		'hidden-tablet-landscape'  => __( 'Hidden on Tablets: Landscape (768px to 1024px)', 'total' ),

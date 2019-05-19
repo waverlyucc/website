@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -193,8 +187,8 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'">';
 					}
 
 					// Get woo product image
-					elseif ( 'product' == $post_type && function_exists( 'get_woocommerce_term_meta' ) ) {
-						$img_id = get_woocommerce_term_meta( $term->term_id, 'thumbnail_id', true );
+					elseif ( 'product' == $post_type ) {
+						$img_id = get_term_meta( $term->term_id, 'thumbnail_id', true );
 					}
 
 					// Image not defined via meta, display image from first post in term

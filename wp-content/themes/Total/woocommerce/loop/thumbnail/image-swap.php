@@ -38,7 +38,7 @@ if ( ! empty( $attachment_ids ) ) {
 }
 
 $secondary_img_id = ( $secondary_img_id != $attachment ) ? $secondary_img_id : '';
-			
+
 // Return thumbnail
 if ( $secondary_img_id ) : ?>
 
@@ -49,9 +49,9 @@ if ( $secondary_img_id ) : ?>
 			'attachment' => $attachment,
 			'size'       => 'shop_catalog',
 			'alt'        => wpex_get_esc_title(),
-			'class'      => 'woo-entry-image-main',
+			'class'      => 'woo-entry-image-main wp-post-image',
 		) );
-		
+
 		// Secondary Image
 		wpex_post_thumbnail( array(
 			'attachment' => $secondary_img_id,
@@ -68,7 +68,7 @@ if ( $secondary_img_id ) : ?>
 		'attachment' => $attachment,
 		'size'       => 'shop_catalog',
 		'alt'        => wpex_get_esc_title(),
-		'class'      => 'woo-entry-image-main',
+		'class'      => 'woo-entry-image-main wp-post-image',
 	) ); ?>
 
 <?php endif; ?>

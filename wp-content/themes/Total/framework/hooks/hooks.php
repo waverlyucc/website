@@ -109,6 +109,8 @@ function wpex_theme_hooks() {
 				'wpex_hook_footer_before',
 				'wpex_hook_footer_top',
 				'wpex_hook_footer_inner',
+				'wpex_hook_footer_widgets_top',
+				'wpex_hook_footer_widgets_bottom',
 				'wpex_hook_footer_bottom',
 				'wpex_hook_footer_after',
 			),

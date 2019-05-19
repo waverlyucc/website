@@ -8,7 +8,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -116,7 +116,7 @@ class GalleryMetabox {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
-		
+
 		// Check the user's permissions.
 		if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
 
@@ -129,7 +129,7 @@ class GalleryMetabox {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				return;
 			}
-			
+
 		}
 
 		if ( isset( $_POST[ 'image_gallery' ] ) && !empty( $_POST[ 'image_gallery' ] ) ) {
@@ -197,7 +197,7 @@ class GalleryMetabox {
 		// Load metabox script
 		wp_enqueue_script(
 			'wpex-gmb-js',
-			wpex_asset_url( 'js/dynamic/wpex-gallery-metabox.js' ),
+			wpex_asset_url( 'js/dynamic/admin/wpex-gallery-metabox.min.js' ),
 			array( 'jquery', 'jquery-ui-sortable' ),
 			WPEX_THEME_VERSION,
 			true

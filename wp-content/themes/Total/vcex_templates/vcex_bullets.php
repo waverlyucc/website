@@ -17,12 +17,6 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Return if no content
 if ( empty( $content ) ) {
 	return;

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.4.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -49,7 +43,7 @@ $url         = $url ? $url : '#';
 
 // Sanitize content
 if( 'custom_field' == $text_source ) {
-	$content = $text_custom_field ? get_post_meta( wpex_get_current_post_id(), $text_custom_field, true ) : '';
+	$content = $text_custom_field ? get_post_meta( wpex_get_dynamic_post_id(), $text_custom_field, true ) : '';
 } elseif( 'callback_function' == $text_source ) {
 	$content = ( $text_callback_function && function_exists( $text_callback_function ) ) ? call_user_func( $text_callback_function ) : '';
 } else {
@@ -88,14 +82,19 @@ if ( $visibility ) {
 
 // Custom field link
 if ( 'custom_field' == $onclick ) {
-	$url = get_post_meta( wpex_get_current_post_id(), $url_custom_field, true );
+	$url = get_post_meta( wpex_get_dynamic_post_id(), $url_custom_field, true );
+	if ( ! $url ) {
+		return; // Lets not show any button if the custom field is empty
+	}
 }
 
 // Callback function link
 elseif ( 'callback_function' == $onclick && function_exists( $url_callback_function ) ) {
 	$url = call_user_func( $url_callback_function );
+	if ( ! $url ) {
+		return; // Lets not show any button if the callback is empty
+	}
 }
-
 
 // Image link
 elseif ( 'image' == $onclick || 'lightbox' == $onclick ) {
@@ -122,20 +121,14 @@ if ( 'lightbox' == $onclick ) {
 
 		$gallery_ids = is_array( $lightbox_gallery ) ? $lightbox_gallery : explode( ',', $lightbox_gallery );
 		if ( $gallery_ids && is_array( $gallery_ids ) ) {
-			$lb_images = '';
-			foreach ( $gallery_ids as $id ) {
-				$lb_images .= wpex_get_lightbox_image( $id ) . ',';
-			}
-			if ( $lb_images ) {
-				$button_data[] = 'data-gallery="'. rtrim( $lb_images, ',' ) .'"';
-			}
+			$button_data[] = 'data-gallery="' . wpex_parse_inline_lightbox_gallery( $gallery_ids ) . '"';
 		}
 
 	}
 
 	// Iframe lightbox
 	elseif ( 'iframe' == $lightbox_type ) {
-		
+
 		$button_classes[] = 'wpex-lightbox';
 		$button_data[]    = 'data-type="iframe"';
 		$button_data[]    = 'data-options="'. $lightbox_dimensions .'"';
@@ -176,8 +169,8 @@ if ( 'lightbox' == $onclick ) {
 		$lightbox_video_html5_webm = $lightbox_video_html5_webm ? $lightbox_video_html5_webm : $url;
 		$poster = wp_get_attachment_url( $lightbox_poster_image );
 		$button_classes[] = 'wpex-lightbox';
-		$button_data[]      = 'data-type="video"';
-		$button_data[]      = 'data-options="'. $lightbox_dimensions .', html5video: { webm: \''. $lightbox_video_html5_webm .'\', poster: \''. $poster .'\' }"';
+		$button_data[]    = 'data-type="video"';
+		$button_data[]    = 'data-options="'. $lightbox_dimensions .', html5video: { webm: \''. $lightbox_video_html5_webm .'\', poster: \''. $poster .'\' }"';
 
 	}
 

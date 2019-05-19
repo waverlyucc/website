@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -87,7 +87,7 @@ $this->sections['wpex_portfolio_archives'] = array(
 		),
 		array(
 			'id' => 'portfolio_entry_overlay_style',
-			'default' => 'none',
+			'default' => '',
 			'control' => array(
 				'label' => __( 'Image Overlay', 'total' ),
 				'type' => 'select',
@@ -124,7 +124,7 @@ $this->sections['wpex_portfolio_archives'] = array(
 
 // Single
 $this->sections['wpex_portfolio_single'] = array(
-	'title' => __( 'Single', 'total' ),
+	'title' => __( 'Single Post', 'total' ),
 	'panel' => 'wpex_portfolio',
 	'settings' => array(
 		array(

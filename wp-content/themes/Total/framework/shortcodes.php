@@ -20,6 +20,36 @@ add_filter( 'the_excerpt', 'do_shortcode' );
 add_filter( 'wp_nav_menu_items', 'do_shortcode' );
 
 /**
+ * Site URL
+ *
+ * @since 4.8
+ */
+if ( ! shortcode_exists( 'site_url' ) ) {
+	function wpex_site_url_shortcode( $atts ) {
+		$atts = shortcode_atts( array(
+			'path'   => '',
+			'scheme' => null,
+		), $atts, 'site_url' );
+		return site_url( $atts['path'], $atts['scheme'] );
+	}
+	add_shortcode( 'site_url', 'wpex_site_url_shortcode' );
+}
+
+/**
+ * Relative URL
+ *
+ * @since 4.8
+ */
+if ( ! shortcode_exists( 'menu_site_url' ) ) {
+	function wpex_menu_site_url_shortcode( $atts ) {
+		$url = get_site_url( null, '', 'http' );
+		$url = str_replace( 'http://', '', $url );
+		return $url;
+	}
+	add_shortcode( 'menu_site_url', 'wpex_menu_site_url_shortcode' );
+}
+
+/**
  * Text highlight
  *
  * @since 4.6.5
@@ -232,12 +262,19 @@ if ( ! function_exists( 'wpex_font_awesome_shortcode' ) ) {
 			'color'         => '',
 			'size'          => '',
 			'link'          => '',
+			'class'         => '',
 		), $atts ) );
 
 		// Sanitize vars
 		$link       = esc_url( $link );
 		$icon       = esc_attr( $icon );
 		$link_title = $link_title ? esc_attr( $link_title ) : '';
+
+		// Sanitize $icon
+		if ( apply_filters( 'wpex_font_awesome_shortcode_parse_fa', false ) ) {
+			$icon = str_replace( 'fa ', 'ticon ', $icon );
+			$icon = str_replace( 'fa-', 'ticon-', $icon );
+		}
 
 		// Generate inline styles
 		$style = array();
@@ -277,14 +314,14 @@ if ( ! function_exists( 'wpex_font_awesome_shortcode' ) ) {
 					'target' => $link_target,
 					'rel'    => $link_rel,
 				),
-				'<span class="fa fa-' . $icon . '"' . $style . '></span>'
+				'<span class="ticon ticon-' . $icon . '"' . $style . '></span>'
 			);
 
 		}
 
 		// Display icon without link
 		else {
-			$output = '<span class="fa fa-' . $icon . '"' . $style . '></span>';
+			$output = '<span class="ticon ticon-' . $icon . '"' . $style . '></span>';
 		}
 
 		// Return shortcode output

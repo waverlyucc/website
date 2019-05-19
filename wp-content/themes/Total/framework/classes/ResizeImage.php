@@ -1,10 +1,10 @@
 <?php
 /**
  * Function used to resize and crop images
- * 
+ *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8.4
  */
 
 namespace TotalTheme;
@@ -77,6 +77,9 @@ class ResizeImage {
 			}
 
 			if ( $image_src ) {
+				if ( $attachment ) {
+					return wp_get_attachment_image_src( $attachment, 'full' );
+				}
 				return $image_src;
 			}
 
@@ -172,23 +175,23 @@ class ResizeImage {
 		// Define Intermediate size name
 		// Must be defined early on so retina image dst_w and dst_he matches non-retina image
 		if ( $meta ) {
-			
+
 			// If no size is defined then intermediate size should be the crop_suffix + height&width
 			if ( ! $intermediate_size ) {
 				if ( $crop_suffix ) {
-					$intermediate_size = 'wpex_'. $crop_suffix . '-'. $dst_w .'x'. $dst_h;
+					$intermediate_size = 'wpex_' . $crop_suffix . '-' . $dst_w . 'x' . $dst_h;
 				} else {
-					$intermediate_size = 'wpex_'. $dst_w .'x'. $dst_h;
+					$intermediate_size = 'wpex_' . $dst_w . 'x' . $dst_h;
 				}
 			}
 
 			// Retina intermediate size should be same as intermediate size with added @2x
 			if ( $intermediate_size && $retina ) {
-				$intermediate_size = $intermediate_size .'@2x';
+				$intermediate_size = $intermediate_size . '@2x';
 			}
 
 		}
-		
+
 		// Check that the file size is smaller then the destination size
 		// If it's not smaller then we don't have to do anything but return the original image
 		if ( $orig_w > $dst_w || $orig_h > $dst_h ) {
@@ -235,16 +238,16 @@ class ResizeImage {
 			if ( file_exists( $destfilename ) && getimagesize( $destfilename ) ) {
 
 				$img_url = $upload_url . $dst_rel_path . '-' . $suffix . '.' . $ext;
-		
+
 			}
 
 			// Cached image doesn't exist so lets try and create it
 			// Can not use image_make_intermediate_size() unfortunately because it
 			// does not allow for custom naming conventions or custom crop arrays
 			else {
-				
+
 				$editor = wp_get_image_editor( $img_path );
-				
+
 				// Create image
 				if ( ! is_wp_error( $editor ) && ! is_wp_error( $editor->resize( $width, $height, $crop ) ) ) {
 
@@ -298,7 +301,7 @@ class ResizeImage {
 
 				// Make sure meta sizes exist if not lets add them
 				$meta['sizes'] = isset( $meta['sizes'] ) ? $meta['sizes'] : array();
-		
+
 				// Get destination filename
 				$dst_filename = basename( str_replace( $upload_url . '/', '', $img_url ) );
 
@@ -415,8 +418,13 @@ class ResizeImage {
 			$args['crop'] = 'center-center';
 		}
 
+		// Set crop to false for soft-crop
+		if ( 'soft-crop' == $args['crop'] ) {
+			$args['crop'] = false;
+		}
+
 		// If height is greater then 9999 set crop to false
-		if ( $args['height'] >= '9999' || $args['width'] >= '9999' ) {
+		elseif ( $args['height'] >= '9999' || $args['width'] >= '9999' ) {
 			$args['crop'] = false;
 		}
 

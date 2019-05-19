@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.7
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -18,10 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.0
  */
 function wpex_enqueue_front_end_main_css() {
-
-	// Remove other font awesome scripts
-	wp_deregister_style( 'font-awesome' );
-	wp_deregister_style( 'fontawesome' );
 
 	// Register hover-css for use with shortcodes
 	wp_register_style(
@@ -90,27 +86,7 @@ function wpex_enqueue_front_end_rtl_css() {
 add_action( 'wp_enqueue_scripts', 'wpex_enqueue_front_end_rtl_css', 98 );
 
 /**
- * Load responsive CSS => must be added last!
- *
- * @since 4.0
- */
-function wpex_enqueue_front_end_responsive_css() {
-	
-	wp_enqueue_style(
-		'wpex-responsive',
-		wpex_asset_url( 'css/wpex-responsive.css' ),
-		array(),
-		WPEX_THEME_VERSION
-	);
-
-}
-
-if ( wpex_is_layout_responsive() ) {
-	add_action( 'wp_enqueue_scripts', 'wpex_enqueue_front_end_responsive_css', 99 );
-}
-
-/**
- * Load theme js => High priority so that it loads after after js_composer
+ * Load theme js
  *
  * @since 4.0
  */
@@ -126,20 +102,26 @@ function wpex_enqueue_front_end_js() {
 	);
 	wp_script_add_data( 'wpex-html5shiv', 'conditional', 'lt IE 9' );
 
-	// Get localized array
-	$localize_array = wpex_js_localize_data();
-
 	// Comment reply
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+	// Load more pagination
+	wp_register_script(
+		'wpex-loadmore',
+		wpex_asset_url( 'js/dynamic/wpex-loadmore.min.js' ),
+		array( 'jquery', WPEX_THEME_JS_HANDLE ),
+		WPEX_THEME_VERSION,
+		true
+	);
 
 	// Load minified js
 	if ( wpex_get_mod( 'minify_js_enable', true ) ) {
 
 		wp_enqueue_script(
 			WPEX_THEME_JS_HANDLE,
-			wpex_asset_url( 'js/wpex.min.js' ),
+			wpex_asset_url( 'js/total.min.js' ),
 			array( 'jquery' ),
 			WPEX_THEME_VERSION,
 			true
@@ -183,14 +165,6 @@ function wpex_enqueue_front_end_js() {
 		);
 
 		wp_enqueue_script(
-			'wpex-tipsy',
-			wpex_asset_url( 'js/core/tipsy.js' ),
-			array( 'jquery' ),
-			WPEX_THEME_VERSION,
-			true
-		);
-
-		wp_enqueue_script(
 			'wpex-imagesloaded',
 			wpex_asset_url( 'js/core/imagesloaded.pkgd.min.js' ),
 			array( 'jquery' ),
@@ -201,13 +175,17 @@ function wpex_enqueue_front_end_js() {
 		wp_enqueue_script(
 			'wpex-isotope',
 			wpex_asset_url( 'js/core/isotope.js' ),
-			array( 'jquery' ), '2.2.2', true
+			array( 'jquery' ),
+			'2.2.2',
+			true
 		);
 
 		wp_enqueue_script(
 			'wpex-sliderpro',
 			wpex_asset_url( 'js/core/jquery.sliderPro.js' ),
-			array( 'jquery' ), '1.3', true
+			array( 'jquery' ),
+			'1.3',
+			true
 		);
 
 		wp_enqueue_script(
@@ -277,7 +255,7 @@ function wpex_enqueue_front_end_js() {
 		// Core global functions
 		wp_enqueue_script(
 			WPEX_THEME_JS_HANDLE,
-			wpex_asset_url( 'js/functions.js' ),
+			wpex_asset_url( 'js/total.js' ),
 			array( 'jquery' ),
 			WPEX_THEME_VERSION,
 			true
@@ -286,7 +264,7 @@ function wpex_enqueue_front_end_js() {
 	}
 
 	// Localize core js
-	wp_localize_script( WPEX_THEME_JS_HANDLE, 'wpexLocalize', $localize_array );
+	wp_localize_script( WPEX_THEME_JS_HANDLE, 'wpexLocalize', wpex_js_localize_data() );
 
 	// Retina.js
 	if ( wpex_is_retina_enabled() ) {
@@ -314,12 +292,13 @@ function wpex_enqueue_front_end_js() {
 add_action( 'wp_enqueue_scripts', 'wpex_enqueue_front_end_js' );
 
 /**
- * Remove the type attribute from scripts
+ * Remove block library CSS
  *
- * @since 4.5.4
- *
-function wpex_remove_scripts_attribute_type( $tag, $handle ) {
-	return preg_replace( "/type=['\"]text\/(javascript|css)['\"] /", '', $tag );
+ * @since 4.0
+ */
+function wpex_remove_block_library_css() {
+	if ( class_exists( 'Classic_Editor' ) || ( WPEX_VC_ACTIVE && get_option( 'wpb_js_gutenberg_disable' ) ) ) {
+		wp_dequeue_style( 'wp-block-library' );
+	}
 }
-add_filter( 'style_loader_tag', 'wpex_remove_scripts_attribute_type', 10, 2 );
-add_filter( 'script_loader_tag', 'wpex_remove_scripts_attribute_type', 10, 2 ); */
+add_action( 'wp_enqueue_scripts', 'wpex_remove_block_library_css', 100 );

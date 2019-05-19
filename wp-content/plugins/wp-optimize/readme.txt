@@ -1,10 +1,10 @@
 === WP-Optimize ===
-Contributors: DavidAnderson, ruhanirabin, DNutbourne, aporter, snightingale
+Contributors: DavidAnderson, ruhanirabin, DNutbourne, aporter, snightingale, lumberhack
 Donate link: https://david.dw-perspective.org.uk/donate
 Tags: comments, spam, optimize, database, revisions, users, posts, trash, schedule, automatic, clean, phpmyadmin, meta, postmeta, responsive, mobile
 Requires at least: 3.8
-Tested up to: 5.0
-Stable tag: 2.2.6
+Tested up to: 5.1
+Stable tag: 2.3.3
 License: GPLv2+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,7 @@ WP-Optimize is an effective tool for automatically cleaning your WordPress datab
 
 * Removes all unnecessary data (e.g. trashed/unapproved/spam comments, stale data) plus pingbacks, trackbacks and expired transient options
 * Compact/de-fragment MySQL tables with a button-press
+* Compress ("smush") images (existing images and automatically on new ones)
 * Detailed control of which optimizations you wish to carry out
 * Carries out automatic weekly (or otherwise) clean-ups
 * Retains a set number of weeks' data during clean-ups
@@ -65,6 +66,11 @@ When you use this plugin for the first time or just updated to major version, ma
 <strong>Seamless Graphical User Interface:</strong> for superb clarity in scheduling and managing of multi-site optimizations.
 
 <strong>WP-CLI support:</strong> provides a way to manage optimizations from command-line interface.
+
+<strong>Lazy Loading:</strong> lazy loading is the technique of only loading parts of a web-page when it is visible to the user.
+
+
+<strong>Optimization Preview:</strong> gives users the ability to preview, select and remove data and records available for optimization from the database.
 
 = Translations =
 
@@ -138,10 +144,85 @@ Please check your database for corrupted tables. That can happen, usually your w
 
 == Changelog ==
 
+= 2.3.3 - 17/Apr/2019 =
+
+* FIX: Revert faulty change to the default settings page in 2.3.2, which prevented optimization buttons working
+
+= 2.3.2 - 17/Apr/2019 =
+
+* FIX: Non-ASCII filenames could get mangled in the image optimization preview, resulting in images not shown (and WP 404 generation on the back-end).
+* FIX: Optimizing a table now runs correctly after automatic pre-optimize backup
+* TWEAK: Changed the default settings page from 'Settings' to 'Database'
+
+= 2.3.1 - 16/Apr/2019 =
+
+* FIX: Fix a code path that could cause a fatal error on PHP 5.2
+* TWEAK: Optimizing a table should then refresh the information in the UI shown for it
+* TWEAK: Use an image compression logfile path inside the uploads hierarchy, with unpredictable salted element
+
+= 2.3.0 - 12/Apr/2019 =
+
+* FEATURE: Compress images using lossy and lossless compression - both existing images, and newly uploaded
+* FIX: Wrong information about corrupted tables
+* TWEAK: Prevent PHP notices on calls from UpdraftCentral
+* TWEAK: Prevent notices about Premium showing in Premium, correct button text, update coupon
+* TWEAK: Prevent the overdue cron checker running twice instead of once
+
+= 2.2.13 - 04/Mar/2019 =
+
+* FIX: Fixed RTL layout
+* FIX: Detect more relationships between tables and plugins in orphaned database tables optimization
+* FIX: Fixed orphaned relationships optimization
+* TWEAK: The informational list of WP core tables missed some possible extra tables on multisite
+
+= 2.2.12 - 07/Feb/2019 =
+
+* TWEAK: Updated information on More plugins tab
+* TWEAK: Fix header layout when a system or third party notification are shown
+* TWEAK: (Premium) Fix layout in unused images list mode
+* TWEAK: Improve data reliability in javascript
+* TWEAK: Improve orphaned relationships data optimization
+* TWEAK: Wrong message for "remove spam and trashed comments" optimization
+* TWEAK: Output additional information if table was not deleted
+* FIX: Added escaping for table names in database queries
+* FIX: Fix another possible fatal error due to missing get_plugins() function
+* FIX: Improve identification of installed/active plugins
+
+= 2.2.11 - 16/Jan/2019 =
+
+* FIX: A regression in the "identify table by owner" feature caused optimizing to silently fail on some tables
+* TWEAK: Added ability to exclude lazy load images by class
+
+= 2.2.10 - 11/Jan/2019 =
+
+* FEATURE: Added the ability to download unused images list (Premium version) as a CSV file
+* FIX: Load scripts and styles only on WP-Optimize pages
+* FIX: Fix a possible fatal error due to missing get_plugins() function
+* TWEAK: Remember selected optimizations on Database page
+* TWEAK: Prevent PHP notices when saving settings or optimizing in some circumstances
+
+= 2.2.9 - 03/Jan/2019 =
+
+* FIX: Change a newly-introduced fragment that was not compatible with PHP 5.2
+* TWEAK: Tweak some other code that had PHP 5.2 compatibility issues
+
+= 2.2.7 - 31/December/2018 =
+
+* RE-FACTOR: Refactoring and reorganisation of the UI
+* TWEAK: Added feature to view unused images as list
+* TWEAK: Fix sorting sizes columns in Tables information to take into account textual modifiers
+* FIX: MetaSlider images detected as unused
+* FIX: Preview for Trashed posts optimization doesn't work
+* FIX: Unselected optimizations could be run on a scheduled run
+
 = 2.2.6 - 30/October/2018 =
 
+* FEATURE: Added Gzip compression support
+* FIX: Unexpected content in the footer after preview popup closed
 * TWEAK: Mark as supporting WordPress 5.0
 * TWEAK: Update seasonal notices
+* TWEAK: Removed redundant checkbox for Lazy Loading settings
+* FEATURE: Remove orphaned database tables, and identify (many) known tables by plugin.
 
 = 2.2.5 - 24/August/2018 =
 
@@ -430,4 +511,4 @@ Please check your database for corrupted tables. That can happen, usually your w
 * Fix Interface
 
 == Upgrade Notice ==
-* 2.2.6 : Various tweaks and fixes, and new Premium features; a recommended update for all.
+* 2.3.3 : New feature in 2.3: image compression, plus other tweaks and fixes. 2.3.3 fixes a regression in 2.3.2. A recommended update for all.

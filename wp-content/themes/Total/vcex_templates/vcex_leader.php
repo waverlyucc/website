@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.4.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_param_group_parse_atts' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -97,9 +91,9 @@ foreach ( $leaders as $leader ) {
 	$value = isset( $leader['value'] ) ? $leader['value'] : esc_html__( 'Value', 'total' );
 
 	$output .= '<li class="' . $leader_classes . '">';
-		
+
 		$output .= '<span class="vcex-first"' . $label_typo . '>' . esc_html( do_shortcode( $label ) ) . '</span>';
-		
+
 		if ( $responsive && 'minimal' != $style ) {
 
 			$output .= '<span class="vcex-inner">...</span>';
@@ -107,11 +101,11 @@ foreach ( $leaders as $leader ) {
 		}
 
 		if ( 'Value' != $value ) {
-		
+
 			$output .= '<span class="vcex-last"' . $value_typo . '>' . esc_html( do_shortcode( $value ) ) . '</span>';
 
 		}
-	
+
 	$output .= '</li>';
 
 }

@@ -17,15 +17,6 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' )
-	|| ! function_exists( 'vc_shortcode_custom_css_class' )
-	|| ! function_exists( 'vc_build_link' )
-) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Fallbacks (old atts)
 $link_title  = isset( $atts['link_title'] ) ? $atts['link_title'] : '';
 $link_target = isset( $atts['link_target'] ) ? $atts['link_target'] : '';

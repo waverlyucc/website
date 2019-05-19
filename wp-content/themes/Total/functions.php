@@ -1,28 +1,22 @@
 <?php
 /**
- * Functions.php => This file loads all the needed files for the theme to work properly.
+ * This file loads all the needed files for the theme to work properly.
  *
- * IMPORTANT : DO NOT USE AN ILLEGAL COPY OF THIS THEME
- * IMPORTANT : DO NOT EVER EDIT THIS FILE
- * IMPORTANT : DO NOT COPY AND PASTE THIS FILE INTO YOUR CHILD THEME
- * IMPORTANT : DO NOT COPY AND PASTE ANYTHING FROM THIS FILE TO YOUR CHILD THEME BECAUSE IT WILL CAUSE ERRORS
- * IMPORTANT : YES => USE HOOKS, FILTERS & TEMPLATE PARTS TO ALTER THIS THEME VIA A CHILD THEME
- *
- * Total is a very powerful theme and virtually anything can be customized
- * via a child theme. If you need any help altering a function, just let us know we are here to help!
- *
- * Advanced customizations aren't included with your purchase but if it's a simple task we can assist :)
+ * DO NOT : USE AN ILLEGAL COPY OF THIS THEME
+ * DO NOT : EVER EDIT THIS FILE
+ * DO NOT : COPY AND PASTE THIS FILE INTO YOUR CHILD THEME
+ * DO NOT : COPY AND PASTE ANYTHING FROM THIS FILE TO YOUR CHILD THEME BECAUSE IT WILL CAUSE ERRORS
+ * YES    : USE HOOKS, FILTERS & TEMPLATE PARTS TO ALTER THIS THEME VIA A CHILD THEME
  *
  * Theme Docs        : https://wpexplorer-themes.com/total/docs/
  * Request Support   : https://wpexplorer-themes.com/total/docs/how-to-request-support/
  * Theme Snippets    : https://wpexplorer-themes.com/total/snippets/
  * Using Hooks       : https://wpexplorer-themes.com/total/docs/action-hooks/
- * Filters Reference : https://www.wpexplorer.com/docs/total-wordpress-theme-filters/
- * Theme Support     : https://wpexplorer-themes.com/support/ (valid purchase required)
+ * Theme Support     : https://wpexplorer-themes.com/support/ (valid purchase & support license required)
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.7.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -48,7 +42,7 @@ final class WPEX_Theme_Setup {
 		$this->constants();
 
 		// Store theme mods in $wpex_theme_mods global variable and register theme mod functions
-		require_once WPEX_THEME_DIR . '/framework/get-mods.php';
+		require_once WPEX_THEME_DIR . '/framework/theme-mods.php';
 
 		// Include main Admin Panel
 		require_once WPEX_THEME_DIR . '/framework/AdminPanel.php';
@@ -87,8 +81,8 @@ final class WPEX_Theme_Setup {
 	public function constants() {
 
 		define( 'TOTAL_THEME_ACTIVE', true );
-		define( 'WPEX_THEME_VERSION', '4.7.1' );
-		define( 'WPEX_VC_SUPPORTED_VERSION', '5.5.4' );
+		define( 'WPEX_THEME_VERSION', '4.8.5' );
+		define( 'WPEX_VC_SUPPORTED_VERSION', '5.7' );
 
 		define( 'WPEX_THEME_DIR', get_template_directory() );
 		define( 'WPEX_THEME_URI', get_template_directory_uri() );
@@ -192,6 +186,10 @@ final class WPEX_Theme_Setup {
 		require_once WPEX_FRAMEWORK_DIR . 'helpers/blog.php';
 		require_once WPEX_FRAMEWORK_DIR . 'helpers/instagram-feed.php';
 
+		require_once WPEX_FRAMEWORK_DIR . 'helpers/portfolio.php';
+		require_once WPEX_FRAMEWORK_DIR . 'helpers/testimonials.php';
+		require_once WPEX_FRAMEWORK_DIR . 'helpers/staff.php';
+
 		require_once WPEX_FRAMEWORK_DIR . 'wp-actions/widgets-init.php';
 		require_once WPEX_FRAMEWORK_DIR . 'wp-actions/enqueue-scripts.php';
 		require_once WPEX_FRAMEWORK_DIR . 'wp-actions/template-redirect.php';
@@ -216,10 +214,6 @@ final class WPEX_Theme_Setup {
 		require_once WPEX_FRAMEWORK_DIR . 'wp-filters/move-comment-form-fields.php';
 		require_once WPEX_FRAMEWORK_DIR . 'wp-filters/authors-posts-link-schema.php';
 		require_once WPEX_FRAMEWORK_DIR . 'wp-filters/custom-password-protected-form.php';
-
-		if ( wpex_get_mod( 'disable_comment_cookies', true ) ) {
-			require_once WPEX_FRAMEWORK_DIR . 'wp-actions/disable-comment-cookies.php';
-		}
 
 		if ( wpex_get_mod( 'remove_emoji_scripts_enable', true ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'wp-actions/remove-emoji-scripts.php';
@@ -254,102 +248,90 @@ final class WPEX_Theme_Setup {
 	 */
 	public function configs() {
 
-		// Portfolio
 		if ( WPEX_PORTFOLIO_IS_ACTIVE ) {
-			require_once WPEX_FRAMEWORK_DIR . 'post-types/portfolio/portfolio-config.php';
+			require_once WPEX_FRAMEWORK_DIR . 'classes/PostTypes/Portfolio.php';
 		}
 
-		// Staff
 		if ( WPEX_STAFF_IS_ACTIVE ) {
-			require_once WPEX_FRAMEWORK_DIR . 'post-types/staff/staff-config.php';
+			require_once WPEX_FRAMEWORK_DIR . 'classes/PostTypes/Staff.php';
 		}
 
-		// Testimonias
 		if ( WPEX_TESTIMONIALS_IS_ACTIVE ) {
-			require_once WPEX_FRAMEWORK_DIR . 'post-types/testimonials/testimonials-config.php';
+			require_once WPEX_FRAMEWORK_DIR . 'classes/PostTypes/Testimonials.php';
 		}
 
-		// WooCommerce
 		if ( WPEX_WOOCOMMERCE_ACTIVE && wpex_woo_version_supported() ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/woocommerce/woo-config.php';
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/woocommerce/woocommerce.php';
 		}
 
-		// Visual Composer
 		if ( WPEX_VC_ACTIVE && wpex_has_vc_mods() ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/visual-composer/vc-config.php';
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/wpbakery/vc-config.php';
 		}
 
-		// The Events Calendar
-		if ( class_exists( 'Tribe__Events__Main' ) ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/tribe-events/tribe-events-config.php';
+		if ( class_exists( 'Tribe__Events__Main' ) && apply_filters( 'wpex_tribe_events', true ) ) {
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/tribe-events/TribeEvents.php';
 		}
 
-		// WPML
 		if ( WPEX_WPML_ACTIVE ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/WPML.php';
 		}
 
-		// Polylang
 		if ( class_exists( 'Polylang' ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/Polylang.php';
 		}
 
-		// bbPress
 		if ( WPEX_BBPRESS_ACTIVE ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/bbpress/bbpress-config.php';
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/bbpress/bbPress.php';
 		}
 
-		// BuddyPress
 		if ( function_exists( 'buddypress' ) ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/buddypress/buddypress-config.php';
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/BuddyPress.php';
 		}
 
-		// Sensei
 		if ( function_exists( 'Sensei' ) ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/sensei.php';
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/sensei.php';
 		}
 
-		// Yoast SEO
 		if ( defined( 'WPSEO_VERSION' ) && apply_filters( 'wpex_yoast_support', true ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/YoastSEO.php';
 		}
 
-		// Contact From 7
 		if ( defined( 'WPCF7_VERSION' ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/ContactForm7.php';
 		}
 
-		// Real Media library
 		if ( defined( 'RML_VERSION' ) ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/real-media-library.php';
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/real-media-library.php';
 		}
 
-		// Revolution
 		if ( class_exists( 'RevSlider' ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/Revslider.php';
 		}
 
-		// LayerSlider
+		if ( class_exists( 'TablePress' ) ) {
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/TablePress.php';
+		}
+
 		if ( class_exists( 'LS_Sliders' ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/LayerSlider.php';
 		}
 
-		// JetPack
 		if ( class_exists( 'Jetpack' ) && apply_filters( 'wpex_jetpack_support', true ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/JetPack.php';
 		}
 
-		// Gravity Forms
 		if ( class_exists( 'RGForms' ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/GravityForms.php';
 		}
 
-		// Post types UI
-		if ( function_exists( 'cptui_init' ) ) {
-			require_once WPEX_FRAMEWORK_DIR . '3rd-party/cpt-ui.php';
+		if ( class_exists( 'Post_Types_Unlimited' ) ) {
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/PostTypesUnlimited.php';
 		}
 
-		// Massive VC Addons
+		if ( function_exists( 'cptui_init' ) ) {
+			require_once WPEX_FRAMEWORK_DIR . 'vendor/cpt-ui.php';
+		}
+
 		if ( defined( 'MPC_MASSIVE_VERSION' ) ) {
 			require_once WPEX_FRAMEWORK_DIR . 'vendor/MassiveAddons.php';
 		}
@@ -363,33 +345,33 @@ final class WPEX_Theme_Setup {
 	 */
 	public function classes() {
 
-		// Sanitize input
+		// Takes an input and outputs sanitized data
 		require_once WPEX_ClASSES_DIR . 'SanitizeData.php';
 
-		// iLightbox
+		// Loads iLightbox scripts and registers lightbox settings
 		require_once WPEX_ClASSES_DIR . 'iLightbox.php';
 
-		// Post Series
+		// Adds new Post Series taxonomy
 		if ( wpex_get_mod( 'post_series_enable', true ) ) {
 			require_once WPEX_ClASSES_DIR . 'PostSeries.php';
 		}
 
-		// Custom WP header
+		// Enable the default WP header image function and outputs the design
 		if ( wpex_get_mod( 'header_image_enable' ) ) {
 			require_once WPEX_ClASSES_DIR . 'CustomHeader.php';
 		}
 
-		// Term thumbnails
+		// Adds Thumbnail support for taxonomies
 		if ( wpex_get_mod( 'term_thumbnails_enable', true ) ) {
 			require_once WPEX_ClASSES_DIR . 'TermThumbnails.php';
 		}
 
-		// Remove post type slugs
+		// Removes slugs from Custom post types
 		if ( wpex_get_mod( 'remove_posttype_slugs' ) ) {
 			require_once WPEX_ClASSES_DIR . 'RemovePostTypeSlugs.php';
 		}
 
-		// Custom image sizes, dynamic resizing and image sizes panel
+		// Register theme image sizes and adds image sizing admin panel
 		if ( wpex_get_mod( 'image_sizes_enable', true ) ) {
 			require_once WPEX_ClASSES_DIR . 'ImageSizes.php';
 		}
@@ -397,55 +379,57 @@ final class WPEX_Theme_Setup {
 		// Admin only classes
 		if ( is_admin() ) {
 
-			// Recommend plugins
+			// Recommends plugins to install and/or update
 			if ( wpex_recommended_plugins() && wpex_get_mod( 'recommend_plugins_enable', true ) ) {
 				require_once WPEX_FRAMEWORK_DIR . 'vendor/TGMPA.php';
 			}
 
-			// Plugins updater
-			// @deprecated in 4.4.1 must be enabled via filter
+			// Provides auto updates for plugins based on recommended versions
+			// @deprecated in 4.4.1 - must be enabled via filter
 			if ( apply_filters( 'wpex_plugins_updater', false ) ) {
 				require_once WPEX_ClASSES_DIR . 'PluginUpdater.php';
 			}
 
-			// Gallery metabox
+			// Enables a post type editor panel for theme post types
+			require_once WPEX_ClASSES_DIR . 'PostTypeEditorPanel.php';
+
+			// Enables the Gallery Meta box in the post type editor to define post specific gallery images
 			require_once WPEX_ClASSES_DIR . 'GalleryMetabox.php';
 
-			// Category meta
+			// Introduces custom settings to the category taxonomy edit screen
 			if ( apply_filters( 'wpex_category_settings', true ) ) {
 				require_once WPEX_ClASSES_DIR . 'CategorySettings.php';
 			}
 
-			// Custom attachment fields
+			// Adds custom meta fields to the media edit screen
 			require_once WPEX_ClASSES_DIR . 'MediaMetaFields.php';
 
 		}
 
-		// Inline CSS for various Customizer settings
+		// Outputs inline CSS to the front-end of the site based on Customizer settings
 		require_once WPEX_ClASSES_DIR . 'InlineCSS.php';
 
-		// Accent color
+		// Outputs CSS to the live site for your custom accent color
 		require_once WPEX_ClASSES_DIR . 'AccentColors.php';
 
-		// Border color
+		// Outputs CSS to the live site for your custom theme borders color
 		require_once WPEX_ClASSES_DIR . 'BorderColors.php';
 
-		// Site backgrounds
+		// Outputs CSS to the live site for your custom site and post-based backgrounds
 		require_once WPEX_ClASSES_DIR . 'SiteBackgrounds.php';
 
-		// Advanced styling
+		// Outputs CSS to the live site for advanced Customizer settings
 		require_once WPEX_ClASSES_DIR . 'AdvancedStyles.php';
 
-		// Breadcrumbs class
+		// Front-end breadcrumbs class
 		require_once WPEX_ClASSES_DIR . 'breadcrumbs.php';
 
-		// Disable Google Services
+		// Disable Google Services | Removes Google Fonts
 		if ( wpex_disable_google_services() ) {
 			require_once WPEX_ClASSES_DIR . 'DisableGoogleServices.php';
 		}
 
-		// Customizer must load last to take advantage of all functions before it
-		// Must load in front and backend
+		/*** IMPORTANT: Customizer Class must load last ***/
 		require_once WPEX_FRAMEWORK_DIR . 'customizer/customizer.php';
 
 	}
@@ -470,14 +454,15 @@ final class WPEX_Theme_Setup {
 
 		// Register theme navigation menus
 		register_nav_menus( array(
-			'topbar_menu'     => __( 'Top Bar', 'total' ),
-			'main_menu'       => __( 'Main/Header', 'total' ),
-			'mobile_menu_alt' => __( 'Mobile Menu Alternative', 'total' ),
-			'mobile_menu'     => __( 'Mobile Icons', 'total' ),
-			'footer_menu'     => __( 'Footer', 'total' ),
+			'topbar_menu'     => esc_html__( 'Top Bar', 'total' ),
+			'main_menu'       => esc_html__( 'Main/Header', 'total' ),
+			'mobile_menu_alt' => esc_html__( 'Mobile Menu Alternative', 'total' ),
+			'mobile_menu'     => esc_html__( 'Mobile Icons', 'total' ),
+			'footer_menu'     => esc_html__( 'Footer', 'total' ),
 		) );
 
 		// Declare theme support
+		//add_theme_support( 'custom-logo' );
 		add_theme_support( 'post-formats', array( 'video', 'gallery', 'audio', 'quote', 'link' ) );
 		add_theme_support( 'automatic-feed-links' );
 		add_theme_support( 'post-thumbnails' );
@@ -490,7 +475,7 @@ final class WPEX_Theme_Setup {
 
 		// Add styles to the WP editor
 		add_editor_style( 'assets/css/wpex-editor-style.css' );
-		add_editor_style( wpex_asset_url( 'lib/font-awesome/css/font-awesome.min.css' ) );
+		add_editor_style( wpex_asset_url( 'lib/ticons/css/ticons.min.css' ) );
 
 	}
 

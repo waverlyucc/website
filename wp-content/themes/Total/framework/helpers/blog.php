@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.5.4
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -478,14 +478,10 @@ function wpex_blog_wrap_classes( $classes = NULL ) {
 		if ( 'masonry' == wpex_blog_grid_style() ) {
 			$classes[] = 'blog-masonry-grid';
 		} else {
-			if ( 'infinite_scroll' == wpex_blog_pagination_style() ) {
-				$classes[] = 'blog-masonry-grid';
-			} else {
-				$classes[] = 'blog-grid';
-			}
+			$classes[] = 'blog-grid';
 		}
 		if ( $gap = wpex_get_mod( 'blog_grid_gap' ) ) {
-			$classes[] = 'gap-'. $gap;
+			$classes[] = 'gap-' . $gap;
 		}
 	}
 

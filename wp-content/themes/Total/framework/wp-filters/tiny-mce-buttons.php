@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.0
+ * @version 4.8.3
  */
 
 // Exit if accessed directly
@@ -32,7 +32,9 @@ add_filter( 'mce_buttons', 'wpex_style_select' );
  */
 if ( ! function_exists( 'wpex_mce_buttons' ) ) {
 	function wpex_mce_buttons( $buttons ) {
-		array_unshift( $buttons, 'fontselect' );
+		if ( wpex_get_mod( 'mce_buttons_fontselect', true ) ) {
+			array_unshift( $buttons, 'fontselect' );
+		}
 		array_unshift( $buttons, 'fontsizeselect' );
 		return $buttons;
 	}

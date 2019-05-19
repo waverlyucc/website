@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /* Outer Wrap > Before
 -------------------------------------------------------------------------------*/
+add_action( 'wpex_outer_wrap_before', 'wpex_site_overlay' );
 add_action( 'wpex_outer_wrap_before', 'wpex_site_frame_border', 0 );
 add_action( 'wpex_outer_wrap_before', 'wpex_skip_to_content_link' );
 add_action( 'wpex_outer_wrap_before', 'wpex_ls_top' );
@@ -52,6 +53,7 @@ add_action( 'wpex_hook_header_top', 'wpex_header_menu' );
 add_action( 'wpex_hook_header_inner', 'wpex_header_logo' );
 add_action( 'wpex_hook_header_inner', 'wpex_header_aside' );
 add_action( 'wpex_hook_header_inner', 'wpex_header_menu' );
+//add_action( 'wpex_hook_header_inner', 'wpex_header_buttons' ); // @todo for upcoming header 7
 add_action( 'wpex_hook_header_inner', 'wpex_mobile_menu_icons' );
 add_action( 'wpex_hook_header_inner', 'wpex_header_inner_search_dropdown' );
 

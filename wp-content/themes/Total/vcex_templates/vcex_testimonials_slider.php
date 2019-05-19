@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -77,12 +71,19 @@ if ( $wpex_query->have_posts() ) :
 	$slide_style = vcex_inline_style( array(
 		'font_size'   => $font_size,
 		'font_weight' => $font_weight,
+		'color'       => $text_color,
 	) );
+	$slide_data = '';
+	if ( $rfont_size = vcex_get_responsive_font_size_data( $font_size ) ) {
+		$slide_data = " data-wpex-rcss='" . json_encode( array( 'font-size' => $rfont_size ) ) . "'";
+	}
 
 	// Image classes
 	$img_classes = '';
 	if ( ( $img_width || $img_height ) || 'wpex_custom' != $img_size ) {
-		$img_classes .= 'remove-dims';
+		$img_classes .= 'vcex-custom-dims';
+	} else {
+		$img_classes .= 'vcex-default-dims';
 	}
 
 	// Define wrap attributes
@@ -92,7 +93,7 @@ if ( $wpex_query->have_posts() ) :
 	);
 
 	// Wrap classes
-	$wrap_classes = array( 'vcex-module', 'vcex-testimonials-fullslider', 'vcex-flexslider-wrap', 'wpex-fs-21px' );
+	$wrap_classes = array( 'vcex-module', 'vcex-testimonials-fullslider', 'vcex-flexslider-wrap' );
 	if ( $skin ) {
 		$wrap_classes[] = $skin .'-skin';
 	}
@@ -121,10 +122,10 @@ if ( $wpex_query->have_posts() ) :
 		$wrap_classes[] = vcex_get_extra_class( $classes );
 	}
 
-	// Get responsive data
-	if ( $responsive_data = vcex_get_module_responsive_data( $atts ) ) {
-		$wrap_attrs['data-wpex-rcss'] = $responsive_data;
-	}
+	// Inner classes
+	$inner_classes = 'vcex-testimonials-fullslider-inner clr';
+	$align = $align ? $align : 'center';
+	$inner_classes .= ' text' . $align;
 
 	// Turn class array into string
 	$wrap_classes = implode( ' ', $wrap_classes );
@@ -162,20 +163,32 @@ if ( $wpex_query->have_posts() ) :
 	} elseif ( $height_animation ) {
 		$height_animation = intval( $height_animation );
 		$height_animation = 0 == $height_animation ? '0.0' : $height_animation;
-		$slider_data .= ' data-height-animation-duration="'. $height_animation .'"';
+		$slider_data .= ' data-height-animation-duration="' . $height_animation . '"';
 	}
 
 	// Image settings & style
-	$img_style = array( 'border_radius' => $img_border_radius );
-	if ( 'wpex_custom' == $img_size && $img_width ) {
-		$img_style['width'] = $img_width; // for retina support
+	$avatar_style = vcex_inline_style( array(
+		'margin_bottom' => $img_bottom_margin,
+	) );
+	$img_style = vcex_inline_style( array(
+		'border_radius' => $img_border_radius
+	), false );
+
+	// Meta settings
+	$meta_style = vcex_inline_style( array(
+		'color'       => $meta_color,
+		'font_size'   => $meta_font_size,
+		'font_weight' => $meta_font_weight,
+	) );
+	$meta_data = '';
+	if ( $rfont_size = vcex_get_responsive_font_size_data( $meta_font_size ) ) {
+		$meta_data = " data-wpex-rcss='" . json_encode( array( 'font-size' => $rfont_size ) ) . "'";
 	}
-	$img_style = vcex_inline_style( $img_style, false );
 
 	// Start output
 	$output .= '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 
-		$output .= '<div class="wpex-slider slider-pro"'. $slider_data .'>';
+		$output .= '<div class="wpex-slider slider-pro"' . $slider_data . '>';
 
 			$output .= '<div class="wpex-slider-slides sp-slides">';
 
@@ -201,15 +214,15 @@ if ( $wpex_query->have_posts() ) :
 					// Testimonial start
 					if ( '' != $atts['post_content'] ) :
 
-						$output .= '<div class="wpex-slider-slide sp-slide">';
+						$output .= '<div ' . vcex_grid_get_post_class( array( 'wpex-slider-slide', 'sp-slide' ), $atts['post_id'], false ) . '>';
 
-							$output .= '<div class="vcex-testimonials-fullslider-inner textcenter clr">';
+							$output .= '<div class="' . esc_attr( $inner_classes ) . '">';
 
 								// Author avatar
 								$avatar_output = '';
 								if ( 'yes' == $display_author_avatar && has_post_thumbnail( $atts['post_id'] ) ) {
 
-									$avatar_output .= '<div class="vcex-testimonials-fullslider-avatar">';
+									$avatar_output .= '<div class="vcex-testimonials-fullslider-avatar"' . $avatar_style . '>';
 
 										// Output thumbnail
 										$avatar_output .= wpex_get_post_thumbnail( array(
@@ -229,14 +242,16 @@ if ( $wpex_query->have_posts() ) :
 
 								$output .= apply_filters( 'vcex_testimonials_slider_avatar', $avatar_output, $atts );
 
+								// Content
+								$excerpt_output = '<div class="entry clr"' . $slide_style . $slide_data . '>';
+
 								// Custom Excerpt
-								$excerpt_output = '';
-								if ( 'true' == $excerpt ) :
+								if ( 'true' == $excerpt ) {
 
 									if ( 'true' == $read_more ) {
 
 										$read_more_text = $read_more_text ? $read_more_text : __( 'read more', 'total' );
-										
+
 										$read_more_link = '&hellip;<a href="'. get_permalink() .'" title="'. esc_attr( $read_more_text ) .'">'. esc_html( $read_more_text ) .'<span>&rarr;</span></a>';
 
 									} else {
@@ -245,27 +260,21 @@ if ( $wpex_query->have_posts() ) :
 
 									}
 
-									$excerpt_output .= '<div class="entry wpex-fw-300 clr"'. $slide_style .'>';
-
-										$excerpt_output .= wpex_get_excerpt( array(
-											'length'               => $excerpt_length,
-											'more'                 => $read_more_link,
-											'context'              => 'vcex_testimonials_slider',
-											'custom_excerpts_more' => true, // force readmore on custom excerpts
-										) );
-
-									$excerpt_output .= '</div>';
+									$excerpt_output .= wpex_get_excerpt( array(
+										'length'               => $excerpt_length,
+										'more'                 => $read_more_link,
+										'context'              => 'vcex_testimonials_slider',
+										'custom_excerpts_more' => true, // force readmore on custom excerpts
+									) );
 
 								// Full content
-								else :
+								} else {
 
-									$excerpt_output .= '<div class="entry clr"' . $slide_style . '>';
+									$excerpt_output .= wpex_the_content( get_the_content(), 'vcex_testimonials_slider' );
 
-										$excerpt_output .= wpex_the_content( get_the_content(), 'vcex_testimonials_slider' );
+								}
 
-									$excerpt_output .= '</div>';
-								
-								endif;
+								$excerpt_output .= '</div>'; // close excerpt
 
 								$output .= apply_filters( 'vcex_testimonials_slider_excerpt', $excerpt_output, $atts );
 
@@ -276,12 +285,12 @@ if ( $wpex_query->have_posts() ) :
 									|| 'true' == $rating
 								) :
 
-									$meta_output .= '<div class="vcex-testimonials-fullslider-author wpex-fs-14px clr">';
+									$meta_output .= '<div class="vcex-testimonials-fullslider-author clr" ' . $meta_style . $meta_data . '>';
 
 										// Display author name
 										$meta_author_output = '';
 										if ( 'yes' == $display_author_name ) {
-											$meta_author_output .= wp_kses_post( $atts['post_meta_author'] );
+											$meta_author_output .= '<div class="vcex-testimonials-fullslider-author-name">' . wp_kses_post( $atts['post_meta_author'] ) . '</div>';
 										}
 										$meta_output .= apply_filters( 'vcex_testimonials_slider_meta_author', $meta_author_output, $atts );
 

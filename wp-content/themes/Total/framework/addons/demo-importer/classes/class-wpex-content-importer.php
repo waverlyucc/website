@@ -8,11 +8,11 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 		 * Contains the data for the demos.
 		 *
 		 * @since 1.1.0
-		 * 
+		 *
 		 * @var array
 		 */
 		private $demos = array();
-		
+
 		public function __construct() {
 			// Nothing needed here.
 		}
@@ -27,7 +27,7 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 		 * @since 1.1.0
 		 */
 		public function process_xml( $demo, $import_images ) {
-			
+
 			$response = WPEX_Demo_Importer_Utils::remote_get( $this->demos[ $demo ][ 'xml' ] );
 
 			// No sample data found
@@ -51,7 +51,7 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 			}
 
 		}
-		
+
 		private function import_xml( $file, $import_images ) {
 
 			// Make sure importers constant is defined
@@ -118,7 +118,7 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 		public function process_theme_mods( $demo ) {
 
 			// Save backup
-			update_option( 'total_import_theme_mods_backup', get_theme_mods() );
+			update_option( 'total_import_theme_mods_backup', get_theme_mods(), false );
 
 			// Get file from github and save remotely
 			$mods = WPEX_Demo_Importer_Utils::remote_get( $this->demos[ $demo ]['theme_mods'] );
@@ -166,7 +166,7 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 		 * @since 1.0.0
 		 */
 		public function process_sliders_import( $demo ) {
-			
+
 			// Return since no sliders are defined
 			if ( empty( $this->demos[ $demo ]['sliders'] ) ) {
 				return;
@@ -364,12 +364,12 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 					// Get existing widgets in this sidebar
 					$sidebars_widgets = get_option( 'sidebars_widgets' );
 					$sidebar_widgets = isset( $sidebars_widgets[$use_sidebar_id] ) ? $sidebars_widgets[$use_sidebar_id] : array(); // check Inactive if that's where will go
-					
+
 					// Loop widgets with ID base
 					$single_widget_instances = ! empty( $widget_instances[$id_base] ) ? $widget_instances[$id_base] : array();
-					
+
 					foreach ( $single_widget_instances as $check_id => $check_widget ) {
-					  
+
 					  // Is widget in same sidebar and has identical settings?
 					  if ( in_array( "$id_base-$check_id", $sidebar_widgets ) && (array) $widget == $check_widget ) {
 						$fail = true;
@@ -489,7 +489,7 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 			if ( $page && $page->ID ) {
 				update_option( 'page_on_front', $page->ID );
 				update_option( 'show_on_front', 'page' );
-			}	
+			}
 
 		}
 
@@ -511,7 +511,7 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 				update_option( 'page_for_posts', $posts_page->ID );
 
 			}
-			
+
 		}
 
 		/**
@@ -532,7 +532,7 @@ if ( ! class_exists( 'WPEX_Content_Importer' ) ) {
 				update_option( 'woocommerce_shop_page_id', $shop->ID );
 
 			}
-			
+
 		}
 
 	}

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -127,6 +127,10 @@ class CustomActions {
 												'wp_footer',
 											),
 										),
+										'html' => array(
+											'label' => 'HTML',
+											'hooks' => array( 'wpex_hook_after_body_tag' )
+										)
 									);
 
 									// Theme hooks

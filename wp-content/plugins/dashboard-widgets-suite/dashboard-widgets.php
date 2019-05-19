@@ -9,10 +9,10 @@
 	Author URI: https://plugin-planet.com/
 	Donate link: https://monzillamedia.com/donate.html
 	Requires at least: 4.1
-	Tested up to: 5.0
-	Stable tag: 1.9
-	Version: 1.9
-	Requires PHP: 5.2
+	Tested up to: 5.2
+	Stable tag: 2.2
+	Version: 2.2
+	Requires PHP: 5.6.20
 	Text Domain: dashboard-widgets-suite
 	Domain Path: /languages
 	License: GPL v2 or later
@@ -32,7 +32,7 @@
 	You should have received a copy of the GNU General Public License
 	with this program. If not, visit: https://www.gnu.org/licenses/
 	
-	Copyright 2018 Monzilla Media. All rights reserved.
+	Copyright 2019 Monzilla Media. All rights reserved.
 */
 
 if (!defined('ABSPATH')) die();
@@ -230,7 +230,7 @@ if (!class_exists('Dashboard_Widgets_Suite')) {
 		}
 		
 		private function constants() {
-			if (!defined('DWS_VERSION')) define('DWS_VERSION', '1.9');
+			if (!defined('DWS_VERSION')) define('DWS_VERSION', '2.2');
 			if (!defined('DWS_REQUIRE')) define('DWS_REQUIRE', '4.1');
 			if (!defined('DWS_NAME'))    define('DWS_NAME',    'Dashboard Widgets Suite');
 			if (!defined('DWS_AUTHOR'))  define('DWS_AUTHOR',  'Jeff Starr');
@@ -256,7 +256,7 @@ if (!class_exists('Dashboard_Widgets_Suite')) {
 		}
 		
 		public function action_links($links, $file) {
-			if ($file == DWS_FILE) {
+			if ($file == DWS_FILE && (current_user_can('manage_options'))) {
 				
 				$dws_links = '<a href="'. admin_url('options-general.php?page=dashboard_widgets_suite') .'">'. esc_html__('Settings', 'dashboard-widgets-suite') .'</a>';
 				array_unshift($links, $dws_links);

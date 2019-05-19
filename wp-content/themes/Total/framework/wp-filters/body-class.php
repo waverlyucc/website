@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -28,7 +28,7 @@ function wpex_body_class( $classes ) {
 	if ( is_customize_preview() ) {
 		$classes[] = 'is_customize_preview';
 	}
-	
+
 	// Main class
 	$classes[] = 'wpex-theme';
 
@@ -81,7 +81,7 @@ function wpex_body_class( $classes ) {
 				$classes[] = 'wpex-fixed-vertical-header';
 			}
 		}
-		
+
 	}
 
 	// Disabled header class
@@ -156,7 +156,7 @@ function wpex_body_class( $classes ) {
 
 	// Mobile menu toggle style
 	if ( wpex_header_has_mobile_menu() ) {
-		
+
 		// Mobile menu toggle style
 		$classes[] = 'wpex-mobile-toggle-menu-' . wpex_header_menu_mobile_toggle_style();
 
@@ -193,7 +193,17 @@ function wpex_body_class( $classes ) {
 	if ( wpex_has_social_share() && $position = wpex_social_share_position() ) {
 		$classes[] = 'wpex-share-p-' . $position;
 	}
-	
+
+	// WooCommerce
+	if ( WPEX_WOOCOMMERCE_ACTIVE ) {
+		if ( wpex_get_mod( 'woo_product_responsive_tabs', false ) && is_singular( 'product' ) ) {
+			$classes[] = 'woo-single-responsive-tabs';
+		}
+		if ( wpex_get_mod( 'woo_checkout_single_col', false ) ) {
+			$classes[] = 'wpex-fw-checkout';
+		}
+	}
+
 	// Return classes
 	return $classes;
 

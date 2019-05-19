@@ -9,10 +9,10 @@ Contributors: specialk
 Author URI: https://plugin-planet.com/
 Donate link: https://monzillamedia.com/donate.html
 Requires at least: 4.1
-Tested up to: 5.0
-Stable tag: 1.9
-Version: 1.9
-Requires PHP: 5.2
+Tested up to: 5.2
+Stable tag: 2.2
+Version: 2.2
+Requires PHP: 5.6.20
 Text Domain: dashboard-widgets-suite
 Domain Path: /languages
 License: GPL v2 or later
@@ -71,9 +71,9 @@ _[Suggest a feature!](https://perishablepress.com/contact/)_
 
 
 
-**GDPR**
+**Privacy**
 
-This plugin does not collect any user data. So it does _not_ do anything to make your site _less_ compliant with GDPR. I have done my best to ensure that this plugin is 100% GDPR compliant, but I'm not a lawyer so can't guarantee anything. To determine if your site is GDPR compliant, please consult an attorney.
+This plugin does not collect or store any user data. It does not set any cookies, and it does not connect to any third-party locations. Thus, this plugin does not affect user privacy in any way.
 
 
 
@@ -123,6 +123,8 @@ How to choose a note format:
 1. Click the "Add Note" link
 2. In the "Format" select menu, choose your format
 3. Write your note how you want, click the "Add Note" button and done!
+
+To __Edit__ or __Delete__ any note, double-click on the note content (to display the "Edit" and "Delete" buttons).
 
 
 **Debug and Error Logs**
@@ -320,6 +322,7 @@ And/or purchase one of my premium WordPress plugins:
 * [BBQ Pro](https://plugin-planet.com/bbq-pro/) - Super fast WordPress firewall
 * [Blackhole Pro](https://plugin-planet.com/blackhole-pro/) - Automatically block bad bots
 * [Banhammer Pro](https://plugin-planet.com/banhammer-pro/) - Monitor traffic and ban the bad guys
+* [GA Google Analytics Pro](https://plugin-planet.com/ga-google-analytics-pro/) - Connect your WordPress to Google Analytics
 * [USP Pro](https://plugin-planet.com/usp-pro/) - Unlimited front-end forms
 
 Links, tweets and likes also appreciated. Thank you! :)
@@ -327,6 +330,27 @@ Links, tweets and likes also appreciated. Thank you! :)
 
 
 == Changelog ==
+
+__Thank you__ for using Dashboard Widgets Suite! If you like the plugin, please show support with a [5-star rating &raquo;](https://wordpress.org/support/plugin/dashboard-widgets-suite/reviews/?rate=5#new-post)
+
+
+**2.2 (2019/04/28)**
+
+* Bumps [minimum PHP version](https://codex.wordpress.org/Template:Server_requirements) to 5.6.20
+* Tweaks plugin settings screen content
+* Updates default translation template
+* Tests on WordPress 5.2
+
+**2.1 (2019/03/06)**
+
+* Refines plugin settings screen UI
+* Generates new default translation template
+* Tests on WordPress 5.1 and 5.2 (alpha)
+
+**2.0 (2019/02/02)**
+
+* Just a version bump for compat with WP 5.1
+* Full update coming soon :)
 
 **1.9 (2018/11/12)**
 

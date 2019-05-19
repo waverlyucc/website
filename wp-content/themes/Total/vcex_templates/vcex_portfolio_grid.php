@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -17,12 +17,6 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Define output var
 $output = '';
 
@@ -31,8 +25,19 @@ if ( ! empty( $atts['term_slug'] ) && empty( $atts['include_categories']) ) {
 	$atts['include_categories'] = $atts['term_slug'];
 }
 
+// Store orginal atts value for use in non-builder params
+$og_atts = $atts;
+
+// Define entry counter
+$entry_count = ! empty( $og_atts['entry_count'] ) ? $og_atts['entry_count'] : 0;
+
 // Get shortcode attributes based on vc_lean_map => This makes sure no attributes are empty
 $atts = vc_map_get_attributes( 'vcex_portfolio_grid', $atts );
+
+// Add paged attribute for load more button (used for WP_Query)
+if ( ! empty( $og_atts['paged'] ) ) {
+	$atts['paged'] = $og_atts['paged'];
+}
 
 // Add base to attributes
 $atts['base'] = 'vcex_portfolio_grid';
@@ -63,7 +68,7 @@ if ( $wpex_query->have_posts() ) :
 	$atts['excerpt_length']     = $atts['excerpt_length'] ? $atts['excerpt_length'] : '30';
 	$atts['css_animation']      = vcex_get_css_animation( $atts['css_animation'] );
 	$atts['css_animation']      = ( 'true' == $atts['filter'] ) ? false : $atts['css_animation'];
-	$atts['equal_heights_grid'] = ( 'true' == $atts['equal_heights_grid'] && $atts['columns'] > '1' ) ? true : false;
+	$atts['equal_heights_grid'] = ( 'true' == $atts['equal_heights_grid'] && $atts['columns'] > '1' ) ? 'true' : 'false';
 	$atts['overlay_style']      = $atts['overlay_style'] ? $atts['overlay_style'] : 'none';
 	$atts['title_tag']          = apply_filters( 'vcex_grid_default_title_tag', $atts['title_tag'], $atts );
 	$atts['title_tag']          = $atts['title_tag'] ? $atts['title_tag'] : 'h2';
@@ -76,14 +81,6 @@ if ( $wpex_query->have_posts() ) :
 	// Enable Isotope
 	if ( 'true' == $atts['filter'] || 'masonry' == $atts['grid_style'] || 'no_margins' == $atts['grid_style'] ) {
 		$is_isotope = true;
-	}
-
-	// No need for masonry if not enough columns and filter is disabled
-	if ( 'true' != $atts['filter'] && 'masonry' == $atts['grid_style'] ) {
-		$post_count = count( $wpex_query->posts );
-		if ( $post_count <= $atts['columns'] ) {
-			$is_isotope = false;
-		}
 	}
 
 	// Get filter taxonomy
@@ -137,7 +134,7 @@ if ( $wpex_query->have_posts() ) :
 	if ( $atts['columns_gap'] ) {
 		$grid_classes[] = 'gap-'. $atts['columns_gap'];
 	}
-	if ( $atts['equal_heights_grid'] ) {
+	if ( 'true' == $atts['equal_heights_grid'] ) {
 		$grid_classes[] = 'match-height-grid';
 	}
 	if ( $is_isotope ) {
@@ -151,13 +148,16 @@ if ( $wpex_query->have_posts() ) :
 	}
 	if ( 'lightbox' == $atts['thumb_link'] || 'lightbox_gallery' == $atts['thumb_link'] ) {
 		if ( 'true' == $atts['thumb_lightbox_gallery'] ) {
-			$grid_classes[] = ' lightbox-group';
+			$grid_classes[] = 'wpex-lightbox-group';
 			if ( $atts['lightbox_skin'] ) {
 				$grid_data[] = 'data-skin="'. $atts['lightbox_skin'] .'"';
 			}
 			$lightbox_single_class = ' wpex-lightbox-group-item';
 		} else {
 			$lightbox_single_class = ' wpex-lightbox';
+		}
+		if ( 'true' != $atts['thumb_lightbox_title'] ) {
+			$grid_data[] = 'data-show_title="false"';
 		}
 	}
 
@@ -310,7 +310,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Begin output
 	$output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $atts['unique_id'] ) .'>';
-	
+
 		// Display filter links
 		if ( 'true' == $atts['filter'] && ! empty( $filter_terms ) ) :
 
@@ -331,7 +331,7 @@ if ( $wpex_query->have_posts() ) :
 			}
 
 			$output .= '<ul class="'. $filter_classes .'"'. $filter_style .'>';
-				
+
 				if ( 'true' == $atts['filter_all_link'] ) {
 
 					$output .= '<li';
@@ -368,8 +368,8 @@ if ( $wpex_query->have_posts() ) :
 
 				endforeach;
 
-				if ( $vcex_after_grid_filter = apply_filters( 'vcex_after_grid_filter', '', $atts ) ) { 
-					
+				if ( $vcex_after_grid_filter = apply_filters( 'vcex_after_grid_filter', '', $atts, $filter_terms ) ) {
+
 					$output .= wp_kses_post( $vcex_after_grid_filter );
 
 				}
@@ -380,11 +380,11 @@ if ( $wpex_query->have_posts() ) :
 
 		$output .= '<div class="'. $grid_classes .'"'. $grid_data .'>';
 
-			// Define counter var to clear floats
-			$count=0;
-
 			// Start loop
 			while ( $wpex_query->have_posts() ) :
+
+				// Add to the counter var
+				$entry_count++;
 
 				// Get post from query
 				$wpex_query->the_post();
@@ -432,11 +432,8 @@ if ( $wpex_query->have_posts() ) :
 					$entry_has_details = false;
 				}
 
-				// Add to the counter var
-				$count++;
-
 				// Add classes to the entries
-				$entry_classes = array( 'portfolio-entry' );
+				$entry_classes = array( 'portfolio-entry', 'vcex-grid-item' );
 				if ( $entry_has_details ) {
 					$entry_classes[] = 'entry-has-details';
 				}
@@ -447,8 +444,8 @@ if ( $wpex_query->have_posts() ) :
 				} else {
 					$entry_classes[] = 'col';
 				}
-				if ( $count ) {
-					$entry_classes[] = 'col-'. $count;
+				if ( $entry_count ) {
+					$entry_classes[] = 'col-' . $entry_count;
 				}
 				if ( $atts['css_animation'] ) {
 					$entry_classes[] = $atts['css_animation'];
@@ -477,34 +474,11 @@ if ( $wpex_query->have_posts() ) :
 
 					// Gallery
 					if ( 'lightbox_gallery' == $latts['thumb_link'] ) {
-						if ( $lightbox_gallery_imgs = wpex_get_gallery_images( $latts['post_id'], 'lightbox' ) ) {
+						if ( $lightbox_gallery_imgs = wpex_get_gallery_ids( $latts['post_id'] ) ) {
 							$latts['lightbox_class']  = ' wpex-lightbox-gallery';
-							$latts['lightbox_data'][] = 'data-gallery="'. implode( ',', $lightbox_gallery_imgs ) .'"';
+							$latts['lightbox_data'][] = 'data-gallery="' . wpex_parse_inline_lightbox_gallery( $lightbox_gallery_imgs ) . '"';
 						}
 					}
-
-					/*
-					// Include captions and titles in the lightbox gallery
-					// @todo - requires re-factor of iLightbox script
-					if ( 'lightbox_gallery' == $latts['thumb_link'] ) {
-						if ( $lightbox_gallery_ids = wpex_get_gallery_ids( $latts['post_id'], 'lightbox' ) ) {
-							$latts['lightbox_class']  = ' wpex-lightbox-gallery';
-							$lightbox_gallery_array = array();
-							foreach ( $lightbox_gallery_ids as $id ) {
-								$lightbox_gallery_array[$id] = array(
-									'url'     => wpex_get_lightbox_image( $id ),
-								);
-								if ( $attachment_title = wpex_get_attachment_data( $id, 'title' ) ) {
-									$lightbox_gallery_array[$id]['title'] = $attachment_title;
-								}
-								if ( $attachment_caption = wpex_get_attachment_data( $id, 'caption' ) ) {
-									$lightbox_gallery_array[$id]['caption'] = $attachment_caption;
-								}
-							}
-							$latts['lightbox_data'][] = 'data-gallery=\'' . json_encode( $lightbox_gallery_array ) . '\'';
-						}
-					}
-					*/
 
 					// Generate lightbox image
 					$lightbox_image = wpex_get_lightbox_image();
@@ -513,16 +487,11 @@ if ( $wpex_query->have_posts() ) :
 					$latts['lightbox_link'] = $lightbox_image;
 
 					// Add lightbox data attributes
-					if ( $atts['lightbox_skin'] ) {
-						$latts['lightbox_data'][] = 'data-skin="'. $atts['lightbox_skin'] .'"';
-					}
 					if ( 'true' == $atts['thumb_lightbox_title'] ) {
-						$latts['lightbox_data'][] = 'data-title="'. wpex_get_esc_title() .'"';
-					} else {
-						$latts['lightbox_data'][] = 'data-show_title="false"';
+						$latts['lightbox_data'][] = 'data-title="' . wpex_get_esc_title() . '"';
 					}
 					if ( 'true' == $atts['thumb_lightbox_caption'] && $latts['post_excerpt'] ) {
-						$latts['lightbox_data'][] = 'data-caption="'. str_replace( '"',"'", $latts['post_excerpt'] ) .'"';
+						$latts['lightbox_data'][] = 'data-caption="' . str_replace( '"',"'", $latts['post_excerpt'] ) . '"';
 					}
 
 					// Check for video
@@ -533,7 +502,7 @@ if ( $wpex_query->have_posts() ) :
 						if ( $embed_url ) {
 							$latts['lightbox_link']                 = $embed_url;
 							$latts['lightbox_data']['data-type']    = 'data-type="iframe"';
-							$latts['lightbox_data']['data-options'] = 'data-options="iframeType:\'video\',thumbnail:\''. $lightbox_image .'\'"';
+							$latts['lightbox_data']['data-options'] = 'data-options="iframeType:\'video\',thumbnail:\'' . $lightbox_image . '\'"';
 						}
 					}
 
@@ -569,15 +538,17 @@ if ( $wpex_query->have_posts() ) :
 									// Open link tag if thumblink does not equal nowhere
 									if ( 'nowhere' != $latts['thumb_link'] ) {
 
-										// Lightbox
-										if ( 'lightbox' == $latts['thumb_link'] || 'lightbox_gallery' == $latts['thumb_link'] ) {
+										// Lightbox (only add if overlay with lightbox isn't enabled to prevent duplicate lightbox items)
+										if ( ! in_array( $latts['overlay_style'], array( 'view-lightbox-buttons-buttons', 'view-lightbox-buttons-text' ) )
+											&& ( 'lightbox' == $latts['thumb_link'] || 'lightbox_gallery' == $latts['thumb_link'] )
+										) {
 
-											$media_output .= '<a href="'. $latts["lightbox_link"] .'" title="'. $latts['post_esc_title'] .'" class="portfolio-entry-media-link'. $latts['lightbox_class'] .'"'. $lightbox_data .'>';
+											$media_output .= '<a href="' . $latts["lightbox_link"] . '" title="' . $latts['post_esc_title'] . '" class="portfolio-entry-media-link' . $latts['lightbox_class'] . '"' . $lightbox_data . '>';
 
 										// Standard post link
 										} else {
 
-											$media_output .= '<a href="'. $latts['post_permalink'] .'" title="'. $latts['post_esc_title'] .'" class="portfolio-entry-media-link"'. vcex_html( 'target_attr', $latts['link_target'] ) .'>';
+											$media_output .= '<a href="' . $latts['post_permalink'] . '" title="' . $latts['post_esc_title'] . '" class="portfolio-entry-media-link"' . vcex_html( 'target_attr', $latts['link_target'] ) . '>';
 
 										}
 
@@ -593,7 +564,7 @@ if ( $wpex_query->have_posts() ) :
 										'apply_filters' => 'vcex_grid_thumbnail_args', // @todo rename filter to vcex_portfolio_grid_thumbnail_args
 										'filter_arg1'   => $latts,
 									);
-									
+
 									// Add data-no-lazy to prevent conflicts with WP-Rocket
 									if ( $is_isotope ) {
 										$thumbnail_args['attributes'] = array( 'data-no-lazy' => 1 );
@@ -635,10 +606,10 @@ if ( $wpex_query->have_posts() ) :
 
 						// Display content if needed
 						if ( $entry_has_details ) :
-							
+
 							// Entry details start
 							$output .= '<div class="portfolio-entry-details entry-details wpex-clr';
-								
+
 								if ( $content_css ) {
 									$output .= ' '. $content_css;
 								}
@@ -650,7 +621,7 @@ if ( $wpex_query->have_posts() ) :
 							$output .= '>';
 
 								// Equal height div
-								if ( $atts['equal_heights_grid'] ) {
+								if ( 'true' == $atts['equal_heights_grid'] ) {
 									$output .= '<div class="match-height-content">';
 								}
 
@@ -671,9 +642,9 @@ if ( $wpex_query->have_posts() ) :
 											if ( $latts["lightbox_link"] ) {
 
 												$title_output .= '<a href="'. $latts["lightbox_link"] .'" title="'. $latts['post_esc_title'] .'" class="wpex-lightbox"'. $heading_link_style . $lightbox_data .'>';
-													
+
 													$title_output .= wp_kses_post( $latts['post_title'] );
-												
+
 												$title_output .= '</a>';
 
 											} else {
@@ -686,9 +657,9 @@ if ( $wpex_query->have_posts() ) :
 										} else {
 
 											$title_output .= '<a href="'. $latts['post_permalink'] .'" title="'. $latts['post_esc_title'] .'"'. $heading_link_style .''. vcex_html( 'target_attr', $latts['link_target'] ) .'>';
-												
+
 												$title_output .= wp_kses_post( $latts['post_title'] );
-											
+
 											$title_output .= '</a>';
 
 										}
@@ -707,13 +678,13 @@ if ( $wpex_query->have_posts() ) :
 
 										// Display categories
 										if ( 'true' == $latts['show_first_category_only'] ) {
-										
+
 											$categories_output .= wpex_get_first_term_link( $latts['post_id'], $latts['show_categories_tax'] );
-										
+
 										} else {
 
 											$categories_output .= wpex_get_list_post_terms( $latts['show_categories_tax'], true, true );
-										
+
 										}
 
 									$categories_output .= '</div>';
@@ -727,9 +698,9 @@ if ( $wpex_query->have_posts() ) :
 								if ( 'true' == $latts['excerpt'] && $latts['post_excerpt'] ) {
 
 									$excerpt_output .= '<div class="portfolio-entry-excerpt entry-excerpt wpex-clr"'. $excerpt_style .'>';
-									
+
 										$excerpt_output .= $latts['post_excerpt']; // Already sanitized
-									
+
 									$excerpt_output .= '</div>';
 
 									$output .= apply_filters( 'vcex_portfolio_grid_excerpt', $excerpt_output, $atts );
@@ -769,9 +740,9 @@ if ( $wpex_query->have_posts() ) :
 									$output .= apply_filters( 'vcex_portfolio_grid_readmore', $readmore_output, $atts );
 
 								endif;
-								
+
 								// Close Equal height container
-								if ( $atts['equal_heights_grid'] ) {
+								if ( 'true' == $atts['equal_heights_grid'] ) {
 									$output .= '</div>';
 								}
 
@@ -784,19 +755,28 @@ if ( $wpex_query->have_posts() ) :
 				$output .= '</div>'; // Close entry
 
 				// Reset entry counter
-				if ( $count == $atts['columns'] ) {
-					$count=0;
+				if ( $entry_count == $atts['columns'] ) {
+					$entry_count=0;
 				}
-			
+
 			endwhile; // End post loop
 
 		$output .= '</div>';
-		
+
 		// Display pagination if enabled
-		if ( 'true' == $atts['pagination']
-			|| ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) )
+		if ( ( 'true' == $atts['pagination'] || ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) ) )
+			&& 'true' != $atts['pagination_loadmore']
 		) {
+
 			$output .= wpex_pagination( $wpex_query, false );
+
+		}
+
+		// Load more button
+		if ( 'true' == $atts['pagination_loadmore'] && ! empty( $wpex_query->max_num_pages ) ) {
+			vcex_loadmore_scripts();
+			$og_atts['entry_count'] = $entry_count; // Update counter
+			$output .= vcex_get_loadmore_button( 'vcex_portfolio_grid', $og_atts, $wpex_query );
 		}
 
 	$output .= '</div>';

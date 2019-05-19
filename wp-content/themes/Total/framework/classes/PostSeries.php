@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Post Series
- * @version 4.6.5
+ * @version 4.8.4
  */
 
 namespace TotalTheme;
@@ -71,6 +71,7 @@ class PostSeries {
 			),
 			'public'            => true,
 			'show_in_nav_menus' => true,
+			'show_in_rest'      => true,
 			'show_ui'           => true,
 			'show_tagcloud'     => true,
 			'hierarchical'      => true,

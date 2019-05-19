@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.6.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -33,7 +33,7 @@ get_header(); ?>
 					} else {
 						woocommerce_product_archive_description();
 					} ?>
-					
+
 				</article><!-- #post -->
 
 				<?php wpex_hook_content_bottom(); ?>

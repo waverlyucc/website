@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'comments_template' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -43,7 +37,5 @@ if ( $atts['visibility'] ) {
 
 // Output comments
 echo '<div ' . wpex_parse_attrs( $wrap_attrs ) . '>';
-
 	comments_template();
-
 echo '</div>';

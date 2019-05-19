@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -62,7 +62,7 @@ $this->sections['wpex_header_general'] = array(
 			),
 			'control_display' => array(
 				'check' => 'header_style',
-				'value' => array( 'six', 'seven' ),
+				'value' => array( 'six', 'vertical-2' ),
 			),
 		),
 		array(
@@ -76,7 +76,7 @@ $this->sections['wpex_header_general'] = array(
 			),
 			'control_display' => array(
 				'check' => 'header_style',
-				'value' => array( 'six', 'seven' ),
+				'value' => array( 'six', 'vertical-2' ),
 			),
 		),
 		array(
@@ -646,7 +646,7 @@ $this->sections['wpex_header_menu'] = array(
 				'description' => __( 'Can be used to increase the spacing between your items. Value in pixels.', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => 'body .navbar-style-one .dropdown-menu > li',
+				'target' => 'body .navbar-style-one .dropdown-menu > li.menu-item',
 				'alter' => 'margin-left',
 				'sanitize' => 'px',
 			),
@@ -665,10 +665,10 @@ $this->sections['wpex_header_menu'] = array(
 			),
 			'inline_css' => array(
 				'target' => array(
-					'body .navbar-style-two .dropdown-menu > li > a',
-					'body .navbar-style-three .dropdown-menu > li > a',
-					'body .navbar-style-four .dropdown-menu > li > a',
-					'body .navbar-style-five .dropdown-menu > li > a',
+					'body .navbar-style-two .dropdown-menu > li.menu-item > a',
+					'body .navbar-style-three .dropdown-menu > li.menu-item > a',
+					'body .navbar-style-four .dropdown-menu > li.menu-item > a',
+					'body .navbar-style-five .dropdown-menu > li.menu-item > a',
 				),
 				'alter' => array( 'padding-left', 'padding-right' ),
 				'sanitize' => 'px',
@@ -732,7 +732,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Color', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > li > a',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item > a',
 				'alter' => 'color',
 			),
 		),
@@ -744,7 +744,8 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Color: Hover', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > li > a:hover, #site-navigation .dropdown-menu > li.sfHover > a',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item > a:hover,
+							#site-navigation .dropdown-menu > li.menu-item.dropdown.sfHover > a',
 				'alter' => 'color',
 			),
 		),
@@ -756,8 +757,8 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Color: Current Menu Item', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > .current-menu-item > a,
-							#site-navigation .dropdown-menu > .current-menu-parent > a',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item.current-menu-item > a,
+							#site-navigation .dropdown-menu > li.menu-item.current-menu-parent > a',
 				'alter' => 'color',
 				//'important' => true, // removed in 4.4.1 - causes issues with superfish hover settings
 			),
@@ -771,7 +772,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Background', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > li > a',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item > a',
 				'alter' => 'background-color',
 			),
 		),
@@ -783,8 +784,8 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Background: Hover', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > li > a:hover,
-							#site-navigation .dropdown-menu > li.sfHover > a',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item > a:hover,
+							#site-navigation .dropdown-menu > li.menu-item.dropdown.sfHover > a',
 				'alter' => 'background-color',
 			),
 		),
@@ -796,8 +797,8 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Background: Current Menu Item', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > .current-menu-item > a,
-							#site-navigation .dropdown-menu > .current-menu-parent > a',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item.current-menu-item > a,
+							#site-navigation .dropdown-menu > li.menu-item.current-menu-parent > a',
 				'alter' => 'background-color',
 			),
 		),
@@ -810,7 +811,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Inner Background', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > li > a > span.link-inner',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item > a > span.link-inner',
 				'alter' => 'background-color',
 			),
 		),
@@ -822,8 +823,8 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Inner Background: Hover', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > li > a:hover > span.link-inner,
-							#site-navigation .dropdown-menu > li.sfHover > a > span.link-inner',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item > a:hover > span.link-inner,
+							#site-navigation .dropdown-menu > li.menu-item.dropdown.sfHover > a > span.link-inner',
 				'alter' => 'background-color',
 			),
 		),
@@ -835,8 +836,8 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Inner Background: Current Menu Item', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-navigation .dropdown-menu > .current-menu-item > a > span.link-inner,
-							#site-navigation .dropdown-menu > .current-menu-parent > a > span.link-inner',
+				'target' => '#site-navigation .dropdown-menu > li.menu-item.current-menu-item > a > span.link-inner,
+							#site-navigation .dropdown-menu > li.menu-item.current-menu-parent > a > span.link-inner',
 				'alter' => 'background-color',
 			),
 		),
@@ -859,7 +860,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Background', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-header #site-navigation .dropdown-menu ul',
+				'target' => '#site-header #site-navigation .dropdown-menu ul.sub-menu',
 				'alter' => 'background-color',
 			),
 		),
@@ -872,7 +873,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Pointer Background', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.wpex-dropdowns-caret .dropdown-menu ul:after',
+				'target' => '.wpex-dropdowns-caret .dropdown-menu ul.sub-menu::after',
 				'alter' => 'border-bottom-color',
 			),
 		),
@@ -884,7 +885,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Pointer Border', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.wpex-dropdowns-caret .dropdown-menu ul:before',
+				'target' => '.wpex-dropdowns-caret .dropdown-menu ul.sub-menu::before',
 				'alter' => 'border-bottom-color',
 			),
 		),
@@ -898,9 +899,9 @@ $this->sections['wpex_header_menu'] = array(
 			),
 			'inline_css' => array(
 				'target' => array(
-						'#site-header #site-navigation .dropdown-menu ul',
-						'#site-header #site-navigation .dropdown-menu ul li',
-						'#site-header #site-navigation .dropdown-menu ul li a',
+					'#site-header #site-navigation .dropdown-menu ul.sub-menu',
+					'#site-header #site-navigation .dropdown-menu ul.sub-menu li.menu-item',
+					'#site-header #site-navigation .dropdown-menu ul.sub-menu li.menu-item a',
 				),
 				'alter' => 'border-color',
 			),
@@ -915,7 +916,7 @@ $this->sections['wpex_header_menu'] = array(
 			),
 			'inline_css' => array(
 				'target' => array(
-					'.wpex-dropdown-top-border #site-navigation .dropdown-menu li ul',
+					'.wpex-dropdown-top-border #site-navigation .dropdown-menu li.menu-item ul.sub-menu',
 					'#searchform-dropdown',
 					'#current-shop-items-dropdown',
 				),
@@ -932,7 +933,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Color', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-header #site-navigation .dropdown-menu ul > li > a',
+				'target' => '#site-header #site-navigation .dropdown-menu ul.sub-menu > li.menu-item > a',
 				'alter' => 'color',
 			),
 		),
@@ -944,7 +945,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Color: Hover', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-header #site-navigation .dropdown-menu ul > li > a:hover',
+				'target' => '#site-header #site-navigation .dropdown-menu ul.sub-menu > li.menu-item > a:hover',
 				'alter' => 'color',
 			),
 		),
@@ -957,7 +958,7 @@ $this->sections['wpex_header_menu'] = array(
 			),
 			'subtitle' => __( 'Select your custom hex color.', 'total' ),
 			'inline_css' => array(
-				'target' => '#site-header #site-navigation .dropdown-menu ul > li > a:hover',
+				'target' => '#site-header #site-navigation .dropdown-menu ul.sub-menu > li.menu-item > a:hover',
 				'alter' => 'background-color',
 			),
 		),
@@ -970,7 +971,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Color: Current Menu Item', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-header #site-navigation .dropdown-menu ul > .current-menu-item > a',
+				'target' => '#site-header #site-navigation .dropdown-menu ul.sub-menu > li.menu-item.current-menu-item > a',
 				'alter' => 'color',
 			),
 		),
@@ -982,7 +983,7 @@ $this->sections['wpex_header_menu'] = array(
 				'label' => __( 'Link Background: Current Menu Item', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '#site-header #site-navigation .dropdown-menu ul > .current-menu-item > a',
+				'target' => '#site-header #site-navigation .dropdown-menu ul.sub-menu > li.menu-item.current-menu-item > a',
 				'alter' => 'background-color',
 			),
 		),
@@ -1034,6 +1035,7 @@ $this->sections['wpex_menu_search'] = array(
 			'inline_css' => array(
 				'target' => '#searchform-dropdown',
 				'alter' => 'border-top-color',
+				'important' => true,
 			),
 		),
 	)
@@ -1075,7 +1077,7 @@ $this->sections['wpex_header_mobile_menu'] = array(
 			),
 			'control_display' => array(
 				'check' => 'header_style',
-				'value' => array( 'one', 'two', 'three', 'four', 'five' ),
+				'value' => array( 'one', 'two', 'three', 'four', 'five', 'seven' ),
 			),
 		),
 		// Search
@@ -1094,7 +1096,7 @@ $this->sections['wpex_header_mobile_menu'] = array(
 			'control' => array(
 				'label' => __( 'Toggle Button Style', 'total' ),
 				'type' => 'select',
-				'active_callback' => 'wpex_cac_has_mobile_menu',
+				'active_callback' => 'wpex_cac_mobile_menu_toggle_style',
 				'choices' => array(
 					'icon_buttons' => __( 'Right Aligned Icon Button(s)', 'total' ),
 					'icon_buttons_under_logo' => __( 'Under The Logo Icon Button(s)', 'total' ),
@@ -1327,7 +1329,7 @@ $this->sections['wpex_header_mobile_menu'] = array(
 				'active_callback' => 'wpex_cac_mobile_menu_is_sidr',
 			),
 			'inline_css' => array(
-				'target' => '#sidr-main li, #sidr-main ul, .sidr-class-mobile-menu-searchform input, .sidr-class-mobile-menu-searchform input:focus',
+				'target' => '#sidr-main li, #sidr-main ul, .sidr-class-mobile-menu-searchform input, .sidr-class-mobile-menu-searchform',
 				'alter' => 'border-color',
 			),
 		),

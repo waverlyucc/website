@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -31,7 +31,7 @@ $this->sections['wpex_testimonials_archives'] = array(
 			'id' => 'testimonials_entry_columns',
 			'default' => '4',
 			'control' => array(
-				'label' => __( 'Columns', 'total' ), 
+				'label' => __( 'Columns', 'total' ),
 				'type' => 'select',
 				'choices' => wpex_grid_columns(),
 			),
@@ -55,7 +55,7 @@ $this->sections['wpex_testimonials_archives'] = array(
 		array(
 			'id' => 'testimonial_entry_title',
 			'control' => array(
-				'label' => __( 'Entry Title', 'total' ), 
+				'label' => __( 'Entry Title', 'total' ),
 				'type' => 'checkbox',
 			),
 		),
@@ -68,7 +68,7 @@ $this->sections['wpex_testimonials_archives'] = array(
 				'desc' => __( 'Default size is 45px.', 'total' ),
 			),
 			'inline_css' => array(
-				'target' => '.testimonial-entry-thumb img',
+				'target' => '.testimonial-entry-thumb.default-dims img',
 				'alter' => array( 'width', 'height' ),
 				'sanitize' => 'px',
 			),
@@ -117,7 +117,7 @@ $this->sections['wpex_testimonials_archives'] = array(
 
 // Single
 $this->sections['wpex_testimonials_single'] = array(
-	'title' => __( 'Single', 'total' ),
+	'title' => __( 'Single Post', 'total' ),
 	'panel' => 'wpex_testimonials',
 	'settings' => array(
 		array(
@@ -162,7 +162,7 @@ $this->sections['wpex_testimonials_single'] = array(
 		array(
 			'id' => 'testimonials_comments',
 			'control' => array(
-				'label' => __( 'Comments', 'total' ), 
+				'label' => __( 'Comments', 'total' ),
 				'type' => 'checkbox',
 				'active_callback' => 'wpex_cac_testimonials_single_hasnt_custom_template',
 			),

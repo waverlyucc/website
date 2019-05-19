@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,15 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' )
-	|| ! function_exists( 'vcex_get_extra_class' )
-	|| ! function_exists( 'vc_build_link' )
-) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -42,10 +33,10 @@ $lightbox_url = $lightbox_url ? do_shortcode( $lightbox_url ) : ''; // Allow sho
 if ( 'media_library' == $source ) {
 	$attachment = $image_id;
 } elseif ( 'featured' == $source ) {
-	$attachment = get_post_thumbnail_id( wpex_get_current_post_id() );
+	$attachment = get_post_thumbnail_id( wpex_get_dynamic_post_id() );
 } elseif ( 'custom_field' == $source ) {
 	if ( $custom_field_name ) {
-		$custom_field_val = get_post_meta( wpex_get_current_post_id(), $custom_field_name, true );
+		$custom_field_val = get_post_meta( wpex_get_dynamic_post_id(), $custom_field_name, true );
 		$attachment = intval( $custom_field_val );
 	}
 }
@@ -57,14 +48,20 @@ if ( $attachment ) {
 		'border_radius' => $border_radius,
 	), false );
 
-	$image = wpex_get_post_thumbnail( array(
+	$img_args = array(
 		'attachment' => $attachment,
 		'size'       => $img_size,
 		'crop'       => $img_crop,
 		'width'      => $img_width,
 		'height'     => $img_height,
 		'style'      => $image_style,
-	) );
+	);
+
+	if ( $alt_attr ) {
+		$img_args[ 'alt' ] = esc_attr( $alt_attr );
+	}
+
+	$image = wpex_get_post_thumbnail( $img_args );
 
 	$lightbox_source = ( 'true' == $lightbox && empty( $lightbox_url ) ) ? wpex_get_lightbox_image( $attachment ) : '';
 
@@ -139,16 +136,9 @@ if ( 'true' == $lightbox ) {
 		$link_attrs['href'] = '#';
 		$gallery_ids = is_array( $lightbox_gallery ) ? $lightbox_gallery : explode( ',', $lightbox_gallery );
 		if ( is_array( $gallery_ids ) ) {
-			$lb_images = '';
-			foreach ( $gallery_ids as $id ) {
-				$gallery_image = wpex_get_lightbox_image( $id );
-				if ( $gallery_image ) {
-					$lb_images .= $gallery_image . ',';
-				}
-			}
-			$lightbox_data['data-gallery'] = rtrim( $lb_images, ',' );
-			$link_attrs['class'] = str_replace( 'wpex-lightbox', 'wpex-lightbox-gallery', $link_attrs['class'] );
-			$atts['lightbox_class'] = 'wpex-lightbox-gallery';
+			$lightbox_data['data-gallery'] = wpex_parse_inline_lightbox_gallery( $gallery_ids );
+			$link_attrs['class']           = str_replace( 'wpex-lightbox', 'wpex-lightbox-gallery', $link_attrs['class'] );
+			$atts['lightbox_class']        = 'wpex-lightbox-gallery';
 		}
 	} elseif( $lightbox_custom_img ) {
 		$link_attrs['href'] = wpex_get_lightbox_image( intval( $lightbox_custom_img ) );
@@ -231,24 +221,24 @@ $output .= '<div class="' . esc_attr( $wrap_classes ) . '">';
 	if ( $img_filter ) {
 		$span_classes .= ' ' . wpex_image_filter_class( $img_filter );
 	}
-	
+
 	if ( $img_hover_style ) {
 		$span_classes .= ' ' . wpex_image_hover_classes( $img_hover_style );
 	}
-	
+
 	if ( $overlay_style && 'none' != $overlay_style ) {
 		$span_classes .= ' ' . wpex_overlay_classes( $overlay_style );
 	}
-	
+
 	if ( $hover_animation ) {
 		$span_classes .= ' ' . wpex_hover_animation_class( $hover_animation );
 		vcex_enque_style( 'hover-animations' );
 	}
-	
+
 	if ( $css ) {
 		$span_classes .= ' ' . vc_shortcode_custom_css_class( $css );
 	}
-	
+
 	if ( $width ) {
 		$span_style = vcex_inline_style( array(
 			'width' => esc_attr( $width ),
@@ -283,7 +273,7 @@ $output .= '<div class="' . esc_attr( $wrap_classes ) . '">';
 			if ( 'true' == $lightbox_video_overlay_icon ) {
 
 				$output .= '<div class="overlay-icon"><span>&#9658;</span></div>';
-				
+
 			}
 
 			$output .= '</a>';

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.3
+ * @version 4.8
  *
  * @todo Allow display of the title in the testimonial seperate from archive entry title setting
  */
@@ -32,11 +32,11 @@ if ( $template_content = wpex_get_singular_template_content( 'testimonials' ) ) 
 			get_template_part( 'partials/testimonials/testimonials-entry' );
 
 		// Display full content
-		else :
+		else : ?>
 
-			the_content();
+			<div class="single-content clr"><?php the_content(); ?></div>
 
-		endif; ?>
+		<?php endif; ?>
 
 	</div><!-- .entry-content -->
 

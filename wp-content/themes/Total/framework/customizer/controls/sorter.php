@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 3.6.0
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WPEX_Customize_Control_Sorter' ) ) {
 						if ( $label ) : ?>
 							<li data-value="<?php echo esc_attr( $val ); ?>" class="wpex-sortable-li">
 								<?php echo esc_html( $label ); ?>
-								<span class="wpex-hide-sortee fa fa-toggle-on"></span>
+								<span class="wpex-hide-sortee ticon ticon-toggle-on"></span>
 							</li>
 						<?php
 						// End if label check
@@ -59,7 +59,7 @@ if ( ! class_exists( 'WPEX_Customize_Control_Sorter' ) ) {
 					foreach ( $choices as $val => $label ) { ?>
 						<li data-value="<?php echo esc_attr( $val ); ?>" class="wpex-sortable-li wpex-hide">
 							<?php echo esc_html( $label ); ?>
-							<span class="wpex-hide-sortee fa fa-toggle-on fa-rotate-180"></span>
+							<span class="wpex-hide-sortee ticon ticon-toggle-on ticon-rotate-180"></span>
 						</li>
 					<?php } ?>
 				</ul>
@@ -90,7 +90,7 @@ if ( ! class_exists( 'WPEX_Customize_Control_Sorter' ) ) {
 				// Toggle classes
 				sortableUl.find( 'li' ).each( function() {
 					$( this ).find( '.wpex-hide-sortee' ).click( function() {
-						$( this ).toggleClass( 'fa-rotate-180' ).parents( 'li:eq(0)' ).toggleClass( 'wpex-hide' );
+						$( this ).toggleClass( 'ticon-rotate-180' ).parents( 'li:eq(0)' ).toggleClass( 'wpex-hide' );
 					} );
 				})
 				// Update Sortable when hidding/showing items

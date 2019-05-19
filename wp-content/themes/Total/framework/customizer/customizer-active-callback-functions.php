@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Customizer
- * @version 4.7.1
+ * @version 4.8
  */
 
 /*-------------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@ function wpex_cac_has_topbar_social() {
 function wpex_cac_header_supports_fixed_header() {
 	$header_style = get_theme_mod( 'header_style' );
 	$header_style = $header_style ? $header_style : 'one';
-	return ( 'one' == $header_style || 'five' == $header_style ) ? true : false;
+	return ( in_array( $header_style, array( 'one', 'five', 'seven' ) )  ) ? true : false;
 }
 
 
@@ -134,7 +134,7 @@ function wpex_supports_fixed_header_logo_retina_height() {
 }
 
 function wpex_cac_has_vertical_header() {
-	return ( in_array( get_theme_mod( 'header_style' ) , array( 'six', 'seven' ) ) ) ? true : false;
+	return ( in_array( get_theme_mod( 'header_style' ) , array( 'six', 'vertical-2' ) ) ) ? true : false;
 }
 
 function wpex_cac_hasnt_vertical_header() {
@@ -173,6 +173,13 @@ function wpex_cac_hasnt_custom_logo() {
 /*-------------------------------------------------------------------------------*/
 function wpex_cac_has_mobile_menu() {
 	return ( 'disabled' != get_theme_mod( 'mobile_menu_style' ) ) ? true : false;
+}
+
+function wpex_cac_mobile_menu_toggle_style() {
+	if ( 'disabled' == get_theme_mod( 'mobile_menu_style' ) || 'seven' == get_theme_mod( 'header_style' ) ) {
+		return false;
+	}
+	return true;
 }
 
 function wpex_cac_is_mobile_toggle_fixed_top() {

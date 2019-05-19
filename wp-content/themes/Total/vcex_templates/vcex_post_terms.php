@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.5
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -63,7 +63,7 @@ if ( ! $terms ) {
 	$query_args = apply_filters( 'vcex_post_terms_query_args', $query_args );
 
 	// Get terms
-	$terms = wp_get_post_terms( wpex_get_current_post_id(), $atts['taxonomy'], $query_args );
+	$terms = wp_get_post_terms( wpex_get_dynamic_post_id(), $atts['taxonomy'], $query_args );
 
 	// Get first term only
 	if ( 'true' == $atts['first_term_only'] ) {

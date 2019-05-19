@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -285,7 +279,7 @@ $output .= '<nav ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 
 					// Link attributes
 					$link_attrs = array(
-						'href'        => esc_url( $menu_item->url ),
+						'href'        => ( $atts['filter_menu'] && $data_filter ) ? '#' : esc_url( $menu_item->url ),
 						'title'       => esc_attr( $menu_item->attr_title ? $menu_item->attr_title : '' ),
 						'class'       => implode( ' ', array_filter( $link_classes, 'trim' ) ),
 						'target'      => $menu_item->target,
@@ -294,7 +288,7 @@ $output .= '<nav ' . wpex_parse_attrs( $wrap_attrs ) . '>';
 					);
 
 					// Add active filter class
-					if (  $atts['filter_menu'] && $data_filter == '.' . $filter_active_category ) {
+					if ( $atts['filter_menu'] && $data_filter == '.' . $filter_active_category ) {
 						$link_attrs['class'] .= ' active';
 					}
 

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.0
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -34,8 +34,8 @@ function wpex_enqueue_font_awesome_in_admin( $hook ) {
 
 		// Load font awesome script for VC icons and other
 		wp_enqueue_style(
-			'font-awesome',
-			wpex_asset_url( 'lib/font-awesome/css/font-awesome.min.css' ),
+			'ticons',
+			wpex_asset_url( 'lib/ticons/css/ticons.min.css' ),
 			array(),
 			'4.6.3'
 		);

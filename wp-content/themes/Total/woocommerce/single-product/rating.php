@@ -37,9 +37,9 @@ $comments_open   = comments_open(); ?>
 	} ?>
 	<?php if ( $comments_open ) : ?>
 		<?php if ( $average ) { ?>
-			<span class="wpex-avg-rating"><?php echo esc_html( $average_display ); ?></span> <a href="#reviews" class="woocommerce-review-link" rel="nofollow">(<?php printf( _n( '%s review', '%s reviews', $review_count, 'total' ), '<span class="wpex-count">' . esc_html( $review_count ) . '</span>' ); ?>)</a>
+			<span class="wpex-avg-rating"><?php echo esc_html( $average_display ); ?></span> (<a href="#reviews" class="woocommerce-review-link" rel="nofollow"><?php printf( _n( '%s review', '%s reviews', $review_count, 'total' ), '<span class="wpex-count">' . esc_html( $review_count ) . '</span>' ); ?></a>)
 		<?php } else { ?>
-			<a href="#reviews" class="woocommerce-review-link" rel="nofollow">(<?php esc_html_e( 'be the first to review', 'total' ); ?>)</a>
+			(<a href="#reviews" class="woocommerce-review-link" rel="nofollow"><?php esc_html_e( 'be the first to review', 'total' ); ?></a>)
 		<?php } ?>
 	<?php endif ?>
 </div>

@@ -227,7 +227,7 @@ class Custom404 {
 		<div class="wrap">
 
 			<h1><?php esc_html_e( 'Custom 404', 'total' ); ?></h1>
-			
+
 			<form method="post" action="options.php">
 				<?php settings_fields( 'wpex_error_page' ); ?>
 				<?php do_settings_sections( 'wpex-custom-error-page-admin' ); ?>

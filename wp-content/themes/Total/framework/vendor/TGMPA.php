@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage 3rd Party
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme\Vendor;
@@ -21,7 +21,7 @@ class TGMPA {
 	 * @version 4.6.5
 	 */
 	public function __construct() {
-		require_once WPEX_ClASSES_DIR . 'tgmpa/class-tgm-plugin-activation.php';
+		require_once WPEX_FRAMEWORK_DIR . 'lib/tgmpa/class-tgm-plugin-activation.php';
 		add_action( 'tgmpa_register', array( $this, 'register' ) );
 	}
 
@@ -42,7 +42,7 @@ class TGMPA {
 		// Prevent dismiss for Visual Composer
 		// And remove VC plugin from recommended list if it has a valid license
 		// active on the site to prevent update issues between TGMPA and VC plugin
-		if ( WPEX_VC_ACTIVE ) {
+		if ( function_exists( 'vcex_theme_mode_check' ) ) {
 			if ( vcex_theme_mode_check() ) {
 				$dismissable = wpex_vc_is_supported() ? true : false;
 			} else {

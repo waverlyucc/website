@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -14,14 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Return if disabled
 if ( ! wpex_get_mod( 'top_bar_social', true ) && ! wpex_topbar_social_alt_content() )  {
-	return;
-}
-
-// Get social options array
-$social_options = wpex_topbar_social_options();
-
-// Return if $social_options array is empty
-if ( empty( $social_options ) ) {
 	return;
 }
 
@@ -48,6 +40,14 @@ if ( $social_alt = wpex_topbar_social_alt_content() ) : ?>
 <?php return; endif; ?>
 
 <?php
+// Get social options array
+$social_options = wpex_topbar_social_options();
+
+// Return if $social_options array is empty
+if ( empty( $social_options ) ) {
+	return;
+}
+
 // Get Social options
 $profiles = wpex_get_mod( 'top_bar_social_profiles' );
 

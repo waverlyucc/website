@@ -3,10 +3,10 @@ Contributors: coffee2code
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522
 Tags: admin, css, style, stylesheets, admin theme, customize, coffee2code
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 4.6
-Tested up to: 4.9
-Stable tag: 1.6
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Requires at least: 4.7
+Tested up to: 5.1
+Stable tag: 1.7
 
 Interface for easily defining additional CSS (inline and/or by URL) to be added to all administration pages.
 
@@ -17,14 +17,14 @@ Ever want to tweak the appearance of the WordPress admin pages by hiding stuff, 
 
 Using this plugin you'll easily be able to define additional CSS (inline and/or files by URL) to be added to all administration pages. You can define CSS to appear inline in the admin head (within style tags), or reference CSS files to be linked (via "link rel='stylesheet'" tags). The referenced CSS files will appear in the admin head first, listed in the order defined in the plugin's settings. Then any inline CSS are added to the admin head. Both values can be filtered for advanced customization (see Advanced section).
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/add-admin-css/) | [Plugin Directory Page](https://wordpress.org/plugins/add-admin-css/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/add-admin-css/) | [Plugin Directory Page](https://wordpress.org/plugins/add-admin-css/) | [GitHub](https://github.com/coffee2code/add-admin-css/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
 
-1. Unzip `add-admin-css.zip` inside the `/wp-content/plugins/` directory for your site (or install via the built-in WordPress plugin installer)
+1. Install via the built-in WordPress plugin installer. Or download and unzip `add-admin-css.zip` inside the plugins directory for your site (typically `wp-content/plugins/`)
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
-1. Go to "Appearance" -> "Admin CSS" and add some CSS to be added into all admin pages.
+1. Go to "Appearance" -> "Admin CSS" and specify some CSS to be added into all admin pages. (You can also use the "Settings" link in the plugin's entry on the admin "Plugins" page).
 
 
 == Frequently Asked Questions ==
@@ -47,6 +47,22 @@ No, not presently. At least not directly. By default, the CSS is added for any u
 
 You can hook the 'c2c_add_admin_css' and 'c2c_add_admin_css_files' filters and determine the current user to decide whether the respective hook argument should be returned (and thus output) for the user or not.
 
+= How can I edit the plugin's settings in the event I supplied CSS that prevents the admin pages from properly functioning or being seen? =
+
+It is certainly possible that you can put yourself in an unfortunate position by supplying CSS that could hide critical parts of admin pages, making it seeminly impossible to fix or revert your changes. Fortunately, there are a number of approaches you can take to correct the problem.
+
+The recommended approach is to visit the URL for the plugin's settings page, but appended with a special query parameter to disable the output of its JavaScript. The plugin's settings page would typically be at a URL like `https://example.com/wp-admin/themes.php?page=add-admin-css%2Fadd-admin-css.php`. Append `&c2c-no-css=1` to that, so that the URL is `https://example.com/wp-admin/themes.php?page=add-admin-css%2Fadd-admin-css.php&c2c-no-css=1` (obviously change example.com with the domain name for your site).
+
+There are other approaches you can use, though they require direct database or server filesystem access:
+
+* Some browsers (such as Firefox, via View -> Page Style -> No Style) allow you to disable styles for sites loaded in that tab. Other browsers may also support such functionality natively or through an extension. Chrome has an extension called [Web Developer](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm?hl=en-US) that adds the functionality.
+* If you're familiar with doing so and have an idea of what CSS style you added that is causing problems, you can use your browser's developer tools to inspect the page, find the element in question, and disable the offending style.
+* In the site's `wp-config.php` file, define a constant to disable output of the plugin-defined JavaScript: `define( 'C2C_ADD_ADMIN_CSS_DISABLED', true );`. You can then visit the site's admin. Just remember to remove that line after you've fixed the CSS (or at least change "true" to "false"). This is an alternative to the query parameter approach described above, though it persists while the constant remains defined. There will be an admin notice on the plugin's setting page to alert you to the fact that the constant is defined and effectively disabling the plugin from adding any CSS.
+* Presuming you know how to directly access the database: within the site's database, find the row with the option_name field value of `c2c_add_admin_css` and delete that row. The settings you saved for the plugin will be deleted and it will be like you've installed the plugin for the first time.
+* If your server has WP-CLI installed, you can delete the plugin's setting from the commandline: `wp option delete c2c_add_admin_css`
+
+The initial reaction by some might be to remove the plugin from the server's filesystem. This will certainly disable the plugin and prevent the CSS you configured through it from taking effect, restoring the access and functionality to the backend. However, reinstalling the plugin will put you back into the original predicament because the plugin will use the previously-configured settings, which wouldn't have changed.
+
 = How do I disable syntax highlighting? =
 
 The plugin's syntax highlighting of CSS (available on WP 4.9+) honors the built-in setting for whether syntax highlighting should be enabled or not.
@@ -63,9 +79,19 @@ Yes.
 1. A screenshot of the plugin's admin settings page.
 
 
-== Advanced ==
+== Hooks ==
 
-You can also programmatically add to or customize any CSS defined in the "Admin CSS" field via the c2c_add_admin_css filter, like so:
+The plugin exposes two filters for hooking. Typically, code making use of filters should ideally be put into a mu-plugin or site-specific plugin (which is beyond the scope of this readme to explain). Bear in mind that the features controlled by these filters are also configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
+
+**c2c_add_admin_css (filter)**
+
+The 'c2c_add_admin_css' filter allows customization of CSS that should be added directly to the admin page head.
+
+Arguments:
+
+* $css (string): CSS styles.
+
+Example:
 
 `
 /**
@@ -84,7 +110,15 @@ function my_admin_css( $css ) {
 add_filter( 'c2c_add_admin_css', 'my_admin_css' );
 `
 
-You can also programmatically add to or customize any referenced CSS files defined in the "Admin CSS Files" field via the c2c_add_admin_css_files filter, like so:
+**c2c_add_admin_css_files (filter)**
+
+The 'c2c_add_admin_css_files' filter allows programmatic modification of the list of CSS files to enqueue in the admin.
+
+Arguments:
+
+* $files (array): Array of CSS files.
+
+Example:
 
 `
 /**
@@ -102,6 +136,57 @@ add_filter( 'c2c_add_admin_css_files', 'my_admin_css_files' );
 
 
 == Changelog ==
+
+= 1.7_(2019-04-13) =
+Highlights:
+
+* This release adds a recovery mode to disable output of CSS via the plugin (and an admin notice when it is active), improves documentation, updates the plugin framework, notes compatibility through WP 5.1+, drops compatibility with versions of WP older than 4.7, and more documentation and code improvements.
+
+Details:
+
+* New: Add recovery mode to be able to disable output of CSS via the plugin
+    * Add support for `c2c-no-css` query parameter for enabling recovery mode
+    * Add support for `C2C_ADD_ADMIN_CSS_DISABLED` constant for enabling recovery mode
+    * Display admin notice when recovery mode is active
+    * Add `can_show_css()`, `remove_query_param_from_redirects()`, `recovery_mode_notice()`
+* Change: Initialize plugin on `plugins_loaded` action instead of on load
+* Change: Update plugin framework to 049
+    * 049:
+    * Correct last arg in call to `add_settings_field()` to be an array
+    * Wrap help text for settings in `label` instead of `p`
+    * Only use `label` for help text for checkboxes, otherwise use `p`
+    * Ensure a `textarea` displays as a block to prevent orphaning of subsequent help text
+    * Note compatibility through WP 5.1+
+    * Update copyright date (2019)
+    * 048:
+    * When resetting options, delete the option rather than setting it with default values
+    * Prevent double "Settings reset" admin notice upon settings reset
+    * 047:
+    * Don't save default setting values to database on install
+    * Change "Cheatin', huh?" error messages to "Something went wrong.", consistent with WP core
+    * Note compatibility through WP 4.9+
+    * Drop compatibility with version of WP older than 4.7
+* New: Add README.md file
+* New: Add CHANGELOG.md file and move all but most recent changelog entries into it
+* New: Add FAQ entry describing ways to fix having potentially crippled the admin
+* New: Add inline documentation for hooks
+* New: Add GitHub link to readme
+* Unit tests:
+    * New: Add unit tests for `add_css()`
+    * New: Add unit test for defaults for settings
+    * Change: Improve tests for settings handling
+    * Change: Update `set_option()` to accept an array of setting values to use
+    * Change: Explicitly set 'twentyseventeen' as the theme to ensure testing against a known theme
+    * Change: Invoke `setup_options()` within each test as needed instead of `setUp()`
+* Change: Store setting name in constant
+* Change: Cast return value of `c2c_add_admin_css_files` filter as an array
+* Change: Improve documentation for hooks within readme.txt
+* Change: Note compatibility through WP 5.1+
+* Change: Drop compatibility with version of WP older than 4.7
+* Change: Rename readme.txt section from 'Advanced' to 'Hooks' and provide a better section intro
+* Change: Update installation instruction to prefer built-in installer over .zip file
+* Change: Update copyright date (2019)
+* Change: Update License URI to be HTTPS
 
 = 1.6 (2017-11-03) =
 * New: Add support for CodeMirror (as packaged with WP 4.9)
@@ -145,127 +230,13 @@ add_filter( 'c2c_add_admin_css_files', 'my_admin_css_files' );
 * Change: Remove 'Domain Path' from plugin header.
 * New: Add LICENSE file.
 
-= 1.4 (2016-01-10) =
-Highlights:
-* This release fixes a couple of bugs, adds support for language packs, and has many minor behind-the-scenes changes.
-
-Details:
-* Bugfix: Allow CSS links/files with query args to be enqueued.
-* Bugfix: If specified as part of the link, 'ver' query arg takes precedence as script version.
-* Add: More unit tests.
-* Add: Amend a couple of the FAQ answers to indicate things are possible via hooks rather than suggesting they aren't possible.
-* Change: Update plugin framework to 040:
-    * Change class name to c2c_AddAdminCSS_Plugin_040 to be plugin-specific.
-    * Set textdomain using a string instead of a variable.
-    * Don't load textdomain from file.
-    * Change admin page header from 'h2' to 'h1' tag.
-    * Add `c2c_plugin_version()`.
-    * Formatting improvements to inline docs.
-* Change: Add support for language packs:
-    * Set textdomain using a string instead of a variable.
-    * Remove .pot file and /lang subdirectory.
-* Change: Declare class as final.
-* Change: Explicitly declare methods in unit tests as public or protected.
-* Change: Minor tweak to description.
-* Change: Minor improvements to inline docs and test docs.
-* Add: Create empty index.php to prevent files from being listed if web server has enabled directory listings.
-* Change: Note compatibility through WP 4.4+.
-* Change: Remove support for versions of WordPress older than 4.1.
-* Change: Update copyright date (2016).
-
-= 1.3.4 (2015-04-30) =
-* Bugfix: Fix line-wrapping display for Firefox and Safari
-* Enhancement: Add an additional unit test
-* Update: Move 'Advanced' section lower in readme; add inline docs to example code
-* Update: Note compatibility through WP 4.2+
-
-= 1.3.3 (2015-02-21) =
-* Bugfix: Revert back to using `dirname(__FILE__)`; `__DIR__` is only PHP 5.3+
-
-= 1.3.2 (2015-02-16) =
-* Update plugin framework to 039
-* Add to and improve unit tests
-* Explicitly declare class method `activation()` and `uninstall()` static
-* Use __DIR__ instead of `dirname(__FILE__)`
-* Various inline code documentation improvements (spacing, punctuation)
-* Note compatibility through WP 4.1+
-* Update copyright date (2015)
-* Regenerate .pot
-
-= 1.3.1 (2014-08-23) =
-* Update plugin framework to 038
-* Minor plugin header reformatting
-* Minor code reformatting (spacing, bracing)
-* Change documentation links to wp.org to be https
-* Localize an additional string
-* Note compatibility through WP 4.0+
-* Regenerate .pot
-* Add plugin icon
-
-= 1.3 (2014-01-03) =
-* Add unit tests
-* Update plugin framework to 036
-* Improve URL path construction
-* Use explicit path for require_once()
-* Add reset() to reset object to its initial state
-* Remove __clone() and __wake() since they are part of framework
-* For options_page_description(), match method signature of parent class
-* Note compatibility through WP 3.8+
-* Drop compatibility with versions of WP older than 3.5
-* Update copyright date (2014)
-* Change donate link
-* Minor readme.txt tweaks (mostly spacing)
-* Add banner
-* Update screenshot
-
-= 1.2 =
-* Move 'Advanced Tips' section from bottom of settings page into contextual help section
-* Add `help_tabs_content()` and `contextual_help()`
-* Prevent textareas from wrapping lines
-* Display fonts properly in textareas
-* Change input fields to be displayed as inline_textarea instead of textarea
-* Add `instance()` static method for returning/creating singleton instance
-* Made static variable 'instance' private
-* Add dummy `__clone()` and `__wakeup()`
-* Remove support for previously deprecated 'c2c_add_admin_css' global
-* Remove `c2c_AddAdminCSS()`; only PHP5 constructor is supported now
-* Update plugin framework to 035
-* Discontinue use of explicit pass-by-reference for objects
-* Add check to prevent execution of code if file is directly accessed
-* Regenerate .pot
-* Re-license as GPLv2 or later (from X11)
-* Add 'License' and 'License URI' header tags to readme.txt and plugin file
-* Minor documentation improvements
-* Note compatibility through WP 3.5+
-* Drop compatibility versions of WP older than 3.1
-* Update copyright date (2013)
-* Minor code reformatting (spacing)
-* Remove ending PHP close tag
-* Create repo's WP.org assets directory
-* Move screenshot into repo's assets directory
-
-= 1.1 =
-* Rename class from 'AddAdminCSS' to 'c2c_AddAdminCSS'
-* Rename filter from 'add_admin_css' to 'c2c_add_admin_css'
-* Rename filter from 'add_admin_css_files' to 'c2c_add_admin_css_files'
-* Update plugin framework to 029
-* Save a static version of itself in class variable $instance
-* Deprecate use of global variable $c2c_add_admin_css to store instance
-* Explicitly declare all functions as public
-* Add __construct(), activation(), and uninstall()
-* Note compatibility through WP 3.3+
-* Drop compatibility with versions of WP older than 3.0
-* Add .pot
-* Add 'Domain Path' plugin header
-* Minor code formatting changes (spacing)
-* Update copyright date (2011)
-* Add plugin homepage and author links in description in readme.txt
-
-= 1.0 =
-* Initial release (not publicly released)
+_Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/add-admin-css/blob/master/CHANGELOG.md)._
 
 
 == Upgrade Notice ==
+
+= 1.7 =
+Recommended update: added recovery mode, tweaked plugin initialization process, updated plugin framework, compatibility is now WP 4.7 through WP 5.1+, updated copyright date (2019), and more documentation and code improvements.
 
 = 1.6 =
 Recommended update: added code highlighting, syntax checking, etc as introduced elsewhere in WP 4.9; show admin notifications for settings page; updated plugin framework to version 046; verified compatibility through WP 4.9; dropped compatibility with versions of WordPress older than 4.6; updated copyright date (2018).

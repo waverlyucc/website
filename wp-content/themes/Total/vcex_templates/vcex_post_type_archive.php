@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,14 +17,20 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
+// Store orginal atts value for use in non-builder params
+$og_atts = $atts;
+
+// Define entry counter
+global $wpex_count;
+$wpex_count = ! empty( $og_atts['entry_count'] ) ? $og_atts['entry_count'] : 0;
 
 // Get and extract shortcode attributes
 $atts = vc_map_get_attributes( 'vcex_post_type_archive', $atts );
+
+// Add paged attribute for load more button (used for WP_Query)
+if ( ! empty( $og_atts['paged'] ) ) {
+	$atts['paged'] = $og_atts['paged'];
+}
 
 // Make sure post type param is not empty
 $atts['post_type'] = ! empty( $atts['post_type'] ) ? $atts['post_type'] : 'post';
@@ -52,7 +58,7 @@ if ( $wpex_query->have_posts() ) :
 	}
 	$wrap_classes = implode( ' ', $wrap_classes );
 	$wrap_classes = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $wrap_classes, 'vcex_post_type_archive', $atts ); ?>
-	
+
 	<div class="<?php echo esc_attr( $wrap_classes ); ?>"<?php vcex_unique_id( $atts['unique_id'] ); ?>>
 
 		<?php
@@ -67,9 +73,6 @@ if ( $wpex_query->have_posts() ) :
 
 		// Get loop top
 		get_template_part( 'partials/loop/loop-top', $post_type );
-
-			// Define counter var to clear floats
-			$wpex_count=0;
 
 			// Loop through posts
 			while ( $wpex_query->have_posts() ) :
@@ -88,16 +91,25 @@ if ( $wpex_query->have_posts() ) :
 
 		// Get loop bottom
 		get_template_part( 'partials/loop/loop-bottom', $post_type );
-		
+
 		// Display pagination if enabled
-		if ( 'true' == $atts['pagination']
-			|| ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) )
+		if ( ( 'true' == $atts['pagination'] || ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) ) )
+			&& 'true' != $atts['pagination_loadmore']
 		) {
-			wpex_pagination( $wpex_query );
+
+			echo wpex_pagination( $wpex_query, false );
+
+		}
+
+		// Load more button
+		if ( 'true' == $atts['pagination_loadmore'] && ! empty( $wpex_query->max_num_pages ) ) {
+			vcex_loadmore_scripts();
+			$og_atts['entry_count'] = $wpex_count; // Update counter
+			echo vcex_get_loadmore_button( 'vcex_post_type_archive', $og_atts, $wpex_query );
 		} ?>
 
 	</div>
-	
+
 	<?php
 	// Reset the post data to prevent conflicts with WP globals
 	wp_reset_postdata(); ?>

@@ -4,13 +4,38 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.1
+ * @version 4.8
  */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/**
+ * Numbered Pagination for archives
+ *
+ * @since 4.8
+ * @todo replace for blog and main archives
+ */
+function wpex_get_pagination() {
+
+	// Arrow style
+	$arrow_style = wpex_get_mod( 'pagination_arrow' );
+	$arrow_style = $arrow_style ? esc_attr( $arrow_style ) : 'angle';
+
+	// Arrows with RTL support
+	$prev_arrow = is_rtl() ? 'ticon ticon-' . $arrow_style . '-right' : 'ticon ticon-' . $arrow_style . '-left';
+	$next_arrow = is_rtl() ? 'ticon ticon-' . $arrow_style . '-left' : 'ticon ticon-' . $arrow_style . '-right';
+
+	return get_the_posts_pagination( array(
+		'type'               => 'list',
+		'prev_text'          => '<span class="' . $prev_arrow . '" aria-hidden="true"></span><span class="screen-reader-text">' . esc_html__( 'Previous', 'total' ) . '</span>',
+		'next_text'          => '<span class="' . $next_arrow . '" aria-hidden="true"></span><span class="screen-reader-text">' . esc_html__( 'Next', 'total' ) . '</span>',
+		'before_page_number' => '<span class="screen-reader-text">' . esc_html__( 'Page', 'total' ) . ' </span>',
+	) );
+}
+
 
 /**
  * Numbered Pagination
@@ -24,11 +49,11 @@ if ( ! function_exists( 'wpex_pagination' ) ) { // MUST KEEP CHECK SO USERS CAN 
 		// Arrow style
 		$arrow_style = wpex_get_mod( 'pagination_arrow' );
 		$arrow_style = $arrow_style ? esc_attr( $arrow_style ) : 'angle';
-		
+
 		// Arrows with RTL support
-		$prev_arrow = is_rtl() ? 'fa fa-' . $arrow_style . '-right' : 'fa fa-' . $arrow_style . '-left';
-		$next_arrow = is_rtl() ? 'fa fa-' . $arrow_style . '-left' : 'fa fa-' . $arrow_style . '-right';
-		
+		$prev_arrow = is_rtl() ? 'ticon ticon-' . $arrow_style . '-right' : 'ticon ticon-' . $arrow_style . '-left';
+		$next_arrow = is_rtl() ? 'ticon ticon-' . $arrow_style . '-left' : 'ticon ticon-' . $arrow_style . '-right';
+
 		// Get global $query
 		if ( ! $query ) {
 			global $wp_query;
@@ -82,8 +107,7 @@ if ( ! function_exists( 'wpex_pagination' ) ) { // MUST KEEP CHECK SO USERS CAN 
 			) );
 
 			// Alignment classes based on Customizer settings
-			$align = wpex_get_mod( 'pagination_align' );
-			$align = ( 'left' != $align ) ? ' wpex-'. $align : '';
+			$align = ' text' . wpex_get_mod( 'pagination_align', 'left' );
 
 			// Output pagination
 			if ( $echo ) {
@@ -95,7 +119,7 @@ if ( ! function_exists( 'wpex_pagination' ) ) { // MUST KEEP CHECK SO USERS CAN 
 		}
 
 	}
-	
+
 }
 
 /**
@@ -107,10 +131,10 @@ if ( ! function_exists( 'wpex_pagejump' ) ) {
 
 	function wpex_pagejump( $pages = '', $range = 4, $echo = true ) {
 		$output     = '';
-		$showitems  = ( $range * 2 ) + 1; 
+		$showitems  = ( $range * 2 ) + 1;
 		global $paged;
 		if ( empty( $paged ) ) $paged = 1;
-		
+
 		if ( $pages == '' ) {
 			global $wp_query;
 			$pages = $wp_query->max_num_pages;
@@ -154,17 +178,23 @@ if ( ! function_exists( 'wpex_infinite_scroll' ) ) {
 
 		// Load infinite scroll script
 		wp_enqueue_script(
-			'wpex-infinitescroll',
-			wpex_asset_url( 'js/dynamic/infinitescroll.js' ),
+			'wpex-infinite-scroll',
+			wpex_asset_url( 'js/dynamic/wpex-infinite-scroll.min.js' ),
 			array( 'jquery' ),
-			1.0,
+			WPEX_THEME_VERSION,
 			true
 		);
-		
+
+		// Loading text
+		$loading_text = wpex_get_mod( 'loadmore_loading_text', esc_html__( 'Loading...', 'total' ) );
+
+		// Loading img
+		$gif = apply_filters( 'wpex_loadmore_gif', includes_url( 'images/spinner-2x.gif' ) );
+
 		// Localize loading text
 		$is_params = apply_filters( 'wpex_infinite_scroll_args', array(
 			'loading' => array(
-				'msgText'      => '<div class="infinite-scroll-loader"></div>',
+				'msgText'      => '<div class="wpex-infscr-spinner"><img src="' . esc_url( $gif ) . '" class="wpex-spinner" alt="' . esc_html( $loading_text ) . '" /><span class="ticon ticon-spinner"></span></div>',
 				'msg'          => null,
 				'finishedMsg'  => null,
 			),
@@ -173,13 +203,13 @@ if ( ! function_exists( 'wpex_infinite_scroll' ) ) {
 			'nextSelector' => 'div.infinite-scroll-nav div.older-posts a',
 			'itemSelector' => '.blog-entry',
 		), 'blog' );
-		wp_localize_script( 'wpex-infinitescroll', 'wpexInfiniteScroll', $is_params );
+		wp_localize_script( 'wpex-infinite-scroll', 'wpexInfiniteScroll', $is_params );
 
 		if ( wpex_get_mod( 'blog_entry_audio_output', false ) || apply_filters( 'wpex_infinite_scroll_enqueue_mediaelement', false ) ) {
 			wp_enqueue_style( 'wp-mediaelement' );
 			wp_enqueue_script( 'wp-mediaelement' );
 		}
-		
+
 		// Output pagination HTML
 		$output = '';
 
@@ -212,6 +242,7 @@ if ( ! function_exists( 'wpex_infinite_scroll' ) ) {
  */
 function wpex_loadmore( $args = array() ) {
 
+	wp_enqueue_script( 'wpex-loadmore' );
 	wpex_enqueue_ilightbox_skin(); // make sure lightbox is loaded for any lightbox items
 
 	$defaults = array(
@@ -224,15 +255,16 @@ function wpex_loadmore( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$text = wpex_get_mod( 'loadmore_text' );
-	$text = $text ? $text : esc_html__( 'Load More', 'total' );
+	$text         = wpex_get_mod( 'loadmore_text', esc_html__( 'Load More', 'total' ), true );
+	$loading_text = wpex_get_mod( 'loadmore_loading_text', esc_html__( 'Loading...', 'total' ) );
+	$gif          = apply_filters( 'wpex_loadmore_gif', includes_url( 'images/spinner-2x.gif' ) );
 
 	if ( wpex_get_mod( 'blog_entry_audio_output', false ) || apply_filters( 'wpex_loadmore_enqueue_mediaelement', false ) ) {
 		wp_enqueue_style( 'wp-mediaelement' );
 		wp_enqueue_script( 'wp-mediaelement' );
 	}
 
-	echo '<div class="wpex-load-more-wrap"><div class="wpex-load-more theme-button expanded" data-loadmore="' . htmlentities( json_encode( $args ) ) . '"><span class="theme-button-inner">' . $text . '</span></div></div>';
+	echo '<div class="wpex-load-more-wrap"><a href="#" class="wpex-load-more theme-button expanded" data-loadmore="' . htmlentities( json_encode( $args ) ) . '"><span class="theme-button-inner">' . esc_html( $text ) . '</span></a><img src="' . esc_url( $gif ) . '" class="wpex-spinner" alt="' . esc_html( $loading_text ) . '" /><span class="ticon ticon-spinner"></span></div>';
 
 }
 
@@ -257,7 +289,7 @@ function wpex_ajax_load_more() {
 	}
 
 	$query_args['post_status'] = 'publish';
-	$query_args['paged'] = isset( $_POST['page'] ) ? $_POST['page'] : 2;
+	$query_args['paged']       = isset( $_POST['page'] ) ? $_POST['page'] : 2;
 
 	//$context = isset( $_POST['context'] ) ? $_POST['context'] : 'archive';
 	global $wpex_count;
@@ -313,44 +345,44 @@ add_action( 'wp_ajax_nopriv_wpex_ajax_load_more', 'wpex_ajax_load_more' );
 if ( ! function_exists( 'wpex_blog_pagination' ) ) {
 
 	function wpex_blog_pagination( $args = array() ) {
-		
+
 		// Admin Options
 		$blog_style       = wpex_get_mod( 'blog_style', 'large-image' );
 		$pagination_style = wpex_get_mod( 'blog_pagination_style', 'standard' );
-		
+
 		// Category based settings
 		if ( is_category() ) {
-			
+
 			// Get taxonomy meta
 			$term       = get_query_var( 'cat' );
 			$term_data  = get_option( 'category_'. $term );
 			$term_style = $term_pagination = '';
-			
+
 			if ( isset( $term_data['wpex_term_style'] ) ) {
 				$term_style = '' != $term_data['wpex_term_style'] ? $term_data['wpex_term_style'] .'' : $term_style;
 			}
-			
+
 			if ( isset( $term_data['wpex_term_pagination'] ) ) {
 				$term_pagination = '' != $term_data['wpex_term_pagination'] ? $term_data['wpex_term_pagination'] .'' : '';
 			}
-			
+
 			if ( $term_style ) {
 				$blog_style = $term_style .'-entry-style';
 			}
-			
+
 			if ( $term_pagination ) {
 				$pagination_style = $term_pagination;
 			}
-			
+
 		}
-		
+
 		// Set default $type for infnite scroll
 		if ( 'grid-entry-style' == $blog_style ) {
 			$infinite_type = 'standard-grid';
 		} else {
 			$infinite_type = 'standard';
 		}
-		
+
 		// Execute the correct pagination function
 		if ( 'infinite_scroll' == $pagination_style ) {
 			wpex_infinite_scroll( $infinite_type );
@@ -363,5 +395,5 @@ if ( ! function_exists( 'wpex_blog_pagination' ) ) {
 		}
 
 	}
-	
+
 }

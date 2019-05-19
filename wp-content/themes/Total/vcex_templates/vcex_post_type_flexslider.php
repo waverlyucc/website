@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.6
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -14,12 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Helps speed up rendering in backend of VC
 if ( is_admin() && ! wp_doing_ajax() ) {
-	return;
-}
-
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
 	return;
 }
 
@@ -60,7 +54,7 @@ if ( $wpex_query->have_posts() ) :
 		$wrap_data[] = 'data-auto-play="false"';
 	}
 	if ( $slideshow && $slideshow_speed ) {
-		$wrap_data[] = 'data-auto-play-delay="'. $slideshow_speed .'"';
+		$wrap_data[] = 'data-auto-play-delay="'. $slideshow_speed . '"';
 	}
 	if ( 'false' == $direction_nav ) {
 		$wrap_data[] = 'data-arrows="false"';
@@ -78,18 +72,18 @@ if ( $wpex_query->have_posts() ) :
 		$wrap_data[] = 'data-thumbnail-pointer="true"';
 	}
 	if ( $animation_speed ) {
-		$wrap_data[] = 'data-animation-speed="'. intval( $animation_speed ) .'"';
+		$wrap_data[] = 'data-animation-speed="'. intval( $animation_speed ) . '"';
 	}
 	if ( $height_animation ) {
 		$height_animation = intval( $height_animation );
 		$height_animation = 0 == $height_animation ? '0.0' : $height_animation;
-		$wrap_data[] = 'data-height-animation-duration="'. $height_animation .'"';
+		$wrap_data[] = 'data-height-animation-duration="'. $height_animation . '"';
 	}
 	if ( 'true' == $control_thumbs && $control_thumbs_height ) {
-		$wrap_data[] = 'data-thumbnail-height="'. intval( $control_thumbs_height ) .'"';
+		$wrap_data[] = 'data-thumbnail-height="'. intval( $control_thumbs_height ) . '"';
 	}
 	if ( 'true' == $control_thumbs && $control_thumbs_width ) {
-		$wrap_data[] = 'data-thumbnail-width="'. intval( $control_thumbs_width ) .'"';
+		$wrap_data[] = 'data-thumbnail-width="'. intval( $control_thumbs_width ) . '"';
 	}
 
 	// Caption attributes and classes
@@ -222,8 +216,8 @@ if ( $wpex_query->have_posts() ) :
 											if ( 'true' == $title ) {
 
 												$output .= '<div class="vcex-posttype-slider-title entry-title wpex-em-18px">';
-														
-													$output .= '<a href="' . $permalink .'" title="'. $esc_title .'" class="title">' . wp_kses_post( get_the_title() ) . '</a>';
+
+													$output .= '<a href="' . $permalink . '" title="'. $esc_title . '" class="title">' . wp_kses_post( get_the_title() ) . '</a>';
 
 												$output .= '</div>';
 
@@ -246,16 +240,16 @@ if ( $wpex_query->have_posts() ) :
 
 													if ( 'staff' != $post_type ) {
 
-														$output .= '<li class="meta-date"><span class="fa fa-clock-o"></span><span class="updated">' . get_the_date() .'</span></li>';
+														$output .= '<li class="meta-date"><span class="ticon ticon-clock-o"></span><span class="updated">' . get_the_date() . '</span></li>';
 
-														$output .= '<li class="meta-author"><span class="fa fa-user"></span><span class="vcard author">'. get_the_author_posts_link() .'</span></li>';
+														$output .= '<li class="meta-author"><span class="ticon ticon-user-o"></span><span class="vcard author">'. get_the_author_posts_link() . '</span></li>';
 
 														// Display category
 														if ( 'yes' != $tax_query
 															&& $category = wpex_get_post_type_cat_tax( $post_type )
 														) {
 
-															$output .= '<li class="meta-category"><span class="fa fa-folder-o"></span>' . wpex_get_list_post_terms( $category ) . '</li>';
+															$output .= '<li class="meta-category"><span class="ticon ticon-folder-open-o"></span>' . wpex_get_list_post_terms( $category ) . '</li>';
 
 														}
 
@@ -268,7 +262,7 @@ if ( $wpex_query->have_posts() ) :
 										$output .= '</header>';
 
 									}
-									
+
 									// Display excerpt
 									if ( 'true' == $excerpt && $excerpt_length ) {
 
@@ -291,7 +285,7 @@ if ( $wpex_query->have_posts() ) :
 				$output .= '</div>';
 
 			endwhile;
-			
+
 		$output .= '</div>';
 
 		// Thumbnails
@@ -304,7 +298,7 @@ if ( $wpex_query->have_posts() ) :
 				$container_classes .= ' sp-nc-thumbnails';
 			}
 
-			$output .= '<div class="' . $container_classes .'">';
+			$output .= '<div class="' . $container_classes . '">';
 
 				$args = array(
 					'size'          => $img_size,
@@ -314,9 +308,9 @@ if ( $wpex_query->have_posts() ) :
 					'attributes'    => array( 'data-no-lazy' => 1 ),
 					'apply_filters' => 'vcex_post_type_flexslider_nav_thumbnail_args',
 				);
-				
+
 				$entry_classes = '';
-				
+
 				if ( 'true' == $control_thumbs_carousel ) {
 					$args['class'] = 'wpex-slider-thumbnail sp-thumbnail';
 				} else {

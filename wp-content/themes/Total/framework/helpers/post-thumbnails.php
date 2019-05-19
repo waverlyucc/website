@@ -241,7 +241,8 @@ function wpex_get_post_thumbnail( $args = array() ) {
 
 		// Generate retina version
 		if ( $retina ) {
-			$retina_img = wpex_generate_retina_image( $attachment, $width, $height, $crop, $size );
+			$retina_img = apply_filters( 'wpex_get_post_thumbnail_retina', '', $attachment, $size ); // filter for child mods.
+			$retina_img = $retina_img ? $retina_img : wpex_generate_retina_image( $attachment, $width, $height, $crop, $size );
 		}
 
 		// Return image

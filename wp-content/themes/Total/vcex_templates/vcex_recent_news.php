@@ -29,8 +29,19 @@ $output = '';
 // Deprecated Attributes
 $term_slug = isset( $atts['term_slug'] ) ? $atts['term_slug'] : '';
 
+// Store orginal atts value for use in non-builder params
+$og_atts = $atts;
+
+// Define entry counter
+$entry_count = ! empty( $og_atts['entry_count'] ) ? $og_atts['entry_count'] : 0;
+
 // Get shortcode attributes
 $atts = vc_map_get_attributes( 'vcex_recent_news', $atts );
+
+// Add paged attribute for load more button (used for WP_Query)
+if ( ! empty( $og_atts['paged'] ) ) {
+	$atts['paged'] = $og_atts['paged'];
+}
 
 // Define non-vc attributes
 $atts['tax_query']  = '';
@@ -69,7 +80,7 @@ if ( $wpex_query->have_posts() ) :
 
 	// Sanitize data + declare vars
 	$grid_columns = $grid_columns ? $grid_columns : '1';
-	
+
 	// Wrap Classes
 	$wrap_classes = array( 'vcex-module', 'vcex-recent-news', 'clr' );
 	if ( $classes ) {
@@ -173,10 +184,13 @@ if ( $wpex_query->have_posts() ) :
 
 	// VC filter
 	$wrap_classes = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $wrap_classes, 'vcex_recent_news', $atts );
-	
+
+	// Add wrapper (introduced in 4.8 for load more function)
+	$output .= '<div class="vcex-recent-news-wrap clr">';
+
 	// Output module
 	$output .= '<div class="' . esc_attr( $wrap_classes ) . '"' . vcex_get_unique_id( $unique_id ) . '>';
-	
+
 		// Display header if enabled
 		if ( $header ) {
 
@@ -188,21 +202,19 @@ if ( $wpex_query->have_posts() ) :
 
 		}
 
-		// Begin counter for clearing counters
-		$count=0;
-
 		// Loop through posts
+		$total_count = 0;
 		while ( $wpex_query->have_posts() ) :
 
 			// Get post from query
 			$wpex_query->the_post();
 
-			// Add to counter
-			$count++;
+			// Add to counters
+			$entry_count++;
 
 			// Create new post object.
 			$post = new stdClass();
-		
+
 			// Post vars
 			$post->ID            = get_the_ID();
 			$post->permalink     = wpex_get_permalink( $post->ID );
@@ -212,12 +224,12 @@ if ( $wpex_query->have_posts() ) :
 			$post->video_embed   = wpex_get_post_video_html();
 			$post->format        = get_post_format( $post->ID );
 
-			// Open grid columns wrap
+			$entry_wrap_classes = 'vcex-recent-news-entry-wrap vcex-grid-item';
 			if ( $grid_columns > '1' ) {
-
-				$output .= '<div class="col ' . $grid_columns_class . ' vcex-recent-news-entry-wrap col-' . $count . '">';
-
+				$entry_wrap_classes .= ' col ' . $grid_columns_class . ' col-' . $entry_count;
 			}
+
+			$output .= '<div class="' . esc_attr( $entry_wrap_classes ) . '">';
 
 			$output .= '<article ' . wpex_get_post_class( $entry_classes, $post->ID ) . '' . $entry_style . '>';
 
@@ -310,11 +322,11 @@ if ( $wpex_query->have_posts() ) :
 						$output .= '<header class="vcex-recent-news-entry-title entry-title">';
 
 							$output .= '<' . $title_tag . ' class="vcex-recent-news-entry-title-heading"' . $heading_style . '>';
-								
+
 								$output .= '<a href="' . $post->permalink . '">' . wp_kses_post( $post->the_title ) . '</a>';
-							
+
 							$output .= '</' . $title_tag . '>';
-						
+
 						$output .= '</header>';
 
 					} // End title check
@@ -374,37 +386,42 @@ if ( $wpex_query->have_posts() ) :
 
 			$output .= '</article>';
 
-			// Close grid columns wrap
-			if ( $grid_columns > '1' ) {
-				$output .= '</div>';
-			}
+			$output .= '</div>'; // entry wrap close
 
-			if ( $count == $grid_columns ) {
-				$count=0;
+			if ( $entry_count == $grid_columns ) {
+				$entry_count=0;
 			}
 
 		endwhile;
 
-		// Display pagination
-		if ( 'true' == $pagination
-			|| ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) )
-		) {
-
-			// Clear floats to prevent issues with pagination
-			$output .= '<div class="wpex-clear"></div>';
-
-			// Output pagination
-			$output .= wpex_pagination( $wpex_query, false );
-
-		}
-	
 	$output .= '</div>';
+
+	// Display pagination if enabled
+	if ( ( 'true' == $atts['pagination'] || ( 'true' == $atts['custom_query'] && ! empty( $wpex_query->query['pagination'] ) ) )
+		&& 'true' != $atts['pagination_loadmore']
+	) {
+
+		$output .= wpex_pagination( $wpex_query, false );
+
+	}
+
+	// Load more button
+	if ( 'true' == $atts['pagination_loadmore'] && ! empty( $wpex_query->max_num_pages ) ) {
+
+		vcex_loadmore_scripts();
+		$og_atts['entry_count'] = $entry_count; // Update counter
+		$output .= vcex_get_loadmore_button( 'vcex_recent_news', $og_atts, $wpex_query );
+
+	}
 
 	// Remove post object from memory
 	$post = null;
 
 	// Reset the post data to prevent conflicts with WP globals
 	wp_reset_postdata();
+
+	// Close wrap
+	$output .= '</div>';
 
 	// Echo output
 	echo $output;

@@ -23,10 +23,10 @@ if ( ! isset( $wpex_count ) ) {
 // Add Standard Classes
 $classes	= array();
 $classes[]	= 'portfolio-entry';
-$classes[]  = 'loop-'. $wpex_loop;
+$classes[]  = 'loop-' . $wpex_loop;
 $classes[]	= 'col';
 $classes[]	= wpex_portfolio_column_class( $wpex_loop );
-$classes[]	= 'col-'. $wpex_count;
+$classes[]	= 'col-' . $wpex_count;
 
 // Get grid style
 $wpex_grid_style = wpex_get_mod( 'portfolio_archive_grid_style', 'fit-rows' );

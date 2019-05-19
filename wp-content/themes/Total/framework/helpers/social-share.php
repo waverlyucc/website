@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0.0
  */
 function wpex_social_share_sites() {
-    $sites = wpex_get_mod( 'social_share_sites', array( 'twitter', 'facebook', 'google_plus', 'linkedin', 'email' ) );
+    $sites = wpex_get_mod( 'social_share_sites', array( 'twitter', 'facebook', 'linkedin', 'email' ) );
     $sites = apply_filters( 'wpex_social_share_sites', $sites );
     if ( $sites && ! is_array( $sites ) ) {
         $sites = explode( ',', $sites );
@@ -35,37 +35,31 @@ function wpex_get_social_items() {
     return apply_filters( 'wpex_get_social_items', array(
         'twitter' => array(
             'li_class'   => 'wpex-twitter',
-            'icon_class' => 'fa fa-twitter',
+            'icon_class' => 'ticon ticon-twitter',
             'label'      => __( 'Tweet', 'total' ),
             'site'       => 'Twitter',
         ),
         'facebook' => array(
             'li_class'   => 'wpex-facebook',
-            'icon_class' => 'fa fa-facebook',
+            'icon_class' => 'ticon ticon-facebook',
             'label'      => __( 'Share', 'total' ),
             'site'       => 'Facebook',
         ),
-        'google_plus' => array(
-            'li_class'   => 'wpex-googleplus',
-            'icon_class' => 'fa fa-google-plus',
-            'label'      => __( 'Plus one', 'total' ),
-            'site'       => 'Google Plus',
-        ),
         'pinterest' => array(
             'li_class'   => 'wpex-pinterest',
-            'icon_class' => 'fa fa-pinterest',
+            'icon_class' => 'ticon ticon-pinterest',
             'label'      => __( 'Pin It', 'total' ),
             'site'       => 'Pinterest',
         ),
         'linkedin' => array(
             'li_class'   => 'wpex-linkedin',
-            'icon_class' => 'fa fa-linkedin',
+            'icon_class' => 'ticon ticon-linkedin',
             'label'      => __( 'Share', 'total' ),
             'site'       => 'LinkedIn',
         ),
         'email' => array(
             'li_class'   => 'wpex-email',
-            'icon_class' => 'fa fa-envelope',
+            'icon_class' => 'ticon ticon-envelope',
             'label'      => __( 'Email', 'total' ),
             'site'       => 'Email',
         ),
@@ -123,7 +117,7 @@ function wpex_get_social_share_data( $post_id = '', $sites = '' ) {
         $title = wpex_get_esc_title();
 
         if ( in_array( 'pinterest', $sites ) || in_array( 'linkedin', $sites ) ) {
-            
+
             $summary = wpex_get_excerpt( array(
                 'post_id'         => $post_id,
                 'length'          => 30,
@@ -180,7 +174,7 @@ function wpex_get_social_share_data( $post_id = '', $sites = '' ) {
         if ( $twitter_desc = get_post_meta( $post_id, '_yoast_wpseo_twitter-description', true ) ) {
             if ( $twitter_title ) {
                 $data['twitter-title'] = html_entity_decode( wp_strip_all_tags( $twitter_title . ': ' . $twitter_desc ) );
-            } else { 
+            } else {
                 $data['twitter-title'] = $data['title'] . ':' . html_entity_decode( wp_strip_all_tags( $twitter_desc ) );
             }
         }
@@ -197,5 +191,5 @@ function wpex_get_social_share_data( $post_id = '', $sites = '' ) {
     $data['specs'] = 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600';
 
     return apply_filters( 'wpex_get_social_share_data', $data );
-    
+
 }

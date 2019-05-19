@@ -4,9 +4,8 @@
  *
  * @package Total WordPress theme
  * @subpackage Partials
- * @version 4.4.1
+ * @version 4.8.5
  *
- * @todo update to use new wpex_get_post_media_gallery_slider() function
  */
 
 // Exit if accessed directly
@@ -48,10 +47,12 @@ if ( 'grid-entry-style' === $entry_style ) {
 }
 
 // Check if lightbox is enabled
-$lightbox_enabled = false;
 if ( wpex_gallery_is_lightbox_enabled( $post_id ) || wpex_get_mod( 'blog_entry_image_lightbox' ) ) {
 	$lightbox_enabled = true;
+	$lightbox_title   = apply_filters( 'wpex_blog_gallery_lightbox_title', false );
 	wpex_enqueue_ilightbox_skin();
+} else {
+	$lightbox_enabled = $lightbox_title = false;
 } ?>
 
 <div class="blog-entry-media entry-media clr">
@@ -67,12 +68,22 @@ if ( wpex_gallery_is_lightbox_enabled( $post_id ) || wpex_get_mod( 'blog_entry_i
 
 		<div class="wpex-slider slider-pro" <?php wpex_slider_data( $slider_data ); ?>>
 
-			<div class="wpex-slider-slides sp-slides <?php if ( $lightbox_enabled ) echo 'lightbox-group'; ?>">
+			<?php $slides_attrs = array(
+				'class' => 'wpex-slider-slides sp-slides',
+			);
+			if ( $lightbox_enabled ) {
+				$slides_attrs['class'] .= ' wpex-lightbox-group';
+			}
+			if ( ! $lightbox_title ) {
+				$slides_attrs['data-show_title'] = 'false';
+			} ?>
+
+			<div <?php echo wpex_parse_attrs( $slides_attrs ); ?>>
 
 				<?php
 				// Loop through attachments
-				foreach ( $attachments as $attachment ) : ?>
-					<?php
+				foreach ( $attachments as $attachment ) :
+
 					// Get attachment data
 					$attachment_data  = wpex_get_attachment_data( $attachment );
 					$attachment_alt   = $attachment_data['alt'];
@@ -85,13 +96,7 @@ if ( wpex_gallery_is_lightbox_enabled( $post_id ) || wpex_get_mod( 'blog_entry_i
 								'enablejsapi' => '1',
 							)
 						) );
-					}
-
-					// Get image output
-					$attachment_html = wpex_get_blog_entry_thumbnail( array(
-						'attachment' => $attachment,
-						'alt'        => $attachment_alt,
-					) ); ?>
+					} ?>
 
 					<div class="wpex-slider-slide sp-slide">
 
@@ -111,29 +116,47 @@ if ( wpex_gallery_is_lightbox_enabled( $post_id ) || wpex_get_mod( 'blog_entry_i
 								// Display with lightbox
 								if ( $lightbox_enabled ) :
 
-									if ( apply_filters( 'wpex_blog_gallery_lightbox_title', false ) ) {
-										$title_data_attr = ' data-title="'. esc_attr( $attachment_alt ) .'"';
-									} else {
-										$title_data_attr = ' data-show_title="false"';
-									} ?>
+									$lightbox_link_attrs = array(
+										'href'      => esc_url( wpex_get_lightbox_image( $attachment ) ),
+										'title'     => esc_attr( $attachment_alt ),
+										'data-type' => 'image',
+										'class'     => 'wpex-lightbox-group-item',
+									);
 
-									<a href="<?php echo wpex_get_lightbox_image( $attachment ); ?>" title="<?php echo esc_attr( $attachment_alt ); ?>" data-type="image" class="wpex-lightbox-group-item<?php wpex_entry_image_animation_classes(); ?>"<?php echo $title_data_attr; ?>><?php echo $attachment_html; ?></a>
+									if ( $lightbox_title ) {
+										$lightbox_link_attrs['data-title'] = esc_attr( $attachment_alt );
+									}
+
+									if ( $animation = wpex_entry_image_animation_classes() ) {
+										$lightbox_link_attrs['class'] = ' ' . trim( $animation );
+									}
+
+									$thumbnail = wpex_get_blog_entry_thumbnail( array(
+										'attachment' => $attachment,
+										'alt'        => $attachment_alt,
+									) );
+
+									// Display image with lightbox link
+									echo wpex_parse_html( 'a', $lightbox_link_attrs, $thumbnail );
+
+								// Display single image
+								else :
+
+									// Display Image
+									echo wpex_get_blog_entry_thumbnail( array(
+										'attachment' => $attachment,
+										'alt'        => $attachment_alt,
+									) );
+
+								endif; ?>
 
 								<?php
-								// Display single image
-								else : ?>
+								// Display caption if defined
+								if ( ! empty( $attachment_data['caption'] ) ) : ?>
 
-									<?php echo $attachment_html; ?>
-
-									<?php
-									// Display caption if defined
-									if ( ! empty( $attachment_data['caption'] ) ) : ?>
-
-										<div class="wpex-slider-caption sp-layer sp-black sp-padding clr" data-position="bottomCenter" data-show-transition="up" data-hide-transition="down" data-width="100%" data-show-delay="500">
-											<?php echo wp_kses_post( $attachment_data['caption'] ); ?>
-										</div><!-- .wpex-slider-caption -->
-
-									<?php endif; ?>
+									<div class="wpex-slider-caption sp-layer sp-black sp-padding clr" data-position="bottomCenter" data-show-transition="up" data-hide-transition="down" data-width="100%" data-show-delay="500">
+										<?php echo wp_kses_post( $attachment_data['caption'] ); ?>
+									</div><!-- .wpex-slider-caption -->
 
 								<?php endif; ?>
 

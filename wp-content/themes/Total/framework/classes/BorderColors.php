@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Framework
- * @version 4.6.5
+ * @version 4.8
  */
 
 namespace TotalTheme;
@@ -55,13 +55,13 @@ class BorderColors {
 
 			// CPT
 			'.cpt-entry.span_1_of_1',
-			
+
 			// Pagination
 			'ul .page-numbers a,
 			 a.page-numbers,
 			 span.page-numbers',
 
-			'.post-pagination',
+			'.post-pagination-wrap',
 
 			// Widgets
 			'#main .wpex-widget-recent-posts-li:first-child,
@@ -101,6 +101,9 @@ class BorderColors {
 			'.vcex-login-form',
 			'.vcex-recent-news-entry',
 
+			// Tables
+			//'table th, table td', // removed in 4.8 because we have new section just for tables now
+
 		) );
 	}
 
@@ -131,7 +134,7 @@ class BorderColors {
 			// Borders
 			$elements = implode( ',', $elements );
 			$css .= $elements . '{border-color:' . $color . ';}';
-			
+
 			// Return CSS
 			if ( $css ) {
 				return '/*BORDER COLOR*/' . $css;
@@ -176,7 +179,7 @@ class BorderColors {
 		}
 
 		wp_enqueue_script( 'wpex-customizer-border-colors',
-			wpex_asset_url( 'js/dynamic/customizer/border-colors.js' ),
+			wpex_asset_url( 'js/dynamic/customizer/wpex-border-colors.min.js' ),
 			array( 'customize-preview' ),
 			WPEX_THEME_VERSION,
 			true

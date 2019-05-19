@@ -38,7 +38,7 @@ class ImportExport {
 	public function add_page() {
 		add_submenu_page(
 			WPEX_THEME_PANEL_SLUG,
-			esc_attr__( 'Import/Export', 'total' ), 
+			esc_attr__( 'Import/Export', 'total' ),
 			esc_attr__( 'Import/Export', 'total' ),
 			'manage_options',
 			WPEX_THEME_PANEL_SLUG . '-import-export',
@@ -154,11 +154,8 @@ class ImportExport {
 				$error_type = 'error';
 			}
 
-			// Make sure the settings data is reset! 
-			$options = array(
-				'import'	=> '',
-				'reset'		=> '',
-			);
+			// Make sure the settings data is reset so we don't save anything
+			$options = '';
 
 		}
 
@@ -170,8 +167,8 @@ class ImportExport {
 			$error_type
 		);
 
-		// Return options
-		return $options;
+		// Return nothing ( we aren't actually saving options in the add_options db)
+		return;
 
 	}
 
@@ -232,7 +229,7 @@ class ImportExport {
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Import Settings', 'total' ); ?></th>
 					<td>
-						<textarea name="wpex_customizer_options[import]" rows="10" cols="50" style="width:100%;"><?php echo stripslashes( $options['import'] ); ?></textarea>
+						<textarea name="wpex_customizer_options[import]" rows="10" cols="50" style="width:100%;"></textarea>
 						<input id="wpex-reset-hidden" name="wpex_customizer_options[reset]" type="hidden" value=""></input>
 						<p class="submit">
 							<input type="submit" class="button-primary wpex-submit-form" value="<?php esc_attr_e( 'Import Options', 'total' ) ?>" />

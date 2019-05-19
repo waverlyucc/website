@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Partials
- * @version 3.3.0
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -17,4 +17,4 @@ if ( 'inside_link' != $position ) {
 	return;
 } ?>
 
-<div class="magnifying-hover overlay-hide theme-overlay"><span class="fa fa-search"></span></div>
+<div class="magnifying-hover overlay-hide theme-overlay"><span class="ticon ticon-search"></span></div>

@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.7
+ * @version 4.8.5
  */
 
 // Exit if accessed directly
@@ -17,17 +17,12 @@ if ( is_admin() && ! wp_doing_ajax() ) {
 	return;
 }
 
-// Required VC functions
-if ( ! function_exists( 'vc_map_get_attributes' ) || ! function_exists( 'vc_shortcode_custom_css_class' ) ) {
-	vcex_function_needed_notice();
-	return;
-}
-
 // Define output var
 $output = '';
 
 // Get and extract shortcode attributes
-extract( vc_map_get_attributes( 'vcex_image_flexslider', $atts ) );
+$atts = vc_map_get_attributes( 'vcex_image_flexslider', $atts );
+extract( $atts );
 
 // Get images from post gallery
 if ( 'true' == $post_gallery ) {
@@ -121,7 +116,7 @@ if ( $custom_links && 'custom_link' == $thumbnail_link ) {
 } else {
 
 	$attachments = array_combine( $attachments, $attachments );
-	
+
 }
 
 // Output images
@@ -259,7 +254,7 @@ if ( $attachments ) :
 		$wrap_classes[] = $visibility;
 	}
 	if ( 'lightbox' == $thumbnail_link ) {
-		$wrap_classes[] = 'lightbox-group';
+		$wrap_classes[] = 'wpex-lightbox-group';
 		if ( $lightbox_skin ) {
 			$wrap_data[] = 'data-skin="'. esc_attr( $lightbox_skin ) .'"';
 			vcex_enque_style( 'ilightbox', $lightbox_skin );
@@ -274,7 +269,7 @@ if ( $attachments ) :
 
 	// Convert arrays into strings
 	$wrap_classes = implode( ' ', $wrap_classes );
-	$wrap_data    = apply_filters( 'vcex_image_flexslider_data_attributes', $wrap_data );
+	$wrap_data    = apply_filters( 'vcex_image_flexslider_data_attributes', $wrap_data, $atts );
 	$wrap_data    = $wrap_data ? ' '. implode( ' ', $wrap_data ) : '';
 
 	// Apply filters
@@ -290,30 +285,36 @@ if ( $attachments ) :
 		$output .= '<div class="vcex-image-slider-css-wrap '. vc_shortcode_custom_css_class( $css ) .'">';
 	}
 
-	$preloader_classes = 'wpex-slider-preloaderimg';
-	if ( 'false' == $img_strech ) {
-		$preloader_classes .= ' no-stretch';
+	// Preloader image
+	if ( 'true' != $randomize ) {
+
+		$preloader_classes = 'wpex-slider-preloaderimg';
+		if ( 'false' == $img_strech ) {
+			$preloader_classes .= ' no-stretch';
+		}
+		if ( $visibility ) {
+			$preloader_classes .= ' '. $visibility;
+		}
+
+		$output .= '<div class="'. esc_attr( $preloader_classes ) .'">';
+
+			$first_attachment = reset( $attachments );
+			$output .= wpex_get_post_thumbnail( array(
+				'attachment'    => current( array_keys( $attachments ) ),
+				'size'          => $img_size,
+				'crop'          => $img_crop,
+				'width'         => $img_width,
+				'height'        => $img_height,
+				'attributes'    => array( 'data-no-lazy' => 1 ),
+				'apply_filters' => 'vcex_image_flexslider_thumbnail_args',
+				'filter_arg1'   => $atts,
+			) );
+
+		$output .= '</div>';
+
 	}
-	if ( $visibility ) {
-		$preloader_classes .= ' '. $visibility;
-	}
 
-	$output .= '<div class="'. esc_attr( $preloader_classes ) .'">';
-
-		$first_attachment = reset( $attachments );
-		$output .= wpex_get_post_thumbnail( array(
-			'attachment'    => current( array_keys( $attachments ) ),
-			'size'          => $img_size,
-			'crop'          => $img_crop,
-			'width'         => $img_width,
-			'height'        => $img_height,
-			'attributes'    => array( 'data-no-lazy' => 1 ),
-			'apply_filters' => 'vcex_image_flexslider_thumbnail_args',
-			'filter_arg1'   => $atts,
-		) );
-
-	$output .= '</div>';
-
+	// Start slider output
 	$output .= '<div class="' . $wrap_classes . '"' . vcex_get_unique_id( $unique_id ) . $wrap_data . '>';
 
 		$output .= '<div class="wpex-slider-slides sp-slides">';
@@ -367,7 +368,7 @@ if ( $attachments ) :
 											'enablejsapi' => '1',
 										)
 									) );
-									
+
 								$output .= '</div>';
 
 								//$output .= '<a href="'. $attachment_video .'" class="sp-video">'. $attachment_img .'</a>';
@@ -395,18 +396,18 @@ if ( $attachments ) :
 										$lightbox_data_attributes .= ' data-caption="'. str_replace( '"',"'", $attachment_data['caption'] ) .'"';
 									}
 
-									$output .= '<a href="'. wpex_get_lightbox_image( $attachment ) .'" class="vcex-flexslider-entry-img wpex-slider-media-link wpex-lightbox-group-item"'. $lightbox_data_attributes .'>';
+									$output .= '<a href="' . wpex_get_lightbox_image( $attachment ) . '" class="vcex-flexslider-entry-img wpex-slider-media-link wpex-lightbox-group-item"' . $lightbox_data_attributes . '>';
 										$output .= $attachment_img;
 									$output .= '</a>';
-								
+
 								// Custom Links
 								} elseif ( 'custom_link' == $thumbnail_link ) {
 
 									// Custom link
 									if ( $custom_link ) {
 
-										$output .= '<a href="'. esc_url( $custom_link ) .'"'. vcex_html( 'target_attr', $custom_links_target ) .' class="wpex-slider-media-link">';
-											
+										$output .= '<a href="' . esc_url( $custom_link ) . '"' . vcex_html( 'target_attr', $custom_links_target ) . ' class="wpex-slider-media-link">';
+
 											$output .= $attachment_img;
 
 										$output .= '</a>';
@@ -431,7 +432,7 @@ if ( $attachments ) :
 							// Display caption if enabled and there is one
 							if ( $caption_enabled && $caption_output ) {
 
-								$output .= '<div class="'. $caption_classes .'"'. $caption_data .''. $caption_inline_style .'>';
+								$output .= '<div class="' . $caption_classes . '"' . $caption_data . $caption_inline_style . '>';
 
 									if ( in_array( $caption_type, array( 'description', 'caption' ) ) ) :
 

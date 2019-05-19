@@ -4,7 +4,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage VC Templates
- * @version 4.5.4.2
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -32,6 +32,9 @@ $output = '';
 // Sanitize
 $placeholder = $placeholder ? $placeholder : esc_html__( 'Keywords...', 'total' );
 $button_text = $button_text ? $button_text : esc_html__( 'Search', 'total' );
+
+// Autofocus
+$autofocus = 'true' == $autofocus ? 'autofocus' : '';
 
 // Wrap Classes
 $wrap_classes = array( 'vcex-module', 'vcex-searchbar clr' );
@@ -76,7 +79,7 @@ $output .= '<div class="'. esc_attr( $wrap_classes ) .'"'. vcex_get_unique_id( $
 
 	$output .= '<form method="get" class="vcex-searchbar-form" action="'. esc_url( home_url( '/' ) ) .'"'. $input_style .'>';
 
-		$output .= '<input type="search" class="'. $input_classes .'" name="s" placeholder="'. $placeholder .'"'. vcex_inline_style( array( 'width' => $input_width ) ) .' />';
+		$output .= '<input type="search" class="'. $input_classes .'" name="s" placeholder="'. $placeholder .'"'. vcex_inline_style( array( 'width' => $input_width ) ) . $autofocus . ' />';
 		
 		if ( $advanced_query ) :
 

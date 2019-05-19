@@ -6,7 +6,7 @@
  *
  * @package Total WordPress Theme
  * @subpackage Templates
- * @version 4.5.4
+ * @version 4.8
  */
 
 // Exit if accessed directly
@@ -21,6 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 </head>
 
 <body <?php body_class(); ?>>
+
+	<?php do_action( 'wpex_hook_after_body_tag' ); // reserved specicially for child theme edits and custom actions panel ?>
 
 	<?php wpex_outer_wrap_before(); ?>
 
